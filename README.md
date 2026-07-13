@@ -26,7 +26,7 @@
 <br>
 
 [![🗺 Explore the Map](https://img.shields.io/badge/🗺_Explore_the_Map-6D4AFF?style=for-the-badge)](#-opportunity-board)
-[![⚔ Begin a Quest](https://img.shields.io/badge/⚔_Begin_a_Quest-00B894?style=for-the-badge)](...)
+[![⚔ Begin a Quest](https://img.shields.io/badge/⚔_Begin_a_Quest-00B894?style=for-the-badge)](CONTRIBUTING.md)
 [![➕ Add a Discovery](https://img.shields.io/badge/➕_Add_a_Discovery-F4C542?style=for-the-badge&logo=github&logoColor=black)](...)
 
 </div>
