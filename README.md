@@ -8,10 +8,10 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.png">
-  <img src="assets/banner.png" width="760" alt="Aventra — student opportunities worth applying to">
+  <img src="logo_horse.jpg" width="760" alt="Aventra — student opportunities worth applying to">
 </picture>
 
-# Aventra
+# Enchanted Map
 
 ### Go further than your syllabus.
 
