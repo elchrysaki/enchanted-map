@@ -6,30 +6,28 @@
 
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: light)" srcset="side_logo_minimal.PNG">
-  <img src="side_logo_minimal.PNG" width="760" alt="Enchanted Map — student opportunities worth applying to">
-</picture>
+# ✨ Enchanted Map
 
-# Enchanted Map
+### Your Student Adventure Starts Here.
 
-### Go further than your syllabus.
-
-A community-curated directory of **conferences, hackathons, competitions, academies, fellowships, and selective programs** for ambitious students in Europe and worldwide.
+> Discover conferences, hackathons, fellowships, competitions, academies, exchange programs and other legendary opportunities around the world.
 
 <br>
 
-[![Explore Opportunities](https://img.shields.io/badge/EXPLORE-OPPORTUNITIES-6C63FF?style=for-the-badge&logo=googlemaps&logoColor=white)](#-opportunity-board)
-[![Add an Opportunity](https://img.shields.io/badge/ADD-AN%20OPPORTUNITY-00A878?style=for-the-badge&logo=github&logoColor=white)](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose)
-[![Closing Soon](https://img.shields.io/badge/VIEW-CLOSING%20SOON-FF5A5F?style=for-the-badge&logo=clockify&logoColor=white)](#-closing-soon)
+[![⭐ Stars](https://img.shields.io/github/stars/elchrysaki/enchanted-map?style=for-the-badge&color=F4C542)](...)
+[![🦄 Contributors](https://img.shields.io/github/contributors/elchrysaki/enchanted-map?style=for-the-badge&color=8B5CF6)](...)
+[![🗺 Opportunities](https://img.shields.io/badge/Verified-0-blueviolet?style=for-the-badge)](...)
+[![🔥 Closing Soon](https://img.shields.io/badge/Closing%20Soon-0-orange?style=for-the-badge)](...)
 
 <br>
 
-[![Stars](https://img.shields.io/github/stars/YOUR-USERNAME/YOUR-REPOSITORY?style=flat-square&label=Stars&color=ffd166)](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/stargazers)
-[![Contributors](https://img.shields.io/github/contributors/YOUR-USERNAME/YOUR-REPOSITORY?style=flat-square&label=Contributors&color=06d6a0)](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/graphs/contributors)
-[![Open submissions](https://img.shields.io/github/issues/YOUR-USERNAME/YOUR-REPOSITORY?style=flat-square&label=Open%20submissions&color=118ab2)](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues)
-[![Last updated](https://img.shields.io/github/last-commit/YOUR-USERNAME/YOUR-REPOSITORY?style=flat-square&label=Last%20updated&color=ef476f)](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/commits/main)
-[![License](https://img.shields.io/github/license/YOUR-USERNAME/YOUR-REPOSITORY?style=flat-square&color=8f7aea)](LICENSE)
+<img src="side_logo_minimal.PNG" width="760">
+
+<br>
+
+[![🗺 Explore the Map](https://img.shields.io/badge/🗺_Explore_the_Map-6D4AFF?style=for-the-badge)](#-opportunity-board)
+[![⚔ Begin a Quest](https://img.shields.io/badge/⚔_Begin_a_Quest-00B894?style=for-the-badge)](...)
+[![➕ Add a Discovery](https://img.shields.io/badge/➕_Add_a_Discovery-F4C542?style=for-the-badge&logo=github&logoColor=black)](...)
 
 </div>
 
