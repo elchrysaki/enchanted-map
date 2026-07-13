@@ -7,7 +7,7 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.png">
+  <source media="(prefers-color-scheme: dark)" srcset="logo_horse.jpg">
   <img src="logo_horse.jpg" width="760" alt="Aventra — student opportunities worth applying to">
 </picture>
 
