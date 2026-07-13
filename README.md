@@ -1,5 +1,5 @@
 <!--
-  WORKING TITLE: Aventra
+  WORKING TITLE: Enchanted Map
   Replace YOUR-USERNAME/YOUR-REPOSITORY in badge and issue URLs before publishing.
   Suggested repository slug: aventra-opportunities
 -->
@@ -7,8 +7,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="logo_horse.jpg">
-  <img src="logo_horse.jpg" width="760" alt="Aventra — student opportunities worth applying to">
+  <source media="(prefers-color-scheme: light)" srcset="side_logo_minimal.PNG">
+  <img src="side_logo_minimal.PNG" width="760" alt="Enchanted Map — student opportunities worth applying to">
 </picture>
 
 # Enchanted Map
