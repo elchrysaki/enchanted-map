@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   process-submission:
-    name: "📜 Parse and Route Discovery"
+    name: "📜 Parse, Route and Format Discovery"
 
     if: >
       github.event.issue.pull_request == null &&
@@ -51,15 +51,34 @@ jobs:
         run: |
           python scripts/process_submission.py
 
+      - name: "🪶 Format submission with AI"
+        id: ai
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+
+          SUBMISSION_FILE: ${{ steps.intake.outputs.submission_file }}
+          PROMPT_FILE: .github/prompts/opportunity-formatter.md
+          AI_OUTPUT_FILE: artifacts/ai-result-${{ github.event.issue.number }}.json
+
+          AI_MODEL: openai/gpt-4.1
+        run: |
+          python scripts/format_with_ai.py
+
       - name: "📎 Preserve structured submission"
         uses: actions/upload-artifact@v4
         with:
           name: opportunity-submission-${{ github.event.issue.number }}
-          path: ${{ steps.intake.outputs.submission_file }}
+          path: |
+            ${{ steps.intake.outputs.submission_file }}
+            ${{ steps.ai.outputs.ai_output_file }}
           if-no-files-found: error
           retention-days: 14
 
-      - name: "🪶 Show routing result"
+      - name: "🪶 Show processing result"
         run: |
           echo "Category: ${{ steps.intake.outputs.category }}"
           echo "Moderators: ${{ steps.intake.outputs.moderators }}"
+          echo "AI confidence: ${{ steps.ai.outputs.confidence }}"
+          echo "Recommended action: ${{ steps.ai.outputs.recommended_action }}"
