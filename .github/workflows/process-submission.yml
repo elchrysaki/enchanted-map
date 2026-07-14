@@ -13,11 +13,11 @@ permissions:
 
 concurrency:
   group: opportunity-submission-${{ github.event.issue.number }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   process-submission:
-    name: "📜 Parse, Route and Format Discovery"
+    name: "📜 Parse, Route, Format and Draft Discovery"
 
     if: >
       github.event.issue.pull_request == null &&
@@ -26,8 +26,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # -------------------------------------------------------
+      # REPOSITORY SETUP
+      # -------------------------------------------------------
+
       - name: "🗺️ Check out the map"
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: "🐍 Prepare Python"
         uses: actions/setup-python@v5
@@ -40,6 +46,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # -------------------------------------------------------
+      # PARSE AND ROUTE
+      # -------------------------------------------------------
+
       - name: "🧭 Parse submission and assign moderators"
         id: intake
         env:
@@ -48,6 +58,10 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
           python scripts/process_submission.py
+
+      # -------------------------------------------------------
+      # AI FORMATTING
+      # -------------------------------------------------------
 
       - name: "🪶 Format submission with AI"
         id: ai
@@ -64,19 +78,65 @@ jobs:
         run: |
           python scripts/format_with_ai.py
 
-      - name: "📎 Preserve structured submission"
+      # -------------------------------------------------------
+      # GENERATE OPPORTUNITY PAGE
+      # -------------------------------------------------------
+
+      - name: "📜 Generate structured opportunity page"
+        id: generate
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+
+          SUBMISSION_FILE: ${{ steps.intake.outputs.submission_file }}
+          AI_OUTPUT_FILE: ${{ steps.ai.outputs.ai_output_file }}
+
+          OPPORTUNITIES_DIRECTORY: opportunities
+        run: |
+          python scripts/generate_opportunity.py
+
+      # -------------------------------------------------------
+      # CREATE REVIEWABLE PULL REQUEST
+      # -------------------------------------------------------
+
+      - name: "⚔️ Create reviewable draft pull request"
+        id: pull_request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+
+          OPPORTUNITY_FILE: ${{ steps.generate.outputs.opportunity_file }}
+
+          BASE_BRANCH: main
+          BRANCH_PREFIX: automated-discovery
+        run: |
+          python scripts/create_pull_request.py
+
+      # -------------------------------------------------------
+      # PRESERVE GENERATED FILES FOR DEBUGGING
+      # -------------------------------------------------------
+
+      - name: "📎 Preserve processing artifacts"
         uses: actions/upload-artifact@v4
         with:
           name: opportunity-submission-${{ github.event.issue.number }}
           path: |
             ${{ steps.intake.outputs.submission_file }}
             ${{ steps.ai.outputs.ai_output_file }}
+            ${{ steps.generate.outputs.opportunity_file }}
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 7
 
-      - name: "🪶 Show processing result"
+      # -------------------------------------------------------
+      # FINAL SUMMARY
+      # -------------------------------------------------------
+
+      - name: "✨ Display quest-processing result"
         run: |
           echo "Category: ${{ steps.intake.outputs.category }}"
-          echo "Moderators: ${{ steps.intake.outputs.moderators }}"
+          echo "Assigned moderators: ${{ steps.intake.outputs.moderators }}"
           echo "AI confidence: ${{ steps.ai.outputs.confidence }}"
-          echo "Recommended action: ${{ steps.ai.outputs.recommended_action }}"
+          echo "AI recommendation: ${{ steps.ai.outputs.recommended_action }}"
+          echo "Generated file: ${{ steps.generate.outputs.opportunity_file }}"
+          echo "Pull request: ${{ steps.pull_request.outputs.pull_request_url }}"
+          echo "Branch: ${{ steps.pull_request.outputs.branch_name }}"
