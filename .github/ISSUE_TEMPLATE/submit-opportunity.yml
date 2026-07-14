@@ -1,0 +1,225 @@
+name: "🗺️ Submit an Opportunity"
+description: "Add a conference, hackathon, competition, fellowship, academy, or student program to Enchanted Map."
+title: "[Discovery]: "
+labels:
+  - "new-discovery"
+  - "needs-review"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 🦄 Submit a New Discovery
+
+        Thank you for helping expand the Enchanted Map.
+
+        Please provide accurate information from an official source.  
+        Your submission will be reviewed before it is added to the repository.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Opportunity category
+      description: What kind of opportunity are you submitting?
+      options:
+        - Conference
+        - Hackathon
+        - Competition
+        - Fellowship
+        - Academy
+        - Exchange Program
+        - Research Program
+        - Summer School
+        - Scholarship
+        - Internship
+        - Bootcamp
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: name
+    attributes:
+      label: Opportunity name
+      description: Enter the official name of the opportunity.
+      placeholder: "Example: European Space Generation Workshop"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Short description
+      description: Briefly explain what the opportunity offers and why students may find it valuable.
+      placeholder: |
+        A short, factual description of the opportunity.
+
+        Mention its main purpose, activities, and intended participants.
+    validations:
+      required: true
+
+  - type: input
+    id: organizer
+    attributes:
+      label: Organizer
+      description: Which organization, university, company, or institution runs it?
+      placeholder: "Example: Space Generation Advisory Council"
+    validations:
+      required: true
+
+  - type: input
+    id: official_link
+    attributes:
+      label: Official website
+      description: Link directly to the official opportunity page.
+      placeholder: "https://example.org/opportunity"
+    validations:
+      required: true
+
+  - type: input
+    id: application_link
+    attributes:
+      label: Application link
+      description: Add the direct application link, if different from the official page.
+      placeholder: "https://example.org/apply"
+
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: Enter the city and country, or write Remote/Online.
+      placeholder: "Example: Vienna, Austria"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: format
+    attributes:
+      label: Format
+      options:
+        - In person
+        - Online
+        - Hybrid
+        - Not specified
+    validations:
+      required: true
+
+  - type: input
+    id: start_date
+    attributes:
+      label: Start date
+      description: Use YYYY-MM-DD when possible.
+      placeholder: "2027-07-12"
+
+  - type: input
+    id: end_date
+    attributes:
+      label: End date
+      description: Use YYYY-MM-DD when possible.
+      placeholder: "2027-07-15"
+
+  - type: input
+    id: deadline
+    attributes:
+      label: Application deadline
+      description: Use YYYY-MM-DD when possible.
+      placeholder: "2027-03-30"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: geographic_eligibility
+    attributes:
+      label: Geographic eligibility
+      description: Who can apply based on location or nationality?
+      options:
+        - Worldwide
+        - Europe
+        - European Union / EEA
+        - Specific countries only
+        - Host country only
+        - Not specified
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: academic_level
+    attributes:
+      label: Academic level
+      description: Select every group that is eligible.
+      options:
+        - label: High-school students
+        - label: Undergraduate students
+        - label: Master's students
+        - label: Doctoral students
+        - label: Recent graduates
+        - label: Early-career professionals
+        - label: Other
+
+  - type: textarea
+    id: fields
+    attributes:
+      label: Relevant fields
+      description: List the academic or professional fields connected to the opportunity.
+      placeholder: "Engineering, AI, sustainability, public policy"
+
+  - type: checkboxes
+    id: funding
+    attributes:
+      label: Funding and costs
+      description: Select everything confirmed by the official source.
+      options:
+        - label: Free to attend
+        - label: Participation fee required
+        - label: Scholarship available
+        - label: Travel grant available
+        - label: Accommodation provided
+        - label: Meals provided
+        - label: Stipend provided
+        - label: Funding details unclear
+
+  - type: input
+    id: fee
+    attributes:
+      label: Participation fee
+      description: Include the amount and currency, or write Free.
+      placeholder: "Free / €50 / $100"
+
+  - type: textarea
+    id: eligibility_details
+    attributes:
+      label: Additional eligibility requirements
+      description: Include age limits, nationality rules, required experience, or other restrictions.
+      placeholder: "Applicants must be enrolled at a university and be under 30."
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: Main benefits
+      description: What will selected participants receive?
+      placeholder: |
+        - Workshops
+        - Networking
+        - Mentoring
+        - Travel funding
+        - Certificate
+
+  - type: textarea
+    id: source_notes
+    attributes:
+      label: Source notes
+      description: Point reviewers to the official page section confirming deadlines, eligibility, or funding.
+      placeholder: "The travel-grant information appears under the Funding section."
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Submission checklist
+      options:
+        - label: I checked that this opportunity is not already listed.
+          required: true
+        - label: I used an official source.
+          required: true
+        - label: I checked the application deadline and eligibility information.
+          required: true
+        - label: I understand that maintainers may edit or reject the submission.
+          required: true
