@@ -1,0 +1,10 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: "📖 Read the Contribution Guide"
+    url: "https://github.com/elchrysaki/enchanted-map/blob/main/CONTRIBUTING.md"
+    about: "Learn what belongs on Enchanted Map and how submissions are reviewed."
+
+  - name: "💬 Ask a Question"
+    url: "https://github.com/elchrysaki/enchanted-map/discussions"
+    about: "Ask for help, suggest an improvement, or discuss the project before submitting."
