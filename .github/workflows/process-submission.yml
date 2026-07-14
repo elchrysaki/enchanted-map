@@ -1,37 +1,65 @@
-name: Process Opportunity Submission
+name: "🧭 Process Opportunity Submission"
 
 on:
   issues:
-    types: [opened]
+    types:
+      - opened
+      - edited
+      - labeled
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
   issues: write
+  pull-requests: write
+  models: read
+
+concurrency:
+  group: opportunity-submission-${{ github.event.issue.number }}
+  cancel-in-progress: true
 
 jobs:
-  process:
-    if: contains(github.event.issue.labels.*.name, 'new-discovery')
+  process-submission:
+    name: "📜 Parse and Route Discovery"
+
+    if: >
+      github.event.issue.pull_request == null &&
+      contains(github.event.issue.labels.*.name, 'new-discovery')
 
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: "🗺️ Check out the map"
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: "🐍 Prepare Python"
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: "pip"
 
-      - name: Install dependencies
+      - name: "📦 Install dependencies"
         run: |
-          pip install pyyaml requests
+          python -m pip install --upgrade pip
+          pip install requests PyYAML
 
-      - name: Run processor
-        run: |
-          python scripts/process_submission.py
+      - name: "🧭 Parse submission and assign moderators"
+        id: intake
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
           REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          python scripts/process_submission.py
+
+      - name: "📎 Preserve structured submission"
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-submission-${{ github.event.issue.number }}
+          path: ${{ steps.intake.outputs.submission_file }}
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: "🪶 Show routing result"
+        run: |
+          echo "Category: ${{ steps.intake.outputs.category }}"
+          echo "Moderators: ${{ steps.intake.outputs.moderators }}"
