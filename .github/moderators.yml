@@ -1,0 +1,140 @@
+# ============================================================
+# 🧭 Enchanted Map Moderator Registry
+# ============================================================
+#
+# This file controls automatic moderator assignment.
+#
+# The routing workflow will compare each opportunity's:
+# - category
+# - academic fields
+# - country and region
+# - intended audience
+# - keywords
+#
+# A human administrator must still approve every final merge.
+# ============================================================
+
+version: 1
+
+project:
+  name: "🧭 Cartographers' Council"
+  default_status: "New Discovery"
+
+governance:
+  final_approvers:
+    - elchrysaki
+
+  fallback_reviewers:
+    - elchrysaki
+
+  require_human_approval: true
+
+  ai_permissions:
+    format_content: true
+    suggest_tags: true
+    suggest_moderators: true
+    create_pull_requests: true
+    merge_pull_requests: false
+    publish_directly: false
+    change_confirmed_facts: false
+
+routing:
+  max_issue_assignees: 2
+  max_pull_request_reviewers: 3
+
+  priority:
+    - category
+    - academic_field
+    - audience
+    - country
+    - region
+    - keyword
+
+  score_weights:
+    category: 6
+    academic_field: 5
+    audience: 5
+    country: 4
+    region: 2
+    keyword: 1
+
+  tie_breaker: "lowest-active-workload"
+
+moderators:
+
+  # ----------------------------------------------------------
+  # Repository administrator and fallback reviewer
+  # ----------------------------------------------------------
+
+  elchrysaki:
+    display_name: "Elena"
+    active: true
+
+    roles:
+      - administrator
+      - final-approver
+      - moderator
+
+    specialties:
+      categories:
+        - "*"
+
+      academic_fields:
+        - "*"
+
+      countries:
+        - "*"
+
+      regions:
+        - "*"
+
+      audiences:
+        - "*"
+
+      keywords: []
+
+    workload:
+      max_open_reviews: 20
+
+  # ----------------------------------------------------------
+  # Example future moderator
+  #
+  # Remove the leading # characters and replace the username.
+  # ----------------------------------------------------------
+
+  # future-moderator:
+  #   display_name: "Moderator Name"
+  #   active: true
+  #
+  #   roles:
+  #     - moderator
+  #
+  #   specialties:
+  #     categories:
+  #       - hackathon
+  #       - competition
+  #
+  #     academic_fields:
+  #       - computer-science
+  #       - artificial-intelligence
+  #       - cybersecurity
+  #
+  #     countries:
+  #       - greece
+  #       - cyprus
+  #
+  #     regions:
+  #       - europe
+  #
+  #     audiences:
+  #       - women-in-stem
+  #       - lgbtq-plus
+  #
+  #     keywords:
+  #       - machine learning
+  #       - programming
+  #       - software
+  #       - data science
+  #
+  #   workload:
+  #     max_open_reviews: 8
