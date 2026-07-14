@@ -1,76 +1,100 @@
-name: "🗺️ Submit an Opportunity"
-description: "Add a conference, hackathon, competition, fellowship, academy, or student program to Enchanted Map."
+name: "🗺️ Submit a New Quest"
+description: "Add a conference, hackathon, fellowship, competition, scholarship, academy, or other student opportunity."
 title: "[Discovery]: "
 labels:
   - "new-discovery"
   - "needs-review"
+assignees:
+  - "elchrysaki"
+
 body:
+  # ==========================================================
+  # INTRODUCTION
+  # ==========================================================
+
   - type: markdown
     attributes:
       value: |
-        # 🦄 Submit a New Discovery
+        # 🦄 A New Quest Has Appeared
 
-        Thank you for helping expand the Enchanted Map.
+        Thank you for helping expand **The Enchanted Map**.
 
-        Please provide accurate information from an official source.  
-        Your submission will be reviewed before it is added to the repository.
+        Please use information from an official organizer, university, company, institution, or verified program page.
+
+        After submission:
+
+        1. 🤖 AI will organize the information and suggest tags.
+        2. 🧭 A moderator will be assigned based on category, country, major, audience, and keywords.
+        3. 📜 A structured opportunity page will be generated.
+        4. 🔍 A human maintainer will review the Pull Request.
+        5. ✅ The opportunity will appear on the map only after approval and merging.
+
+        AI may improve grammar and presentation, but it must not invent deadlines, funding, eligibility, or benefits.
+
+  # ==========================================================
+  # CORE INFORMATION
+  # ==========================================================
+
+  - type: input
+    id: opportunity_name
+    attributes:
+      label: "✨ Opportunity name"
+      description: "Enter the complete official name."
+      placeholder: "Example: ESA Academy Space Systems Engineering Course"
+    validations:
+      required: true
 
   - type: dropdown
     id: category
     attributes:
-      label: Opportunity category
-      description: What kind of opportunity are you submitting?
+      label: "⚔️ Quest category"
+      description: "Choose the category that best describes the opportunity."
       options:
         - Conference
         - Hackathon
         - Competition
         - Fellowship
         - Academy
-        - Exchange Program
-        - Research Program
-        - Summer School
         - Scholarship
+        - Research Program
+        - Exchange Program
+        - Summer School
         - Internship
+        - Workshop or Seminar
         - Bootcamp
+        - Startup Program
+        - Grant
+        - Volunteering Program
+        - Leadership Program
+        - Cultural Program
         - Other
-    validations:
-      required: true
-
-  - type: input
-    id: name
-    attributes:
-      label: Opportunity name
-      description: Enter the official name of the opportunity.
-      placeholder: "Example: European Space Generation Workshop"
-    validations:
-      required: true
-
-  - type: textarea
-    id: description
-    attributes:
-      label: Short description
-      description: Briefly explain what the opportunity offers and why students may find it valuable.
-      placeholder: |
-        A short, factual description of the opportunity.
-
-        Mention its main purpose, activities, and intended participants.
     validations:
       required: true
 
   - type: input
     id: organizer
     attributes:
-      label: Organizer
-      description: Which organization, university, company, or institution runs it?
-      placeholder: "Example: Space Generation Advisory Council"
+      label: "🏰 Organizer"
+      description: "Name the organization, university, company, institution, or community running the opportunity."
+      placeholder: "Example: European Space Agency"
+    validations:
+      required: true
+
+  - type: textarea
+    id: short_description
+    attributes:
+      label: "📖 What is this quest?"
+      description: "Write a factual explanation of what participants will do and why the opportunity may be valuable."
+      placeholder: |
+        This program introduces university students to spacecraft systems engineering through expert lectures, team activities, and practical design exercises.
     validations:
       required: true
 
   - type: input
-    id: official_link
+    id: official_website
     attributes:
-      label: Official website
-      description: Link directly to the official opportunity page.
+      label: "🔗 Official opportunity page"
+      description: "Link directly to the organizer's official page for this specific opportunity."
       placeholder: "https://example.org/opportunity"
     validations:
       required: true
@@ -78,148 +102,479 @@ body:
   - type: input
     id: application_link
     attributes:
-      label: Application link
-      description: Add the direct application link, if different from the official page.
+      label: "🚪 Direct application portal"
+      description: "Add the direct application link if it differs from the official information page."
       placeholder: "https://example.org/apply"
 
-  - type: input
-    id: location
-    attributes:
-      label: Location
-      description: Enter the city and country, or write Remote/Online.
-      placeholder: "Example: Vienna, Austria"
-    validations:
-      required: true
+  # ==========================================================
+  # LOCATION AND FORMAT
+  # ==========================================================
 
   - type: dropdown
-    id: format
+    id: opportunity_format
     attributes:
-      label: Format
+      label: "🧭 Quest format"
+      description: "How will the opportunity take place?"
       options:
         - In person
         - Online
         - Hybrid
-        - Not specified
+        - Multiple formats
+        - Not confirmed
+    validations:
+      required: true
+
+  - type: input
+    id: host_city
+    attributes:
+      label: "🏙️ Host city"
+      description: "Enter the city, if applicable."
+      placeholder: "Example: Trondheim"
+
+  - type: input
+    id: host_country
+    attributes:
+      label: "🌍 Host country"
+      description: "Use the English country name. For online or travelling programs, write Online, Global, or Multiple countries."
+      placeholder: "Example: Norway"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_locations
+    attributes:
+      label: "🗺️ Additional locations"
+      description: "List any other countries, campuses, cities, destinations, or travelling stages."
+      placeholder: |
+        Copenhagen, Denmark
+        Lund, Sweden
+        Online preparation phase
+
+  # ==========================================================
+  # DATES
+  # ==========================================================
+
+  - type: input
+    id: application_deadline
+    attributes:
+      label: "⏳ Application deadline"
+      description: "Prefer YYYY-MM-DD. You may also enter Rolling, Not announced, or multiple confirmed deadlines."
+      placeholder: "2027-03-14"
     validations:
       required: true
 
   - type: input
     id: start_date
     attributes:
-      label: Start date
-      description: Use YYYY-MM-DD when possible.
-      placeholder: "2027-07-12"
+      label: "🌅 Start date"
+      description: "Prefer YYYY-MM-DD."
+      placeholder: "2027-06-10"
 
   - type: input
     id: end_date
     attributes:
-      label: End date
-      description: Use YYYY-MM-DD when possible.
-      placeholder: "2027-07-15"
+      label: "🌙 End date"
+      description: "Prefer YYYY-MM-DD."
+      placeholder: "2027-06-15"
 
-  - type: input
-    id: deadline
+  - type: textarea
+    id: date_notes
     attributes:
-      label: Application deadline
-      description: Use YYYY-MM-DD when possible.
-      placeholder: "2027-03-30"
-    validations:
-      required: true
+      label: "📆 Additional date information"
+      description: "Include interview dates, selection stages, early deadlines, nomination deadlines, or separate program periods."
+      placeholder: |
+        Early application deadline: 2027-02-01
+        Interviews: April 2027
+        Results announced: May 2027
+
+  # ==========================================================
+  # GEOGRAPHIC ELIGIBILITY
+  # ==========================================================
 
   - type: dropdown
     id: geographic_eligibility
     attributes:
-      label: Geographic eligibility
-      description: Who can apply based on location or nationality?
+      label: "🌐 Geographic eligibility"
+      description: "Select every region whose residents, citizens, or students may apply."
+      multiple: true
       options:
         - Worldwide
+        - Africa
+        - Asia
         - Europe
-        - European Union / EEA
+        - European Union or EEA
+        - Latin America and the Caribbean
+        - Middle East and North Africa
+        - North America
+        - Oceania
         - Specific countries only
         - Host country only
-        - Not specified
+        - Not confirmed
     validations:
       required: true
 
-  - type: checkboxes
-    id: academic_level
+  - type: textarea
+    id: eligible_countries
     attributes:
-      label: Academic level
-      description: Select every group that is eligible.
-      options:
-        - label: High-school students
-        - label: Undergraduate students
-        - label: Master's students
-        - label: Doctoral students
-        - label: Recent graduates
-        - label: Early-career professionals
-        - label: Other
+      label: "🏳️ Eligible countries"
+      description: "List specific eligible countries when the opportunity is not worldwide. Separate countries with commas or new lines."
+      placeholder: |
+        Greece
+        Cyprus
+        Italy
+        Spain
 
   - type: textarea
-    id: fields
+    id: nationality_residency_rules
     attributes:
-      label: Relevant fields
-      description: List the academic or professional fields connected to the opportunity.
-      placeholder: "Engineering, AI, sustainability, public policy"
+      label: "🛂 Nationality or residency requirements"
+      description: "Include citizenship, residence, visa, regional, or university-location restrictions."
+      placeholder: "Applicants must study or legally reside in an EU or EEA country."
 
-  - type: checkboxes
-    id: funding
+  # ==========================================================
+  # EDUCATION AND MAJORS
+  # ==========================================================
+
+  - type: dropdown
+    id: academic_levels
     attributes:
-      label: Funding and costs
-      description: Select everything confirmed by the official source.
+      label: "🎓 Eligible academic levels"
+      description: "Select every group officially allowed to apply."
+      multiple: true
       options:
-        - label: Free to attend
-        - label: Participation fee required
-        - label: Scholarship available
-        - label: Travel grant available
-        - label: Accommodation provided
-        - label: Meals provided
-        - label: Stipend provided
-        - label: Funding details unclear
+        - Secondary or high-school students
+        - Vocational students
+        - Undergraduate students
+        - Master's students
+        - Doctoral students
+        - Postdoctoral researchers
+        - Recent graduates
+        - Early-career professionals
+        - Professionals
+        - Any academic level
+        - Not confirmed
+    validations:
+      required: true
+
+  - type: dropdown
+    id: broad_fields
+    attributes:
+      label: "🔬 Broad academic fields"
+      description: "Select every broad field connected to the opportunity."
+      multiple: true
+      options:
+        - Engineering and Technology
+        - Computer Science and Artificial Intelligence
+        - Mathematics and Statistics
+        - Physics and Astronomy
+        - Chemistry and Materials Science
+        - Biology and Life Sciences
+        - Medicine and Health
+        - Environmental Science and Sustainability
+        - Business and Economics
+        - Entrepreneurship and Innovation
+        - Law and Public Policy
+        - Politics and International Relations
+        - Social Sciences
+        - Psychology and Behavioural Science
+        - Education
+        - Arts and Design
+        - Humanities
+        - Media and Communications
+        - Architecture and Urban Planning
+        - Agriculture and Food Science
+        - Interdisciplinary
+        - Open to all fields
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: specific_majors
+    attributes:
+      label: "🧠 Relevant majors and specializations"
+      description: "List specific degrees or subjects. Write Open to all majors when no restriction exists."
+      placeholder: |
+        Mechanical Engineering
+        Aerospace Engineering
+        Robotics
+        Computer Science
+        Industrial Design
+    validations:
+      required: true
+
+  - type: textarea
+    id: required_skills
+    attributes:
+      label: "🛠️ Required skills or experience"
+      description: "Include required technical knowledge, language level, previous projects, work experience, or qualifications."
+      placeholder: |
+        Basic Python knowledge
+        English proficiency
+        University enrollment
+        No previous experience required
+
+  # ==========================================================
+  # AUDIENCE AND ACCESS
+  # ==========================================================
+
+  - type: markdown
+    attributes:
+      value: |
+        ## 🌈 Intended and priority audiences
+
+        Some opportunities are open to everyone but encourage particular communities. Others give priority to a group or restrict eligibility.
+
+        Please distinguish these carefully. Do not assume that a program is exclusive merely because it promotes inclusion.
+
+  - type: dropdown
+    id: audience_access
+    attributes:
+      label: "🔐 Audience access model"
+      description: "How does the official source describe access for the specified audience?"
+      options:
+        - Open to everyone with no specified priority group
+        - Open to everyone but actively encourages specified groups
+        - Preference or priority is given to specified groups
+        - Reserved exclusively for specified groups
+        - Audience focus is mentioned but eligibility is unclear
+        - Not confirmed
+    validations:
+      required: true
+
+  - type: dropdown
+    id: audience_groups
+    attributes:
+      label: "🧑‍🤝‍🧑 Intended, encouraged, priority, or eligible groups"
+      description: "Select only groups explicitly supported by the official information."
+      multiple: true
+      options:
+        - Women
+        - Women in STEM
+        - Black students
+        - Black women
+        - African students
+        - Students of African descent
+        - African American students
+        - LGBTQ+ students
+        - First-generation students
+        - Low-income students
+        - Students with disabilities
+        - Neurodivergent students
+        - Indigenous students
+        - Refugees or displaced students
+        - Rural or remote-community students
+        - International students
+        - Underrepresented groups in STEM
+        - Ethnic or racial minorities
+        - Religious minorities
+        - Migrant-background students
+        - Care-experienced students
+        - Young carers
+        - Veterans or military families
+        - Other specified group
+
+  - type: textarea
+    id: audience_details
+    attributes:
+      label: "📜 Exact audience or inclusion wording"
+      description: "Copy or closely paraphrase the organizer's wording. Explain whether the group is encouraged, prioritized, or exclusively eligible."
+      placeholder: |
+        The organizer states that applications from Black women studying technology-related subjects are especially encouraged.
 
   - type: input
-    id: fee
+    id: audience_source
     attributes:
-      label: Participation fee
-      description: Include the amount and currency, or write Free.
-      placeholder: "Free / €50 / $100"
+      label: "🔎 Source for audience information"
+      description: "Provide the official page containing the audience or eligibility statement."
+      placeholder: "https://example.org/eligibility"
+
+  # ==========================================================
+  # FUNDING AND COSTS
+  # ==========================================================
+
+  - type: dropdown
+    id: funding
+    attributes:
+      label: "💰 Funding, costs, and support"
+      description: "Select only benefits confirmed by the organizer."
+      multiple: true
+      options:
+        - Free to apply
+        - Application fee required
+        - Free to attend
+        - Participation fee required
+        - Full scholarship available
+        - Partial scholarship available
+        - Travel grant available
+        - Travel fully covered
+        - Accommodation provided
+        - Accommodation subsidy available
+        - Meals provided
+        - Stipend provided
+        - Salary provided
+        - Visa support provided
+        - Accessibility support available
+        - Funding details not confirmed
+    validations:
+      required: true
+
+  - type: input
+    id: participation_fee
+    attributes:
+      label: "💳 Application or participation fee"
+      description: "Include the exact amount and currency. Write Free or Not confirmed when applicable."
+      placeholder: "Free / €50 / $100 application fee"
+    validations:
+      required: true
 
   - type: textarea
-    id: eligibility_details
+    id: funding_details
     attributes:
-      label: Additional eligibility requirements
-      description: Include age limits, nationality rules, required experience, or other restrictions.
-      placeholder: "Applicants must be enrolled at a university and be under 30."
+      label: "🎒 Funding details"
+      description: "Explain exactly what is covered and whether funding is automatic, competitive, reimbursed, or limited."
+      placeholder: |
+        Accommodation and meals are provided to all selected participants.
+        Travel grants are available through a separate application.
+        Flights are reimbursed up to €300.
+
+  # ==========================================================
+  # BENEFITS AND PROGRAM CONTENT
+  # ==========================================================
+
+  - type: textarea
+    id: activities
+    attributes:
+      label: "⚒️ Main activities"
+      description: "Describe what selected participants will actually do."
+      placeholder: |
+        - Attend technical workshops
+        - Work in international teams
+        - Present a final project
+        - Meet researchers and industry professionals
 
   - type: textarea
     id: benefits
     attributes:
-      label: Main benefits
-      description: What will selected participants receive?
+      label: "🎁 Quest rewards"
+      description: "List confirmed benefits, outcomes, certificates, prizes, mentoring, networking, or professional opportunities."
       placeholder: |
-        - Workshops
+        - Participation certificate
+        - Expert mentoring
+        - Professional networking
+        - Access to laboratories
+        - Cash prize
+
+  - type: textarea
+    id: selection_process
+    attributes:
+      label: "🏹 Selection process"
+      description: "Include essays, interviews, nominations, portfolios, tests, team requirements, or selection stages."
+      placeholder: |
+        Applicants submit a CV and motivation letter.
+        Shortlisted candidates are invited to an online interview.
+
+  # ==========================================================
+  # SEARCH AND MODERATOR ROUTING
+  # ==========================================================
+
+  - type: textarea
+    id: keywords
+    attributes:
+      label: "🏷️ Search keywords"
+      description: "Add useful topics, technologies, industries, themes, and skills. AI will normalize these into searchable tags."
+      placeholder: |
+        robotics
+        artificial intelligence
+        sustainability
+        aerospace
+        leadership
+        entrepreneurship
+
+  - type: dropdown
+    id: career_themes
+    attributes:
+      label: "🧭 Career and opportunity themes"
+      description: "Select every relevant theme."
+      multiple: true
+      options:
+        - Academic Research
+        - Career Development
+        - Entrepreneurship
+        - Innovation
+        - Leadership
+        - International Exchange
+        - Cultural Exchange
+        - Volunteering
+        - Community Impact
+        - Climate and Sustainability
+        - Technology
+        - Policy and Governance
+        - Human Rights
+        - Diversity and Inclusion
+        - Arts and Creativity
+        - Health and Wellbeing
         - Networking
-        - Mentoring
-        - Travel funding
-        - Certificate
+        - Professional Training
+        - Competition
+        - Travel
+        - Other
+
+  # ==========================================================
+  # SOURCES AND EVIDENCE
+  # ==========================================================
 
   - type: textarea
     id: source_notes
     attributes:
-      label: Source notes
-      description: Point reviewers to the official page section confirming deadlines, eligibility, or funding.
-      placeholder: "The travel-grant information appears under the Funding section."
+      label: "📚 Verification notes"
+      description: "Tell reviewers where the official source confirms the deadline, eligibility, country access, funding, and audience information."
+      placeholder: |
+        Deadline: Application section
+        Eligibility: Who Can Apply section
+        Funding: Costs and Financial Support section
+        Audience requirements: Eligibility paragraph 3
+    validations:
+      required: true
+
+  - type: upload
+    id: supporting_files
+    attributes:
+      label: "📎 Supporting files"
+      description: "Optionally upload an official PDF, screenshot, brochure, or poster."
+    validations:
+      required: false
+      accept: ".pdf,.png,.jpg,.jpeg,.webp"
+
+  # ==========================================================
+  # FINAL CHECKLIST
+  # ==========================================================
 
   - type: checkboxes
     id: confirmation
     attributes:
-      label: Submission checklist
+      label: "🛡️ Adventurer's oath"
+      description: "Every box must be confirmed before the discovery can enter review."
       options:
-        - label: I checked that this opportunity is not already listed.
+        - label: "I checked that this opportunity is not already listed."
           required: true
-        - label: I used an official source.
+        - label: "I used an official organizer, university, institution, or company source."
           required: true
-        - label: I checked the application deadline and eligibility information.
+        - label: "I checked the application deadline and geographic eligibility."
           required: true
-        - label: I understand that maintainers may edit or reject the submission.
+        - label: "I did not assume funding, identity eligibility, or benefits that were not confirmed."
           required: true
+        - label: "I understand that AI may improve formatting and suggest classifications but may not change confirmed facts."
+          required: true
+        - label: "I understand that a human maintainer must review and merge the generated Pull Request."
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ## ✨ Your discovery is ready for the Guild
+
+        Once submitted, the automation will prepare the information for review.
+
+        **Submitting does not publish the opportunity automatically.**  
+        A maintainer remains the final gatekeeper because giving a language model unilateral control over factual scholarship information would be an unusually elaborate way to create chaos.
