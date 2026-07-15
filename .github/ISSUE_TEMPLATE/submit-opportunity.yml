@@ -1,11 +1,9 @@
 name: "🗺️ Submit a New Quest"
-description: "Share an opportunity with students around the world."
+description: "Share a conference, hackathon, fellowship, scholarship, academy, exchange, or other student opportunity."
 title: "[Discovery]: "
 labels:
   - "new-discovery"
   - "needs-review"
-assignees:
-  - "elchrysaki"
 
 body:
   # ==========================================================
@@ -17,14 +15,21 @@ body:
       value: |
         # 🦄 Add a Discovery to the Map
 
-        Found a conference, hackathon, fellowship, scholarship, academy, exchange, or another worthwhile opportunity?
+        Found an opportunity worth sharing?
 
-        Share the essential information first. The second section is optional, but anything you add helps the Guild research and publish it faster.
+        Start with the essential details. The quick selections and final section are optional, but they help the Guild research and publish the opportunity faster.
 
-        After submission, AI will check the sources, complete missing details where possible, prepare a readable quest page, and send it to a human moderator for approval.
+        After submission:
+
+        1. 🔎 The official sources are researched.
+        2. 🤖 AI organizes the information and flags missing or conflicting details.
+        3. ✨ A polished quest page is prepared.
+        4. 🛡️ A human moderator reviews it before publication.
+
+        Your original submission will remain preserved.
 
   # ==========================================================
-  # PART ONE: ESSENTIAL DETAILS
+  # PART I — ESSENTIAL DETAILS
   # ==========================================================
 
   - type: markdown
@@ -32,14 +37,14 @@ body:
       value: |
         ## ⚔️ Part I — Essential Quest Details
 
-        These are the only details required to submit your discovery.
+        These are the only details required to submit an opportunity.
 
   - type: input
     id: opportunity_name
     attributes:
       label: "✨ Opportunity name"
-      description: "Use the official name, or the closest name you found."
-      placeholder: "Example: ESA Academy Space Systems Course"
+      description: "Use the complete official name, or the closest name you found."
+      placeholder: "Example: ESA Academy Space Systems Engineering Course"
     validations:
       required: true
 
@@ -47,7 +52,7 @@ body:
     id: category
     attributes:
       label: "🧭 Quest category"
-      description: "Choose the closest option. Moderators can correct it later."
+      description: "Choose the closest category. A moderator can correct it later."
       options:
         - Conference
         - Hackathon
@@ -70,22 +75,31 @@ body:
     validations:
       required: true
 
+  - type: input
+    id: organizer
+    attributes:
+      label: "🏰 Organizer"
+      description: "Name the university, company, institution, association, or community running the opportunity."
+      placeholder: "Example: European Space Agency"
+    validations:
+      required: true
+
   - type: textarea
     id: short_description
     attributes:
       label: "📖 What is the opportunity?"
-      description: "Two or three sentences are enough. Tell us what participants do and why it seems useful."
+      description: "Two or three sentences are enough. Explain what participants do and why the opportunity seems useful."
       placeholder: |
-        A program for university students interested in spacecraft systems.
-        It includes expert lectures, practical activities and international teamwork.
+        A technical program for university students interested in spacecraft systems.
+        It includes expert lectures, practical activities, and international teamwork.
     validations:
       required: true
 
   - type: input
     id: official_website
     attributes:
-      label: "🔗 Where did you find it?"
-      description: "Add the official page, organizer announcement, application page or most reliable source you found."
+      label: "🔗 Official or most reliable source"
+      description: "Add the official opportunity page, organizer announcement, or most reliable source you found."
       placeholder: "https://example.org/opportunity"
     validations:
       required: true
@@ -94,100 +108,284 @@ body:
     id: application_deadline
     attributes:
       label: "⏳ Application deadline"
-      description: "Any readable format is accepted. Write Unknown, Rolling or Not announced when needed."
-      placeholder: "Example: 5 September / 2027-09-05 / Rolling / Unknown"
+      description: "Any readable format is accepted. Write Unknown, Rolling, or Not announced when necessary."
+      placeholder: "5 September / 2027-09-05 / Rolling / Unknown"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: opportunity_format
+    attributes:
+      label: "🧭 Format"
+      description: "How does the opportunity take place?"
+      options:
+        - In person
+        - Online
+        - Hybrid
+        - Travelling or multiple locations
+        - Multiple formats
+        - Not sure
     validations:
       required: true
 
   # ==========================================================
-  # PART TWO: OPTIONAL DETAILS
+  # PART II — QUICK FILTERS
   # ==========================================================
 
   - type: markdown
     attributes:
       value: |
-        ## ✨ Part II — Help the Guild Research Faster
+        ## 🎒 Part II — Quick Map Filters
 
         Everything below is optional.
 
-        Add only what you already know. The checker will search the official sources for missing information.
+        Select what you already know. You do not need to research missing information yourself.
 
-  - type: input
-    id: organizer
+  - type: dropdown
+    id: geographic_eligibility
     attributes:
-      label: "🏰 Organizer"
-      description: "The university, company, institution, association or community running it."
-      placeholder: "Example: European Space Agency"
+      label: "🌍 Who can apply geographically?"
+      description: "Select every option that appears relevant."
+      multiple: true
+      options:
+        - Worldwide
+        - Africa
+        - Asia
+        - Europe
+        - European Union or EEA
+        - Latin America and the Caribbean
+        - Middle East and North Africa
+        - North America
+        - Oceania
+        - Host country only
+        - Specific countries
+        - Multiple countries or regions
+        - No geographic restriction mentioned
+        - Not sure
+
+  - type: dropdown
+    id: academic_levels
+    attributes:
+      label: "🎓 Academic or career level"
+      description: "Select every group that appears eligible."
+      multiple: true
+      options:
+        - Secondary or high-school students
+        - Vocational students
+        - Undergraduate students
+        - Master's students
+        - Doctoral students
+        - Postdoctoral researchers
+        - Recent graduates
+        - Early-career professionals
+        - Professionals
+        - Open to several levels
+        - No academic restriction mentioned
+        - Not sure
+
+  - type: dropdown
+    id: broad_fields
+    attributes:
+      label: "🔬 Broad academic fields"
+      description: "Select the main fields connected to the opportunity."
+      multiple: true
+      options:
+        - Engineering and Technology
+        - Computer Science and Artificial Intelligence
+        - Mathematics and Statistics
+        - Physics and Astronomy
+        - Chemistry and Materials Science
+        - Biology and Life Sciences
+        - Medicine and Health
+        - Environmental Science and Sustainability
+        - Business and Economics
+        - Entrepreneurship and Innovation
+        - Law and Public Policy
+        - Politics and International Relations
+        - Social Sciences
+        - Psychology and Behavioural Science
+        - Education
+        - Arts and Design
+        - Humanities
+        - Media and Communications
+        - Architecture and Urban Planning
+        - Agriculture and Food Science
+        - Interdisciplinary
+        - Open to all fields
+        - Other
+        - Not sure
+
+  - type: dropdown
+    id: funding_support
+    attributes:
+      label: "💰 Funding, costs, and support"
+      description: "Select only what you saw mentioned. Unconfirmed details can be researched later."
+      multiple: true
+      options:
+        - Free to apply
+        - Application fee required
+        - Free to participate
+        - Participation fee required
+        - Full scholarship available
+        - Partial scholarship available
+        - Travel grant available
+        - Travel fully covered
+        - Accommodation provided
+        - Accommodation support available
+        - Meals provided
+        - Stipend provided
+        - Salary provided
+        - Prize available
+        - Visa support available
+        - Accessibility support available
+        - Funding information not found
+        - Not sure
+
+  - type: dropdown
+    id: audience_groups
+    attributes:
+      label: "🌈 Intended, encouraged, or eligible groups"
+      description: "Select a group only when the opportunity explicitly mentions it."
+      multiple: true
+      options:
+        - Women
+        - Women in STEM
+        - Black students
+        - Black women
+        - African students
+        - Students of African descent
+        - African American students
+        - LGBTQ+ students
+        - First-generation students
+        - Low-income students
+        - Students with disabilities
+        - Neurodivergent students
+        - Indigenous students
+        - Refugees or displaced students
+        - Rural or remote-community students
+        - International students
+        - Underrepresented groups in STEM
+        - Ethnic or racial minorities
+        - Migrant-background students
+        - Other specified group
+        - No particular group mentioned
+        - Not sure
+
+  # ==========================================================
+  # PART III — OPTIONAL DETAILS
+  # ==========================================================
+
+  - type: markdown
+    attributes:
+      value: |
+        ## ✨ Part III — Add What You Know
+
+        This section is optional.
+
+        More information helps moderators work faster, but incomplete submissions are still welcome.
 
   - type: input
     id: application_link
     attributes:
       label: "🚪 Direct application link"
-      description: "Add it if you found it. The checker can search for it later."
+      description: "Add the direct application portal if you found it. The checker can search for it later."
       placeholder: "https://example.org/apply"
+
+  - type: textarea
+    id: host_location
+    attributes:
+      label: "📍 Host location"
+      description: "Add the city, country, online setting, or multiple destinations."
+      placeholder: |
+        Brussels, Belgium
+
+        Or:
+
+        Online preparation followed by events in France and Germany.
+
+  - type: textarea
+    id: eligible_locations
+    attributes:
+      label: "🗺️ Specific eligible countries or regions"
+      description: "Use this when eligibility covers several countries, regions, nationalities, or places of residence."
+      placeholder: |
+        Greece, Cyprus, Italy, and Spain
+
+        Or:
+
+        Students studying at universities in Sub-Saharan Africa.
 
   - type: textarea
     id: event_dates
     attributes:
       label: "📅 Event or program dates"
-      description: "Include start dates, end dates, interview periods or selection dates."
+      description: "Include start dates, end dates, interview periods, or selection dates."
       placeholder: |
         Program: 10–15 November 2027
-        Interviews take place in October.
+        Interviews: October 2027
+        Results announced: late October
 
   - type: textarea
-    id: location_and_geography
+    id: specific_majors
     attributes:
-      label: "🌍 Location and applicant geography"
-      description: "Where does it happen, and where may applicants come from? Multiple countries or regions are completely fine."
+      label: "🧠 Specific majors or specializations"
+      description: "List specific degrees, disciplines, industries, or topics when known."
       placeholder: |
-        Hosted in Brussels, Belgium.
-        Applicants may come from Europe, North Africa and the Middle East.
-
-        Or:
-
-        Fully online and open worldwide.
+        Mechanical Engineering
+        Aerospace Engineering
+        Robotics
+        Computer Science
+        Industrial Design
 
   - type: textarea
-    id: academic_eligibility
+    id: eligibility_details
     attributes:
-      label: "🎓 Academic level and relevant majors"
-      description: "Mention study level, subjects, experience or age limits if known."
+      label: "🛂 Other eligibility requirements"
+      description: "Mention age limits, language requirements, experience, nationality, residence, enrollment, or other restrictions."
       placeholder: |
-        Undergraduate and master's students.
-        Relevant majors include engineering, physics and computer science.
-        Applicants must be under 30.
+        Applicants must be enrolled at a university.
+        English proficiency is required.
+        Participants must be under 30.
 
   - type: textarea
-    id: funding_and_benefits
+    id: funding_details
     attributes:
-      label: "💰 Funding, costs and benefits"
-      description: "Mention fees, scholarships, travel support, accommodation, meals, prizes, certificates or mentoring."
+      label: "🎒 Funding and benefits details"
+      description: "Explain fees, funding, travel, accommodation, prizes, certificates, mentoring, or other benefits."
       placeholder: |
-        Participation is free.
         Accommodation and meals are included.
-        Limited travel grants are available.
+        Travel grants are competitive and require a separate application.
+        Flights are reimbursed up to €300.
 
   - type: textarea
     id: audience_information
     attributes:
-      label: "🌈 Intended or priority groups"
-      description: "Include this only when the official source mentions a particular community, priority group or eligibility restriction."
+      label: "📜 Audience or inclusion wording"
+      description: "Explain how the organizer describes any intended, encouraged, prioritized, or exclusively eligible group."
       placeholder: |
-        Women in STEM are especially encouraged to apply.
+        The organizer especially encourages applications from Black women studying technology-related subjects.
 
         Or:
 
-        The program is reserved for students from African universities.
+        The fellowship is available only to students enrolled at African universities.
+
+  - type: textarea
+    id: application_requirements
+    attributes:
+      label: "🏹 Application requirements or selection process"
+      description: "Mention required documents, interviews, nominations, portfolios, tests, teams, or selection stages."
+      placeholder: |
+        CV and motivation letter required.
+        Shortlisted applicants complete an online interview.
 
   - type: textarea
     id: additional_information
     attributes:
       label: "📝 Anything else worth knowing?"
-      description: "Add useful details, uncertainty, application requirements, or anything that may help the reviewer."
+      description: "Add useful context, uncertainty, concerns, or information that did not fit elsewhere."
       placeholder: |
-        A motivation letter and CV are required.
-        I could not find whether travel support is guaranteed.
+        I could not tell whether travel funding applies to all participants.
+        The application portal may still show last year's edition.
 
   # ==========================================================
   # FINAL CHECK
@@ -196,16 +394,16 @@ body:
   - type: checkboxes
     id: confirmation
     attributes:
-      label: "🛡️ Final check"
+      label: "🛡️ Adventurer's check"
       options:
-        - label: "I shared the most reliable source I could find."
+        - label: "I shared the most reliable source and information I could find."
           required: true
-        - label: "I understand that AI and human moderators may complete, correct or rewrite the information before publication."
+        - label: "I understand that AI and human moderators may research, correct, complete, or rewrite the information before publication."
           required: true
 
   - type: markdown
     attributes:
       value: |
-        ## 🗺️ Ready to submit
+        ## 🗺️ Your discovery is ready
 
-        You bring the discovery. The Guild handles the research, formatting and review.
+        Submit what you know. The Guild handles the research, formatting, and human review.
