@@ -66,11 +66,11 @@ TAVILY_API_KEY = os.environ.get(
 
 MAX_REDIRECTS = 5
 MAX_PAGE_BYTES = 1_500_000
-MAX_PAGE_TEXT = 40_000
-MAX_SEARCH_RESULTS = 5
-MAX_SEARCH_QUERIES = 4
-MAX_EVIDENCE_PAGES = 8
-MAX_MODEL_INPUT_CHARS = 180_000
+MAX_PAGE_TEXT = 6_000
+MAX_SEARCH_RESULTS = 3
+MAX_SEARCH_QUERIES = 2
+MAX_EVIDENCE_PAGES = 4
+MAX_MODEL_INPUT_CHARS = 18_000
 
 CONNECT_TIMEOUT_SECONDS = 8
 READ_TIMEOUT_SECONDS = 20
@@ -589,7 +589,7 @@ def search_tavily(
                 "title": item.get("title"),
                 "url": result_url,
                 "score": item.get("score"),
-                "content": evidence_text[:MAX_PAGE_TEXT],
+                "content": evidence_text[:3_000],
                 "source": "tavily-search",
                 "retrieved_at": datetime.now(
                     timezone.utc
@@ -777,11 +777,31 @@ def call_research_model(
     raw_record: dict[str, Any],
     evidence: dict[str, Any],
 ) -> dict[str, Any]:
-    user_payload = {
-        "raw_record": raw_record,
-        "retrieved_evidence": evidence,
-    }
+    
+    raw_submission = raw_record.get(
+    "raw_submission",
+    {},
+)
 
+issue = raw_record.get(
+    "issue",
+    {},
+)
+
+user_payload = {
+    "issue": {
+        "number": issue.get("number")
+        if isinstance(issue, dict)
+        else ISSUE_NUMBER,
+        "url": issue.get("url")
+        if isinstance(issue, dict)
+        else None,
+    },
+    "raw_submission": raw_submission
+    if isinstance(raw_submission, dict)
+    else {},
+    "retrieved_evidence": evidence,
+}
     user_message = (
         "Create the researched submission record required by "
         "the system prompt.\n\n"
@@ -797,7 +817,7 @@ def call_research_model(
     payload = {
         "model": AI_MODEL,
         "temperature": 0.1,
-        "max_tokens": 12_000,
+        "max_tokens": 3_000,
         "response_format": {
             "type": "json_object",
         },
