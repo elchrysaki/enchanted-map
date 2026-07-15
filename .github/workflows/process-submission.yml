@@ -1,9 +1,13 @@
-name: "🧭 Process Opportunity Submission"
+name: Process Opportunity Submission
 
 on:
   issues:
     types:
       - opened
+
+concurrency:
+  group: enchanted-map-submission-${{ github.event.issue.number }}
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -11,132 +15,129 @@ permissions:
   pull-requests: write
   models: read
 
-concurrency:
-  group: opportunity-submission-${{ github.event.issue.number }}
-  cancel-in-progress: false
-
 jobs:
   process-submission:
-    name: "📜 Parse, Route, Format and Draft Discovery"
-
-    if: >
-      github.event.issue.pull_request == null &&
-      contains(github.event.issue.labels.*.name, 'new-discovery')
-
+    name: Research and prepare quest
     runs-on: ubuntu-latest
 
+    if: contains(github.event.issue.labels.*.name, 'new-discovery')
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPOSITORY: ${{ github.repository }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+      AI_MODEL: openai/gpt-4.1
+
     steps:
-      # -------------------------------------------------------
-      # REPOSITORY SETUP
-      # -------------------------------------------------------
+      # ======================================================
+      # SETUP
+      # ======================================================
 
-      - name: "🗺️ Check out the map"
+      - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: "🐍 Prepare Python"
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip"
+          cache: pip
 
-      - name: "📦 Install dependencies"
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install -r requirements.txt
 
-      # -------------------------------------------------------
-      # PARSE AND ROUTE
-      # -------------------------------------------------------
+      # ======================================================
+      # COPY 1: PRESERVE THE ORIGINAL SUBMISSION
+      # ======================================================
 
-      - name: "🧭 Parse submission and assign moderators"
+      - name: Preserve and parse raw submission
         id: intake
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY: ${{ github.repository }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          OUTPUT_DIRECTORY: artifacts
+          MODERATOR_FILE: .github/moderators.yml
         run: |
           python scripts/process_submission.py
 
-      # -------------------------------------------------------
-      # AI FORMATTING
-      # -------------------------------------------------------
+      # ======================================================
+      # COPY 2: RESEARCH AND ENRICH THE INFORMATION
+      # ======================================================
 
-      - name: "🪶 Format submission with AI"
-        id: ai
+      - name: Research official sources
+        id: research
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY: ${{ github.repository }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          RAW_SUBMISSION_FILE: ${{ steps.intake.outputs.raw_submission_file }}
+          RESEARCH_PROMPT_FILE: .github/prompts/opportunity-researcher.md
+          RESEARCH_OUTPUT_FILE: artifacts/researched-submission-${{ github.event.issue.number }}.json
+        run: |
+          python scripts/research_opportunity.py
 
-          SUBMISSION_FILE: ${{ steps.intake.outputs.submission_file }}
-          PROMPT_FILE: .github/prompts/opportunity-formatter.md
-          AI_OUTPUT_FILE: artifacts/ai-result-${{ github.event.issue.number }}.json
+      # ======================================================
+      # COPY 3: CREATE THE POLISHED QUEST DRAFT
+      # ======================================================
 
-          AI_MODEL: openai/gpt-4.1
+      - name: Format publishable quest content
+        id: formatter
+        env:
+          RESEARCHED_SUBMISSION_FILE: ${{ steps.research.outputs.researched_submission_file }}
+          FORMATTER_PROMPT_FILE: .github/prompts/opportunity-formatter.md
+          PUBLISHABLE_OUTPUT_FILE: artifacts/publishable-content-${{ github.event.issue.number }}.json
         run: |
           python scripts/format_with_ai.py
 
-      # -------------------------------------------------------
-      # GENERATE OPPORTUNITY PAGE
-      # -------------------------------------------------------
+      # ======================================================
+      # GENERATE THE CLICKABLE OPPORTUNITY PAGE
+      # ======================================================
 
-      - name: "📜 Generate structured opportunity page"
-        id: generate
+      - name: Generate opportunity page
+        id: generator
         env:
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-
-          SUBMISSION_FILE: ${{ steps.intake.outputs.submission_file }}
-          AI_OUTPUT_FILE: ${{ steps.ai.outputs.ai_output_file }}
-
+          RESEARCHED_SUBMISSION_FILE: ${{ steps.research.outputs.researched_submission_file }}
+          PUBLISHABLE_CONTENT_FILE: ${{ steps.formatter.outputs.publishable_content_file }}
           OPPORTUNITIES_DIRECTORY: opportunities
         run: |
           python scripts/generate_opportunity.py
 
-      # -------------------------------------------------------
-      # CREATE REVIEWABLE PULL REQUEST
-      # -------------------------------------------------------
+      # ======================================================
+      # BUILD THE HUMAN MODERATOR REPORT
+      # ======================================================
 
-      - name: "⚔️ Create reviewable draft pull request"
+      - name: Build moderator review report
+        id: review
+        env:
+          RESEARCHED_SUBMISSION_FILE: ${{ steps.research.outputs.researched_submission_file }}
+          PUBLISHABLE_CONTENT_FILE: ${{ steps.formatter.outputs.publishable_content_file }}
+          OPPORTUNITY_FILE: ${{ steps.generator.outputs.opportunity_file }}
+          REVIEW_REPORT_FILE: artifacts/review-report-${{ github.event.issue.number }}.md
+        run: |
+          python scripts/build_review_report.py
+
+      # ======================================================
+      # CREATE OR UPDATE THE DRAFT PULL REQUEST
+      # ======================================================
+
+      - name: Create draft pull request
         id: pull_request
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY: ${{ github.repository }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-
-          OPPORTUNITY_FILE: ${{ steps.generate.outputs.opportunity_file }}
-
-          BASE_BRANCH: main
+          RAW_SUBMISSION_FILE: ${{ steps.intake.outputs.raw_submission_file }}
+          PUBLISHABLE_CONTENT_FILE: ${{ steps.formatter.outputs.publishable_content_file }}
+          OPPORTUNITY_FILE: ${{ steps.generator.outputs.opportunity_file }}
+          REVIEW_REPORT_FILE: ${{ steps.review.outputs.review_report_file }}
+          MODERATORS: ${{ steps.intake.outputs.moderators }}
           BRANCH_PREFIX: automated-discovery
         run: |
           python scripts/create_pull_request.py
 
-      # -------------------------------------------------------
-      # PRESERVE GENERATED FILES FOR DEBUGGING
-      # -------------------------------------------------------
+      # ======================================================
+      # KEEP DEBUGGING RECORDS FOR SEVEN DAYS
+      # ======================================================
 
-      - name: "📎 Preserve processing artifacts"
+      - name: Upload processing artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: opportunity-submission-${{ github.event.issue.number }}
-          path: |
-            ${{ steps.intake.outputs.submission_file }}
-            ${{ steps.ai.outputs.ai_output_file }}
-            ${{ steps.generate.outputs.opportunity_file }}
-          if-no-files-found: error
+          name: opportunity-${{ github.event.issue.number }}-processing-records
+          path: artifacts/
+          if-no-files-found: warn
           retention-days: 7
-
-      # -------------------------------------------------------
-      # FINAL SUMMARY
-      # -------------------------------------------------------
-
-      - name: "✨ Display quest-processing result"
-        run: |
-          echo "Category: ${{ steps.intake.outputs.category }}"
-          echo "Assigned moderators: ${{ steps.intake.outputs.moderators }}"
-          echo "AI confidence: ${{ steps.ai.outputs.confidence }}"
-          echo "AI recommendation: ${{ steps.ai.outputs.recommended_action }}"
-          echo "Generated file: ${{ steps.generate.outputs.opportunity_file }}"
-          echo "Pull request: ${{ steps.pull_request.outputs.pull_request_url }}"
-          echo "Branch: ${{ steps.pull_request.outputs.branch_name }}"
