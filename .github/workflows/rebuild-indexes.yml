@@ -1,0 +1,258 @@
+name: Publish Merged Opportunity
+
+on:
+  pull_request:
+    types:
+      - closed
+
+concurrency:
+  group: enchanted-map-publishing
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  publish-opportunity:
+    name: Publish quest and rebuild indexes
+    runs-on: ubuntu-latest
+
+    if: >
+      github.event.pull_request.merged == true &&
+      startsWith(
+        github.event.pull_request.head.ref,
+        'automated-discovery/'
+      )
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+
+    steps:
+      # ======================================================
+      # SETUP
+      # ======================================================
+
+      - name: Check out merged default branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      # ======================================================
+      # FIND OPPORTUNITY FILES FROM THE MERGED PR
+      # ======================================================
+
+      - name: Find merged opportunity files
+        id: changed_files
+        shell: bash
+        run: |
+          gh api \
+            --paginate \
+            "repos/${{ github.repository }}/pulls/${PR_NUMBER}/files" \
+            --jq '.[] | select(.status != "removed") | .filename' \
+            > /tmp/pr-files.txt
+
+          echo "Files changed by merged PR:"
+          cat /tmp/pr-files.txt
+
+          grep '^opportunities/.*\.md$' /tmp/pr-files.txt \
+            | grep -v '^opportunities/README\.md$' \
+            > /tmp/opportunity-files.txt || true
+
+          echo "Opportunity files to publish:"
+          cat /tmp/opportunity-files.txt || true
+
+          if [ -s /tmp/opportunity-files.txt ]; then
+            echo "has_opportunity_files=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_opportunity_files=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ======================================================
+      # CHANGE PENDING-REVIEW TO PUBLISHED
+      # ======================================================
+
+      - name: Mark merged quests as published
+        if: steps.changed_files.outputs.has_opportunity_files == 'true'
+        shell: bash
+        run: |
+          python - <<'PYTHON'
+          from __future__ import annotations
+
+          import re
+          from pathlib import Path
+
+          import yaml
+
+
+          files_list = Path("/tmp/opportunity-files.txt")
+
+          if not files_list.exists():
+              raise SystemExit("Opportunity file list was not found.")
+
+          file_paths = [
+              Path(line.strip())
+              for line in files_list.read_text(
+                  encoding="utf-8"
+              ).splitlines()
+              if line.strip()
+          ]
+
+          updated_files: list[str] = []
+          skipped_files: list[str] = []
+
+          for path in file_paths:
+              if not path.exists():
+                  print(
+                      f"::warning::Merged opportunity file "
+                      f"does not exist: {path}"
+                  )
+                  continue
+
+              text = path.read_text(
+                  encoding="utf-8"
+              )
+
+              match = re.match(
+                  r"^---\s*\n(.*?)\n---\s*(?:\n|$)(.*)$",
+                  text,
+                  flags=re.DOTALL,
+              )
+
+              if not match:
+                  print(
+                      f"::warning::Skipping file without valid "
+                      f"YAML front matter: {path}"
+                  )
+                  continue
+
+              try:
+                  front_matter = yaml.safe_load(
+                      match.group(1)
+                  )
+              except yaml.YAMLError as exc:
+                  print(
+                      f"::warning::Skipping invalid YAML file "
+                      f"{path}: {exc}"
+                  )
+                  continue
+
+              if not isinstance(front_matter, dict):
+                  print(
+                      f"::warning::Skipping front matter that "
+                      f"is not an object: {path}"
+                  )
+                  continue
+
+              current_status = front_matter.get(
+                  "status"
+              )
+
+              if current_status != "pending-review":
+                  skipped_files.append(
+                      f"{path} ({current_status})"
+                  )
+                  continue
+
+              front_matter["status"] = "published"
+
+              verification = front_matter.get(
+                  "verification"
+              )
+
+              if isinstance(verification, dict):
+                  verification[
+                      "human_review_required"
+                  ] = False
+
+                  verification[
+                      "automatically_verified"
+                  ] = False
+
+                  verification[
+                      "approved_by_merge"
+                  ] = True
+
+              yaml_text = yaml.safe_dump(
+                  front_matter,
+                  allow_unicode=True,
+                  sort_keys=False,
+                  default_flow_style=False,
+                  width=1000,
+              ).strip()
+
+              body = match.group(2).lstrip("\n")
+
+              updated_text = (
+                  "---\n"
+                  f"{yaml_text}\n"
+                  "---\n\n"
+                  f"{body}"
+              )
+
+              path.write_text(
+                  updated_text,
+                  encoding="utf-8",
+              )
+
+              updated_files.append(
+                  str(path)
+              )
+
+          print(
+              "Published files:",
+              updated_files or "none",
+          )
+
+          print(
+              "Files left unchanged:",
+              skipped_files or "none",
+          )
+          PYTHON
+
+      # ======================================================
+      # REBUILD DATABASES AND CLICKABLE LIST
+      # ======================================================
+
+      - name: Rebuild opportunity indexes
+        if: steps.changed_files.outputs.has_opportunity_files == 'true'
+        run: |
+          python scripts/build_indexes.py
+
+      # ======================================================
+      # COMMIT THE PUBLISHED STATUS AND INDEXES
+      # ======================================================
+
+      - name: Commit publishing updates
+        if: steps.changed_files.outputs.has_opportunity_files == 'true'
+        shell: bash
+        run: |
+          git config user.name "enchanted-map-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            opportunities/ \
+            data/
+
+          if git diff --cached --quiet; then
+            echo "No publishing or index changes to commit."
+            exit 0
+          fi
+
+          git commit \
+            -m "Publish merged opportunity from PR #${PR_NUMBER}"
+
+          git push
