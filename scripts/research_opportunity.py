@@ -66,11 +66,11 @@ TAVILY_API_KEY = os.environ.get(
 
 MAX_REDIRECTS = 5
 MAX_PAGE_BYTES = 1_500_000
-MAX_PAGE_TEXT = 6_000
-MAX_SEARCH_RESULTS = 3
+MAX_PAGE_TEXT = 2_500
+MAX_SEARCH_RESULTS = 2
 MAX_SEARCH_QUERIES = 2
-MAX_EVIDENCE_PAGES = 4
-MAX_MODEL_INPUT_CHARS = 18_000
+MAX_EVIDENCE_PAGES = 3
+MAX_MODEL_INPUT_CHARS = 9_000
 
 CONNECT_TIMEOUT_SECONDS = 8
 READ_TIMEOUT_SECONDS = 20
@@ -589,7 +589,7 @@ def search_tavily(
                 "title": item.get("title"),
                 "url": result_url,
                 "score": item.get("score"),
-                "content": evidence_text[:3_000],
+                "content": evidence_text[:1_200],
                 "source": "tavily-search",
                 "retrieved_at": datetime.now(
                     timezone.utc
@@ -754,22 +754,102 @@ def collect_evidence(
 # GITHUB MODELS RESEARCH
 # ============================================================
 
-def trim_model_input(data: dict[str, Any]) -> str:
-    serialized = json.dumps(
-        data,
-        ensure_ascii=False,
-        indent=2,
-    )
+def compact_model_value(
+    value: Any,
+    *,
+    string_limit: int,
+) -> Any:
+    if isinstance(value, dict):
+        return {
+            str(key): compact_model_value(
+                child,
+                string_limit=string_limit,
+            )
+            for key, child in value.items()
+        }
 
-    if len(serialized) <= MAX_MODEL_INPUT_CHARS:
-        return serialized
+    if isinstance(value, list):
+        return [
+            compact_model_value(
+                child,
+                string_limit=string_limit,
+            )
+            for child in value[:5]
+        ]
+
+    if isinstance(value, str):
+        if len(value) > string_limit:
+            return value[:string_limit].rstrip() + "…"
+
+        return value
+
+    return value
+
+
+def trim_model_input(
+    data: dict[str, Any],
+) -> str:
+    for string_limit in (
+        1_500,
+        1_000,
+        700,
+        450,
+        250,
+    ):
+        compacted = compact_model_value(
+            data,
+            string_limit=string_limit,
+        )
+
+        serialized = json.dumps(
+            compacted,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+
+        if len(serialized) <= MAX_MODEL_INPUT_CHARS:
+            return serialized
 
     warn(
-        "Research evidence exceeded the model-input limit. "
-        "The payload was truncated."
+        "Research evidence remained too large after compaction. "
+        "Only the first portion will be supplied."
     )
 
-    return serialized[:MAX_MODEL_INPUT_CHARS]
+    minimal_payload = {
+        "issue": data.get("issue", {}),
+        "raw_submission": data.get(
+            "raw_submission",
+            {},
+        ),
+        "retrieved_evidence": {
+            "submitted_pages": (
+                data.get(
+                    "retrieved_evidence",
+                    {},
+                ).get(
+                    "submitted_pages",
+                    [],
+                )[:1]
+                if isinstance(
+                    data.get(
+                        "retrieved_evidence"
+                    ),
+                    dict,
+                )
+                else []
+            ),
+            "search_results": [],
+        },
+    }
+
+    return json.dumps(
+        compact_model_value(
+            minimal_payload,
+            string_limit=400,
+        ),
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
 
 def call_research_model(
     prompt: str,
@@ -822,7 +902,7 @@ def call_research_model(
     payload = {
         "model": AI_MODEL,
         "temperature": 0.1,
-        "max_tokens": 3_000,
+        "max_tokens": 2_800,
         "response_format": {
             "type": "json_object",
         },
