@@ -771,37 +771,42 @@ def trim_model_input(data: dict[str, Any]) -> str:
 
     return serialized[:MAX_MODEL_INPUT_CHARS]
 
-
 def call_research_model(
     prompt: str,
     raw_record: dict[str, Any],
     evidence: dict[str, Any],
 ) -> dict[str, Any]:
-    
     raw_submission = raw_record.get(
-    "raw_submission",
-    {},
-)
+        "raw_submission",
+        {},
+    )
 
-issue = raw_record.get(
-    "issue",
-    {},
-)
+    issue = raw_record.get(
+        "issue",
+        {},
+    )
 
-user_payload = {
-    "issue": {
-        "number": issue.get("number")
-        if isinstance(issue, dict)
-        else ISSUE_NUMBER,
-        "url": issue.get("url")
-        if isinstance(issue, dict)
-        else None,
-    },
-    "raw_submission": raw_submission
-    if isinstance(raw_submission, dict)
-    else {},
-    "retrieved_evidence": evidence,
-}
+    user_payload = {
+        "issue": {
+            "number": (
+                issue.get("number")
+                if isinstance(issue, dict)
+                else ISSUE_NUMBER
+            ),
+            "url": (
+                issue.get("url")
+                if isinstance(issue, dict)
+                else None
+            ),
+        },
+        "raw_submission": (
+            raw_submission
+            if isinstance(raw_submission, dict)
+            else {}
+        ),
+        "retrieved_evidence": evidence,
+    }
+
     user_message = (
         "Create the researched submission record required by "
         "the system prompt.\n\n"
@@ -851,7 +856,13 @@ user_payload = {
 
     try:
         response_data = response.json()
-        content = response_data["choices"][0]["message"]["content"]
+        content = response_data[
+            "choices"
+        ][0][
+            "message"
+        ][
+            "content"
+        ]
     except (
         ValueError,
         KeyError,
@@ -859,19 +870,26 @@ user_payload = {
         TypeError,
     ) as exc:
         fail(
-            f"Unexpected GitHub Models response structure: {exc}"
+            "Unexpected GitHub Models response structure: "
+            f"{exc}"
         )
 
     if not isinstance(content, str):
-        fail("GitHub Models returned no textual JSON result.")
+        fail(
+            "GitHub Models returned no textual JSON result."
+        )
 
     try:
         result = json.loads(content)
     except json.JSONDecodeError as exc:
-        fail(f"Research model returned invalid JSON: {exc}")
+        fail(
+            f"Research model returned invalid JSON: {exc}"
+        )
 
     if not isinstance(result, dict):
-        fail("Research model result must be a JSON object.")
+        fail(
+            "Research model result must be a JSON object."
+        )
 
     return result
 
