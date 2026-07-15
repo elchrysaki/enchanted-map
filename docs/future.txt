@@ -1,0 +1,52 @@
+Future Development Roadmap
+
+Phase 1: Reliable GitHub Workflow
+
+* Structured Issue Form
+* Raw submission preservation
+* Secure official-source research
+* Structured researched copy
+* AI quest formatting
+* Markdown page generation
+* Human review report
+* Draft pull-request creation
+* Automatic publishing after merge
+* JSON database generation
+* Clickable opportunity list
+
+Phase 2: Better Moderation
+
+* GitHub Project moderator board
+* Status and category project fields
+* Deadline and country fields
+* Review confidence field
+* Moderator workload dashboard
+* Duplicate opportunity detection
+* Expired-opportunity detection
+* Scheduled link rechecking
+* Automatic archive suggestions
+* More detailed source provenance
+
+Phase 3: Public Website
+
+* Static website generated from opportunity Markdown
+* Search by title and organizer
+* Filters for country, field, category, and level
+* Deadline sorting
+* Audience and funding filters
+* Individual opportunity routes
+* Application reminders
+* Mobile-friendly layouts
+* Accessible design
+* Public submission progress display
+
+Phase 4: Personalized Discovery
+
+* Optional user profiles
+* Saved opportunities
+* Personalized recommendations
+* Deadline notifications
+* Eligibility matching
+* Similar-opportunity suggestions
+* Opportunity collections
+* Community ratings and reports
