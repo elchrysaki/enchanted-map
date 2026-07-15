@@ -3,19 +3,40 @@ from __future__ import annotations
 import json
 import os
 import re
+import sys
 import unicodedata
-from datetime import date
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import quote
 
 import requests
 import yaml
 
-API_URL = "https://api.github.com"
+
+# ============================================================
+# ENVIRONMENT AND SECURITY LIMITS
+# ============================================================
+
+GITHUB_API = "https://api.github.com"
+
 TOKEN = os.environ["GITHUB_TOKEN"]
 REPOSITORY = os.environ["REPOSITORY"]
 ISSUE_NUMBER = int(os.environ["ISSUE_NUMBER"])
+
+OUTPUT_DIRECTORY = Path(
+    os.environ.get(
+        "OUTPUT_DIRECTORY",
+        "artifacts",
+    )
+)
+
+MODERATOR_FILE = Path(
+    os.environ.get(
+        "MODERATOR_FILE",
+        ".github/moderators.yml",
+    )
+)
 
 HEADERS = {
     "Authorization": f"Bearer {TOKEN}",
@@ -23,45 +44,77 @@ HEADERS = {
     "X-GitHub-Api-Version": "2022-11-28",
 }
 
-COMMENT_MARKER = "<!-- enchanted-map-intake -->"
+INTAKE_COMMENT_MARKER = "<!-- enchanted-map-intake -->"
 
-FIELD_LABELS = {
+# The original GitHub issue remains untouched.
+# These limits protect workflow memory, artifacts, comments and later AI calls.
+MAX_ISSUE_BODY_LENGTH = 100_000
+MAX_FIELD_LENGTH = 20_000
+MAX_LIST_ITEMS = 100
+MAX_ROUTING_KEYWORDS = 40
+MAX_COMMENT_VALUE_LENGTH = 500
+
+
+# ============================================================
+# FINAL FORM FIELD MAP
+# ============================================================
+
+FIELD_LABELS: dict[str, str] = {
+    # Part I: Essential Quest Details
     "opportunity_name": "✨ Opportunity name",
-    "category": "⚔️ Quest category",
+    "category": "🧭 Quest category",
     "organizer": "🏰 Organizer",
-    "short_description": "📖 What is this quest?",
-    "official_website": "🔗 Official opportunity page",
-    "application_link": "🚪 Direct application portal",
-    "opportunity_format": "🧭 Quest format",
-    "host_city": "🏙️ Host city",
-    "host_country": "🌍 Host country",
-    "additional_locations": "🗺️ Additional locations",
+    "short_description": "📖 What is the opportunity?",
+    "official_website": "🔗 Official or most reliable source",
     "application_deadline": "⏳ Application deadline",
-    "start_date": "🌅 Start date",
-    "end_date": "🌙 End date",
-    "date_notes": "📆 Additional date information",
-    "geographic_eligibility": "🌐 Geographic eligibility",
-    "eligible_countries": "🏳️ Eligible countries",
-    "nationality_residency_rules": "🛂 Nationality or residency requirements",
-    "academic_levels": "🎓 Eligible academic levels",
+    "opportunity_format": "🧭 Format",
+
+    # Part II: Quick Map Filters
+    "geographic_eligibility": "🌍 Who can apply geographically?",
+    "academic_levels": "🎓 Academic or career level",
     "broad_fields": "🔬 Broad academic fields",
-    "specific_majors": "🧠 Relevant majors and specializations",
-    "required_skills": "🛠️ Required skills or experience",
-    "audience_access": "🔐 Audience access model",
-    "audience_groups": "🧑‍🤝‍🧑 Intended, encouraged, priority, or eligible groups",
-    "audience_details": "📜 Exact audience or inclusion wording",
-    "audience_source": "🔎 Source for audience information",
-    "funding": "💰 Funding, costs, and support",
-    "participation_fee": "💳 Application or participation fee",
-    "funding_details": "🎒 Funding details",
-    "activities": "⚒️ Main activities",
-    "benefits": "🎁 Quest rewards",
-    "selection_process": "🏹 Selection process",
-    "keywords": "🏷️ Search keywords",
-    "career_themes": "🧭 Career and opportunity themes",
-    "source_notes": "📚 Verification notes",
-    "supporting_files": "📎 Supporting files",
+    "funding_support": "💰 Funding, costs, and support",
+    "audience_groups": "🌈 Intended, encouraged, or eligible groups",
+
+    # Part III: Add What You Know
+    "application_link": "🚪 Direct application link",
+    "host_location": "📍 Host location",
+    "eligible_locations": "🗺️ Specific eligible countries or regions",
+    "event_dates": "📅 Event or program dates",
+    "specific_majors": "🧠 Specific majors or specializations",
+    "eligibility_details": "🛂 Other eligibility requirements",
+    "funding_details": "🎒 Funding and benefits details",
+    "audience_information": "📜 Audience or inclusion wording",
+    "application_requirements": "🏹 Application requirements or selection process",
+    "additional_information": "📝 Anything else worth knowing?",
+
+    # Final confirmation
+    "confirmation": "🛡️ Adventurer's check",
 }
+
+MULTI_VALUE_FIELDS = {
+    "geographic_eligibility",
+    "academic_levels",
+    "broad_fields",
+    "funding_support",
+    "audience_groups",
+    "confirmation",
+}
+
+REQUIRED_FIELDS = {
+    "opportunity_name",
+    "category",
+    "organizer",
+    "short_description",
+    "official_website",
+    "application_deadline",
+    "opportunity_format",
+}
+
+
+# ============================================================
+# NORMALIZED ROUTING MAPS
+# ============================================================
 
 CATEGORY_MAP = {
     "conference": "conference",
@@ -81,490 +134,968 @@ CATEGORY_MAP = {
     "volunteering program": "volunteering-program",
     "leadership program": "leadership-program",
     "cultural program": "cultural-program",
+    "other or not sure": "other",
+}
+
+REGION_MAP = {
+    "worldwide": "worldwide",
+    "africa": "africa",
+    "asia": "asia",
+    "europe": "europe",
+    "european union or eea": "eu-eea",
+    "latin america and the caribbean": "latin-america-caribbean",
+    "middle east and north africa": "mena",
+    "north america": "north-america",
+    "oceania": "oceania",
+    "host country only": "host-country-only",
+    "specific countries": "specific-countries",
+    "multiple countries or regions": "multiple-countries-regions",
+    "no geographic restriction mentioned": "not-mentioned",
+    "not sure": "not-sure",
+}
+
+ACADEMIC_LEVEL_MAP = {
+    "secondary or high-school students": "high-school",
+    "vocational students": "vocational",
+    "undergraduate students": "undergraduate",
+    "master's students": "masters",
+    "doctoral students": "doctoral",
+    "postdoctoral researchers": "postdoctoral",
+    "recent graduates": "recent-graduates",
+    "early-career professionals": "early-career",
+    "professionals": "professionals",
+    "open to several levels": "multiple-levels",
+    "no academic restriction mentioned": "not-mentioned",
+    "not sure": "not-sure",
+}
+
+BROAD_FIELD_MAP = {
+    "engineering and technology": "engineering-technology",
+    "computer science and artificial intelligence": "computer-science-ai",
+    "mathematics and statistics": "mathematics-statistics",
+    "physics and astronomy": "physics-astronomy",
+    "chemistry and materials science": "chemistry-materials",
+    "biology and life sciences": "biology-life-sciences",
+    "medicine and health": "medicine-health",
+    "environmental science and sustainability": "environment-sustainability",
+    "business and economics": "business-economics",
+    "entrepreneurship and innovation": "entrepreneurship-innovation",
+    "law and public policy": "law-public-policy",
+    "politics and international relations": "politics-international-relations",
+    "social sciences": "social-sciences",
+    "psychology and behavioural science": "psychology-behavioural-science",
+    "education": "education",
+    "arts and design": "arts-design",
+    "humanities": "humanities",
+    "media and communications": "media-communications",
+    "architecture and urban planning": "architecture-urban-planning",
+    "agriculture and food science": "agriculture-food-science",
+    "interdisciplinary": "interdisciplinary",
+    "open to all fields": "all-fields",
     "other": "other",
+    "not sure": "not-sure",
 }
 
-FORMAT_MAP = {
-    "in person": "in-person",
-    "online": "online",
-    "hybrid": "hybrid",
-    "multiple formats": "multiple-formats",
-    "not confirmed": "not-confirmed",
+AUDIENCE_MAP = {
+    "women": "women",
+    "women in stem": "women-in-stem",
+    "black students": "black-students",
+    "black women": "black-women",
+    "african students": "african-students",
+    "students of african descent": "students-of-african-descent",
+    "african american students": "african-american-students",
+    "lgbtq+ students": "lgbtq-plus",
+    "first-generation students": "first-generation-students",
+    "low-income students": "low-income-students",
+    "students with disabilities": "students-with-disabilities",
+    "neurodivergent students": "neurodivergent-students",
+    "indigenous students": "indigenous-students",
+    "refugees or displaced students": "refugees-displaced-students",
+    "rural or remote-community students": "rural-remote-students",
+    "international students": "international-students",
+    "underrepresented groups in stem": "underrepresented-stem",
+    "ethnic or racial minorities": "ethnic-racial-minorities",
+    "migrant-background students": "migrant-background-students",
+    "other specified group": "other-specified-group",
+    "no particular group mentioned": "none-mentioned",
+    "not sure": "not-sure",
 }
 
-AUDIENCE_ACCESS_MAP = {
-    "open to everyone with no specified priority group": "none",
-    "open to everyone but actively encourages specified groups": "encouraged",
-    "preference or priority is given to specified groups": "priority",
-    "reserved exclusively for specified groups": "exclusive",
-    "audience focus is mentioned but eligibility is unclear": "focus-unclear",
-    "not confirmed": "not-confirmed",
-}
 
-LABEL_DEFINITIONS = {
-    "new-discovery": {
-        "color": "8B5CF6",
-        "description": "A newly submitted opportunity.",
-    },
-    "needs-review": {
-        "color": "F4C542",
-        "description": "Requires human review before publication.",
-    },
-    "intake-parsed": {
-        "color": "7C3AED",
-        "description": "The submission form was parsed successfully.",
-    },
-}
+# ============================================================
+# BASIC HELPERS
+# ============================================================
+
+def fail(message: str) -> None:
+    print(f"::error::{message}")
+    raise SystemExit(1)
+
+
+def warn(message: str) -> None:
+    print(f"::warning::{message}")
+
+
+def slugify(value: str) -> str:
+    normalized = unicodedata.normalize("NFKD", value)
+    ascii_value = normalized.encode(
+        "ascii",
+        "ignore",
+    ).decode("ascii")
+
+    ascii_value = ascii_value.lower()
+    ascii_value = re.sub(
+        r"[^a-z0-9]+",
+        "-",
+        ascii_value,
+    )
+
+    return ascii_value.strip("-")
+
+
+def normalize_compare_text(value: str) -> str:
+    return re.sub(
+        r"\s+",
+        " ",
+        value.strip().lower(),
+    )
+
+
+def unique_strings(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+
+    for value in values:
+        cleaned = value.strip()
+
+        if not cleaned:
+            continue
+
+        key = cleaned.casefold()
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+        result.append(cleaned)
+
+    return result
+
+
+def neutralize_mentions(value: str) -> str:
+    """
+    Prevent contributor-controlled text from creating GitHub mentions
+    such as @username or @organization/team in automated comments.
+    """
+    return value.replace("@", "@\u200b")
+
+
+def safe_comment_value(value: Any) -> str:
+    if value is None:
+        return "Not confirmed"
+
+    text = neutralize_mentions(str(value).strip())
+
+    if not text:
+        return "Not confirmed"
+
+    if len(text) > MAX_COMMENT_VALUE_LENGTH:
+        return text[:MAX_COMMENT_VALUE_LENGTH] + "…"
+
+    return text
 
 
 def github_request(
     method: str,
     endpoint: str,
     *,
-    expected: tuple[int, ...] = (200,),
+    expected_statuses: tuple[int, ...] = (200,),
     **kwargs: Any,
 ) -> requests.Response:
     response = requests.request(
         method,
-        f"{API_URL}{endpoint}",
+        f"{GITHUB_API}{endpoint}",
         headers=HEADERS,
-        timeout=30,
+        timeout=60,
         **kwargs,
     )
-    if response.status_code not in expected:
-        raise RuntimeError(
-            f"GitHub API {method} {endpoint} failed with "
-            f"{response.status_code}: {response.text}"
+
+    if response.status_code not in expected_statuses:
+        fail(
+            "GitHub API request failed: "
+            f"{method} {endpoint} returned "
+            f"{response.status_code}\n"
+            f"{response.text[:1500]}"
         )
+
     return response
 
 
-def clean_text(value: str | None) -> str:
-    if value is None:
-        return ""
-    value = value.strip()
-    if value in {"_No response_", "No response", "N/A", "n/a"}:
-        return ""
-    return value
+def write_github_output(
+    name: str,
+    value: str,
+) -> None:
+    output_path = os.environ.get("GITHUB_OUTPUT")
+
+    if not output_path:
+        print(f"{name}={value}")
+        return
+
+    with open(
+        output_path,
+        "a",
+        encoding="utf-8",
+    ) as output:
+        output.write(f"{name}={value}\n")
 
 
-def slugify(value: str) -> str:
-    normalized = unicodedata.normalize("NFKD", value)
-    ascii_value = normalized.encode("ascii", "ignore").decode("ascii")
-    slug = re.sub(r"[^a-zA-Z0-9]+", "-", ascii_value.lower()).strip("-")
-    return slug
+# ============================================================
+# ISSUE READING
+# ============================================================
 
-
-def extract_field(body: str, label: str) -> str:
-    known_headings = "|".join(
-        re.escape(item) for item in FIELD_LABELS.values()
+def get_issue() -> dict[str, Any]:
+    response = github_request(
+        "GET",
+        f"/repos/{REPOSITORY}/issues/{ISSUE_NUMBER}",
     )
+
+    issue = response.json()
+
+    if not isinstance(issue, dict):
+        fail("GitHub returned an invalid issue response.")
+
+    if issue.get("pull_request"):
+        fail("The supplied issue number refers to a pull request.")
+
+    return issue
+
+
+def split_issue_sections(
+    body: str,
+) -> dict[str, str]:
+    """
+    GitHub Issue Forms render fields approximately as:
+
+    ### Field label
+
+    Submitted value
+
+    ### Next field
+    """
+
     pattern = re.compile(
-        rf"^###\s+{re.escape(label)}\s*$\n"
-        rf"(.*?)"
-        rf"(?=^###\s+(?:{known_headings})\s*$|\Z)",
+        r"^###\s+(.+?)\s*$\n(.*?)(?=^###\s+|\Z)",
         re.MULTILINE | re.DOTALL,
     )
-    match = pattern.search(body)
-    return clean_text(match.group(1) if match else "")
+
+    sections: dict[str, str] = {}
+
+    for match in pattern.finditer(body):
+        label = match.group(1).strip()
+        value = match.group(2).strip()
+
+        sections[label] = value
+
+    return sections
 
 
-def parse_selected(value: str) -> list[str]:
-    value = clean_text(value)
-    if not value:
+def clean_single_value(
+    value: str,
+) -> str | None:
+    cleaned = value.strip()
+
+    empty_values = {
+        "",
+        "_No response_",
+        "No response",
+        "None",
+    }
+
+    if cleaned in empty_values:
+        return None
+
+    # Preserve the raw issue itself exactly on GitHub.
+    # Refuse to process extreme individual fields rather than silently
+    # modifying the contributor's submission.
+    if len(cleaned) > MAX_FIELD_LENGTH:
+        fail(
+            "A submitted field is too large to process safely. "
+            f"Maximum field size: {MAX_FIELD_LENGTH} characters."
+        )
+
+    return cleaned
+
+
+def parse_multi_value(
+    value: str,
+) -> list[str]:
+    cleaned = clean_single_value(value)
+
+    if cleaned is None:
         return []
 
-    checked = re.findall(r"^\s*-\s*\[[xX]\]\s*(.+?)\s*$", value, re.MULTILINE)
-    if checked:
-        return [item.strip() for item in checked if item.strip()]
+    values: list[str] = []
 
-    without_bullets = re.sub(r"^\s*[-*]\s+", "", value, flags=re.MULTILINE)
-    parts = re.split(r"[\n,;]+", without_bullets)
-    return [
-        part.strip()
-        for part in parts
-        if clean_text(part.strip())
-        and not re.match(r"^\[[ xX]\]$", part.strip())
-    ]
+    for line in cleaned.splitlines():
+        line = line.strip()
 
+        if not line:
+            continue
 
-def parse_lines(value: str) -> list[str]:
-    return parse_selected(value)
+        # GitHub can render multi-select dropdown answers as bullets.
+        line = re.sub(
+            r"^[-*]\s+",
+            "",
+            line,
+        )
 
+        # GitHub can render checkbox answers as:
+        # - [x] Confirmation text
+        line = re.sub(
+            r"^\[[xX ]\]\s*",
+            "",
+            line,
+        )
 
-def normalize_list(values: list[str]) -> list[str]:
-    result: list[str] = []
-    seen: set[str] = set()
-    for value in values:
-        slug = slugify(value)
-        if slug and slug not in seen:
-            seen.add(slug)
-            result.append(slug)
-    return result
+        if line:
+            values.append(line)
 
+    if len(values) == 1 and "," in values[0]:
+        values = [
+            item.strip()
+            for item in values[0].split(",")
+            if item.strip()
+        ]
 
-def normalize_date(value: str) -> str | None:
-    value = clean_text(value)
-    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
-        return None
-    try:
-        return date.fromisoformat(value).isoformat()
-    except ValueError:
-        return None
+    return unique_strings(values)[:MAX_LIST_ITEMS]
 
 
-def valid_http_url(value: str) -> bool:
-    if not value:
+def extract_raw_submission(
+    issue_body: str,
+) -> tuple[dict[str, Any], dict[str, str]]:
+    sections = split_issue_sections(issue_body)
+    raw_submission: dict[str, Any] = {}
+
+    for internal_name, visible_label in FIELD_LABELS.items():
+        raw_value = sections.get(visible_label, "")
+
+        if internal_name in MULTI_VALUE_FIELDS:
+            raw_submission[internal_name] = parse_multi_value(
+                raw_value
+            )
+        else:
+            raw_submission[internal_name] = clean_single_value(
+                raw_value
+            )
+
+    return raw_submission, sections
+
+
+# ============================================================
+# BASIC INTAKE CHECKS
+# ============================================================
+
+def check_missing_required_fields(
+    raw_submission: dict[str, Any],
+) -> list[str]:
+    missing: list[str] = []
+
+    for field_name in sorted(REQUIRED_FIELDS):
+        value = raw_submission.get(field_name)
+
+        if value is None or value == "" or value == []:
+            missing.append(field_name)
+
+    return missing
+
+
+def looks_like_url(value: Any) -> bool:
+    if not isinstance(value, str):
         return False
-    parsed = urlparse(value)
-    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+    return bool(
+        re.match(
+            r"^https?://[^\s]+$",
+            value.strip(),
+            re.IGNORECASE,
+        )
+    )
 
 
-def parse_submission(body: str) -> dict[str, str]:
-    return {
-        key: extract_field(body, label)
-        for key, label in FIELD_LABELS.items()
-    }
-
-
-def category_slug(raw_category: str) -> str:
-    return CATEGORY_MAP.get(raw_category.strip().lower(), "other")
-
-
-def mapped_slug(raw_value: str, mapping: dict[str, str]) -> str:
-    return mapping.get(raw_value.strip().lower(), slugify(raw_value))
-
-
-def build_normalized_submission(
-    issue: dict[str, Any],
-    raw: dict[str, str],
-) -> dict[str, Any]:
-    geographic_values = parse_selected(raw["geographic_eligibility"])
-    academic_levels = parse_selected(raw["academic_levels"])
-    broad_fields = parse_selected(raw["broad_fields"])
-    majors = parse_lines(raw["specific_majors"])
-    audience_groups = parse_selected(raw["audience_groups"])
-    funding = parse_selected(raw["funding"])
-    career_themes = parse_selected(raw["career_themes"])
-    keywords = parse_lines(raw["keywords"])
-    eligible_countries = parse_lines(raw["eligible_countries"])
-
-    deadline_iso = normalize_date(raw["application_deadline"])
-    start_iso = normalize_date(raw["start_date"])
-    end_iso = normalize_date(raw["end_date"])
-
+def basic_intake_warnings(
+    raw_submission: dict[str, Any],
+) -> list[str]:
     warnings: list[str] = []
-    contradictions: list[str] = []
 
-    required_fields = {
-        "opportunity_name": raw["opportunity_name"],
-        "category": raw["category"],
-        "organizer": raw["organizer"],
-        "short_description": raw["short_description"],
-        "official_website": raw["official_website"],
-        "opportunity_format": raw["opportunity_format"],
-        "host_country": raw["host_country"],
-        "application_deadline": raw["application_deadline"],
-        "specific_majors": raw["specific_majors"],
-        "participation_fee": raw["participation_fee"],
-        "source_notes": raw["source_notes"],
-    }
-    missing = [key for key, value in required_fields.items() if not value]
+    official_website = raw_submission.get(
+        "official_website"
+    )
 
-    if raw["official_website"] and not valid_http_url(raw["official_website"]):
-        warnings.append("The official opportunity page is not a valid HTTP/HTTPS URL.")
+    application_link = raw_submission.get(
+        "application_link"
+    )
 
-    if raw["application_link"] and not valid_http_url(raw["application_link"]):
-        warnings.append("The direct application portal is not a valid HTTP/HTTPS URL.")
-
-    if raw["audience_source"] and not valid_http_url(raw["audience_source"]):
-        warnings.append("The audience source is not a valid HTTP/HTTPS URL.")
-
-    if audience_groups and (
-        not raw["audience_details"] or not raw["audience_source"]
+    if official_website and not looks_like_url(
+        official_website
     ):
         warnings.append(
-            "Audience groups were selected without both supporting wording "
-            "and an official audience source."
+            "The official source does not appear to be a complete HTTP or HTTPS URL."
         )
 
-    audience_access = mapped_slug(raw["audience_access"], AUDIENCE_ACCESS_MAP)
-    if audience_access == "none" and audience_groups:
-        contradictions.append(
-            "The access model says there is no specified priority group, "
-            "but audience groups were selected."
+    if application_link and not looks_like_url(
+        application_link
+    ):
+        warnings.append(
+            "The application link does not appear to be a complete HTTP or HTTPS URL."
         )
 
-    if start_iso and end_iso and date.fromisoformat(end_iso) < date.fromisoformat(start_iso):
-        contradictions.append("The end date is earlier than the start date.")
+    audience_groups = raw_submission.get(
+        "audience_groups",
+        [],
+    )
 
-    if deadline_iso and start_iso and date.fromisoformat(deadline_iso) > date.fromisoformat(start_iso):
-        warnings.append("The application deadline is later than the start date.")
+    audience_information = raw_submission.get(
+        "audience_information"
+    )
 
-    category = category_slug(raw["category"])
-    opportunity_slug = slugify(raw["opportunity_name"])
-    issue_number = issue["number"]
+    non_empty_audience_groups = [
+        item
+        for item in audience_groups
+        if normalize_compare_text(item)
+        not in {
+            "no particular group mentioned",
+            "not sure",
+        }
+    ]
+
+    if (
+        non_empty_audience_groups
+        and not audience_information
+    ):
+        warnings.append(
+            "Audience groups were selected, but no supporting audience wording was provided."
+        )
+
+    return warnings
+
+
+# ============================================================
+# ROUTING HINTS
+# ============================================================
+
+def mapped_values(
+    values: list[str],
+    mapping: dict[str, str],
+) -> list[str]:
+    results: list[str] = []
+
+    for value in values:
+        key = normalize_compare_text(value)
+        mapped = mapping.get(key)
+
+        if mapped:
+            results.append(mapped)
+            continue
+
+        fallback = slugify(value)
+
+        if fallback:
+            results.append(fallback)
+
+    return unique_strings(results)
+
+
+def extract_specific_major_hints(
+    value: Any,
+) -> list[str]:
+    if not isinstance(value, str):
+        return []
+
+    parts = re.split(
+        r"[\n,;•]+",
+        value,
+    )
+
+    results = [
+        slugify(part)
+        for part in parts
+        if slugify(part)
+    ]
+
+    return unique_strings(results)[:MAX_LIST_ITEMS]
+
+
+def extract_keyword_hints(
+    raw_submission: dict[str, Any],
+) -> list[str]:
+    source_fields = [
+        "opportunity_name",
+        "short_description",
+        "specific_majors",
+        "eligibility_details",
+        "funding_details",
+        "additional_information",
+    ]
+
+    words: list[str] = []
+
+    for field_name in source_fields:
+        value = raw_submission.get(field_name)
+
+        if not isinstance(value, str):
+            continue
+
+        # Limit routing analysis without altering the preserved raw value.
+        routing_text = value[:MAX_FIELD_LENGTH]
+
+        tokens = re.findall(
+            r"[A-Za-zÀ-ÿ0-9+#.-]{3,}",
+            routing_text.lower(),
+        )
+
+        words.extend(tokens)
+
+    stop_words = {
+        "this",
+        "that",
+        "with",
+        "from",
+        "have",
+        "will",
+        "into",
+        "your",
+        "their",
+        "they",
+        "them",
+        "students",
+        "student",
+        "opportunity",
+        "program",
+        "programme",
+        "application",
+        "applicants",
+        "participants",
+        "include",
+        "includes",
+        "including",
+        "other",
+        "more",
+        "about",
+        "under",
+        "over",
+        "where",
+        "which",
+        "when",
+        "what",
+        "and",
+        "the",
+        "for",
+        "are",
+        "not",
+    }
+
+    filtered = [
+        slugify(word)
+        for word in words
+        if word not in stop_words
+    ]
+
+    return unique_strings(
+        [item for item in filtered if item]
+    )[:MAX_ROUTING_KEYWORDS]
+
+
+def build_routing_hints(
+    raw_submission: dict[str, Any],
+) -> dict[str, Any]:
+    raw_category = str(
+        raw_submission.get("category") or ""
+    )
+
+    category = CATEGORY_MAP.get(
+        normalize_compare_text(raw_category),
+        slugify(raw_category) or "other",
+    )
 
     return {
-        "schema_version": 1,
-        "source": {
-            "repository": REPOSITORY,
-            "issue_number": issue_number,
-            "issue_url": issue.get("html_url", ""),
-            "submitted_by": issue.get("user", {}).get("login", ""),
-            "created_at": issue.get("created_at"),
-        },
-        "identity": {
-            "title": raw["opportunity_name"],
-            "slug": f"{opportunity_slug}-{issue_number}",
-            "category": category,
-            "organizer": raw["organizer"],
-            "status": "pending-review",
-        },
-        "links": {
-            "official": raw["official_website"],
-            "application": raw["application_link"],
-            "audience_source": raw["audience_source"],
-        },
-        "location": {
-            "format": mapped_slug(raw["opportunity_format"], FORMAT_MAP),
-            "host_city": raw["host_city"],
-            "host_country": raw["host_country"],
-            "host_country_slug": slugify(raw["host_country"]),
-            "additional_locations": parse_lines(raw["additional_locations"]),
-        },
-        "dates": {
-            "application_deadline_raw": raw["application_deadline"],
-            "application_deadline": deadline_iso,
-            "start_date_raw": raw["start_date"],
-            "start_date": start_iso,
-            "end_date_raw": raw["end_date"],
-            "end_date": end_iso,
-            "notes": raw["date_notes"],
-        },
-        "eligibility": {
-            "geographic_raw": geographic_values,
-            "geographic_region_slugs": normalize_list(geographic_values),
-            "eligible_countries_raw": eligible_countries,
-            "eligible_country_slugs": normalize_list(eligible_countries),
-            "nationality_residency_rules": raw["nationality_residency_rules"],
-            "academic_levels_raw": academic_levels,
-            "academic_level_slugs": normalize_list(academic_levels),
-            "required_skills": raw["required_skills"],
-        },
-        "academic": {
-            "broad_fields_raw": broad_fields,
-            "broad_field_slugs": normalize_list(broad_fields),
-            "majors_raw": majors,
-            "major_slugs": normalize_list(majors),
-        },
-        "audience": {
-            "access": audience_access,
-            "groups_raw": audience_groups,
-            "group_slugs": normalize_list(audience_groups),
-            "details": raw["audience_details"],
-            "source": raw["audience_source"],
-        },
-        "funding": {
-            "types_raw": funding,
-            "type_slugs": normalize_list(funding),
-            "fee": raw["participation_fee"],
-            "details": raw["funding_details"],
-        },
-        "content": {
-            "description": raw["short_description"],
-            "activities": raw["activities"],
-            "benefits": raw["benefits"],
-            "selection_process": raw["selection_process"],
-            "source_notes": raw["source_notes"],
-            "supporting_files": raw["supporting_files"],
-        },
-        "search": {
-            "keywords_raw": keywords,
-            "keyword_slugs": normalize_list(keywords),
-            "career_themes_raw": career_themes,
-            "career_theme_slugs": normalize_list(career_themes),
-        },
-        "moderation": {
-            "missing_required_fields": missing,
-            "warnings": warnings,
-            "contradictions": contradictions,
-            "human_review_required": True,
-            "verified": False,
-        },
-        "raw_form": raw,
+        "category": category,
+        "regions": mapped_values(
+            raw_submission.get(
+                "geographic_eligibility",
+                [],
+            ),
+            REGION_MAP,
+        ),
+        "academic_levels": mapped_values(
+            raw_submission.get(
+                "academic_levels",
+                [],
+            ),
+            ACADEMIC_LEVEL_MAP,
+        ),
+        "broad_fields": mapped_values(
+            raw_submission.get(
+                "broad_fields",
+                [],
+            ),
+            BROAD_FIELD_MAP,
+        ),
+        "specific_majors": extract_specific_major_hints(
+            raw_submission.get("specific_majors")
+        ),
+        "audiences": mapped_values(
+            raw_submission.get(
+                "audience_groups",
+                [],
+            ),
+            AUDIENCE_MAP,
+        ),
+        "keywords": extract_keyword_hints(
+            raw_submission
+        ),
     }
 
 
-def load_registry() -> dict[str, Any]:
-    path = Path(".github/moderators.yml")
-    if not path.exists():
-        return {}
-    with path.open("r", encoding="utf-8") as file:
-        return yaml.safe_load(file) or {}
+# ============================================================
+# MODERATOR ROUTING
+# ============================================================
 
-
-def config_slugs(values: Any) -> set[str]:
-    if values is None:
-        return set()
-    if isinstance(values, str):
-        values = [values]
-    return {slugify(str(value)) for value in values if str(value).strip()}
-
-
-def open_review_count(username: str) -> int:
-    query = (
-        f"repo:{REPOSITORY} is:open assignee:{username} "
-        f"label:needs-review"
-    )
-    try:
-        response = github_request(
-            "GET",
-            "/search/issues",
-            params={"q": query, "per_page": 1},
+def load_moderator_configuration() -> dict[str, Any]:
+    if not MODERATOR_FILE.exists():
+        warn(
+            f"Moderator registry not found at {MODERATOR_FILE}. "
+            "No automatic specialist routing will occur."
         )
-        return int(response.json().get("total_count", 0))
-    except RuntimeError:
-        return 999
+        return {}
+
+    try:
+        data = yaml.safe_load(
+            MODERATOR_FILE.read_text(
+                encoding="utf-8"
+            )
+        )
+    except yaml.YAMLError as exc:
+        fail(
+            f"Invalid YAML in {MODERATOR_FILE}: {exc}"
+        )
+
+    if data is None:
+        return {}
+
+    if not isinstance(data, dict):
+        fail(
+            f"Expected an object in {MODERATOR_FILE}."
+        )
+
+    return data
 
 
-def moderator_score(
-    username: str,
-    config: dict[str, Any],
-    submission: dict[str, Any],
+def moderator_matches(
+    configured_values: Any,
+    submitted_values: list[str],
+) -> int:
+    if not isinstance(configured_values, list):
+        return 0
+
+    # Wildcards represent fallback/general administrators.
+    # They should not outscore topic specialists.
+    if "*" in configured_values:
+        return 0
+
+    normalized_configured = {
+        slugify(str(item))
+        for item in configured_values
+        if str(item).strip()
+    }
+
+    normalized_submitted = {
+        slugify(str(item))
+        for item in submitted_values
+        if str(item).strip()
+    }
+
+    return len(
+        normalized_configured
+        & normalized_submitted
+    )
+
+
+def score_moderator(
+    moderator: dict[str, Any],
+    routing_hints: dict[str, Any],
     weights: dict[str, int],
-) -> tuple[int, list[str]]:
-    specialties = config.get("specialties", {})
-    reasons: list[str] = []
+) -> int:
+    specialties = moderator.get(
+        "specialties",
+        {},
+    )
+
+    if not isinstance(specialties, dict):
+        return 0
+
+    category_values = [
+        routing_hints["category"]
+    ]
+
     score = 0
 
-    category = submission["identity"]["category"]
-    fields = set(submission["academic"]["broad_field_slugs"])
-    fields.update(submission["academic"]["major_slugs"])
-    audiences = set(submission["audience"]["group_slugs"])
-    countries = {submission["location"]["host_country_slug"]}
-    regions = set(submission["eligibility"]["geographic_region_slugs"])
-    keywords = set(submission["search"]["keyword_slugs"])
+    score += moderator_matches(
+        specialties.get("categories"),
+        category_values,
+    ) * weights.get("category", 6)
 
-    comparisons = [
-        ("category", {category}, config_slugs(specialties.get("categories"))),
-        (
-            "academic_field",
-            fields,
-            config_slugs(specialties.get("academic_fields")),
+    configured_fields = (
+        specialties.get("academic_fields")
+        or specialties.get("broad_fields")
+        or []
+    )
+
+    submitted_fields = unique_strings(
+        routing_hints["broad_fields"]
+        + routing_hints["specific_majors"]
+    )
+
+    score += moderator_matches(
+        configured_fields,
+        submitted_fields,
+    ) * weights.get("academic_field", 5)
+
+    score += moderator_matches(
+        specialties.get("audiences"),
+        routing_hints["audiences"],
+    ) * weights.get("audience", 5)
+
+    score += moderator_matches(
+        specialties.get("regions"),
+        routing_hints["regions"],
+    ) * weights.get("region", 2)
+
+    score += moderator_matches(
+        specialties.get("countries"),
+        routing_hints.get(
+            "host_location_keywords",
+            [],
         ),
-        ("audience", audiences, config_slugs(specialties.get("audiences"))),
-        ("country", countries, config_slugs(specialties.get("countries"))),
-        ("region", regions, config_slugs(specialties.get("regions"))),
-        ("keyword", keywords, config_slugs(specialties.get("keywords"))),
-    ]
+    ) * weights.get("country", 4)
 
-    for key, submitted_values, moderator_values in comparisons:
-        exact_matches = submitted_values & (moderator_values - {"*"})
-        if not exact_matches:
-            continue
+    score += moderator_matches(
+        specialties.get("keywords"),
+        routing_hints["keywords"],
+    ) * weights.get("keyword", 1)
 
-        if key == "keyword":
-            points = weights.get(key, 1) * len(exact_matches)
-        else:
-            points = weights.get(key, 1)
+    return score
 
-        score += points
-        reasons.append(
-            f"{key}: {', '.join(sorted(exact_matches))} (+{points})"
+
+def get_open_assignment_count(
+    username: str,
+) -> int:
+    query = (
+        f"repo:{REPOSITORY} "
+        f"is:issue "
+        f"is:open "
+        f"assignee:{username} "
+        f"label:needs-review"
+    )
+
+    response = requests.get(
+        f"{GITHUB_API}/search/issues",
+        headers=HEADERS,
+        params={
+            "q": query,
+            "per_page": 1,
+        },
+        timeout=30,
+    )
+
+    if response.status_code != 200:
+        warn(
+            f"Could not check workload for {username}: "
+            f"{response.status_code}"
         )
+        return 0
 
-    return score, reasons
+    data = response.json()
+
+    try:
+        return int(data.get("total_count", 0))
+    except (TypeError, ValueError):
+        return 0
 
 
-def select_moderators(
-    registry: dict[str, Any],
-    submission: dict[str, Any],
-) -> tuple[list[str], list[dict[str, Any]]]:
-    routing = registry.get("routing", {})
-    governance = registry.get("governance", {})
-    moderators = registry.get("moderators", {})
+def choose_moderators(
+    moderator_config: dict[str, Any],
+    routing_hints: dict[str, Any],
+) -> list[str]:
+    moderators = moderator_config.get(
+        "moderators",
+        {},
+    )
+
+    if not isinstance(moderators, dict):
+        moderators = {}
+
+    governance = moderator_config.get(
+        "governance",
+        {},
+    )
+
+    if not isinstance(governance, dict):
+        governance = {}
+
+    routing = moderator_config.get(
+        "routing",
+        {},
+    )
+
+    if not isinstance(routing, dict):
+        routing = {}
+
+    fallback_reviewers = governance.get(
+        "fallback_reviewers",
+        [],
+    )
+
+    if not isinstance(fallback_reviewers, list):
+        fallback_reviewers = []
+
+    try:
+        max_assignees = max(
+            1,
+            min(
+                int(
+                    routing.get(
+                        "max_issue_assignees",
+                        2,
+                    )
+                ),
+                10,
+            ),
+        )
+    except (TypeError, ValueError):
+        max_assignees = 2
+
     weights = routing.get(
         "score_weights",
-        {
-            "category": 6,
-            "academic_field": 5,
-            "audience": 5,
-            "country": 4,
-            "region": 2,
-            "keyword": 1,
-        },
+        {},
     )
-    maximum = int(routing.get("max_issue_assignees", 2))
 
-    ranked: list[dict[str, Any]] = []
+    if not isinstance(weights, dict):
+        weights = {}
 
-    for username, config in moderators.items():
-        if not config.get("active", True):
+    scored: list[
+        tuple[int, int, str]
+    ] = []
+
+    for username, moderator in moderators.items():
+        if not isinstance(moderator, dict):
             continue
 
-        score, reasons = moderator_score(
-            username,
-            config,
-            submission,
+        if moderator.get("active", True) is not True:
+            continue
+
+        roles = moderator.get("roles", [])
+
+        if (
+            isinstance(roles, list)
+            and "moderator" not in roles
+            and "administrator" not in roles
+            and "final-approver" not in roles
+        ):
+            continue
+
+        score = score_moderator(
+            moderator,
+            routing_hints,
             weights,
         )
-        workload = open_review_count(username)
-        maximum_workload = int(
-            config.get("workload", {}).get("max_open_reviews", 999)
+
+        workload = get_open_assignment_count(
+            username
         )
 
-        ranked.append(
-            {
-                "username": username,
-                "score": score,
-                "reasons": reasons,
-                "open_reviews": workload,
-                "max_open_reviews": maximum_workload,
-                "available": workload < maximum_workload,
-            }
+        workload_config = moderator.get(
+            "workload",
+            {},
         )
 
-    specialized = [
-        item for item in ranked if item["score"] > 0 and item["available"]
+        maximum = None
+
+        if isinstance(workload_config, dict):
+            maximum = workload_config.get(
+                "max_open_reviews"
+            )
+
+        try:
+            if (
+                maximum is not None
+                and workload >= int(maximum)
+            ):
+                continue
+        except (TypeError, ValueError):
+            pass
+
+        if score > 0:
+            scored.append(
+                (
+                    score,
+                    -workload,
+                    username,
+                )
+            )
+
+    scored.sort(reverse=True)
+
+    selected = [
+        username
+        for _, _, username in scored[
+            :max_assignees
+        ]
     ]
-    specialized.sort(
-        key=lambda item: (
-            -item["score"],
-            item["open_reviews"],
-            item["username"],
-        )
+
+    # General administrators are only used when no specialist matched.
+    if not selected:
+        selected = [
+            str(username)
+            for username in fallback_reviewers
+            if str(username).strip()
+        ][:max_assignees]
+
+    return unique_strings(selected)
+
+
+# ============================================================
+# LABELS AND ASSIGNEES
+# ============================================================
+
+def ensure_label(
+    name: str,
+    color: str,
+    description: str,
+) -> None:
+    encoded_name = quote(
+        name,
+        safe="",
     )
 
-    selected = [item["username"] for item in specialized[:maximum]]
-
-    if not selected:
-        fallback = governance.get("fallback_reviewers", [])
-        selected = [str(username) for username in fallback[:maximum]]
-
-    return selected, ranked
-
-
-def ensure_label(name: str, color: str, description: str) -> None:
-    owner_repo = REPOSITORY
-    encoded_name = requests.utils.quote(name, safe="")
     response = requests.get(
-        f"{API_URL}/repos/{owner_repo}/labels/{encoded_name}",
+        f"{GITHUB_API}/repos/{REPOSITORY}/labels/{encoded_name}",
         headers=HEADERS,
         timeout=30,
     )
+
     if response.status_code == 200:
         return
+
     if response.status_code != 404:
-        raise RuntimeError(
-            f"Could not inspect label {name}: "
-            f"{response.status_code} {response.text}"
+        fail(
+            f"Could not check label '{name}': "
+            f"{response.status_code} "
+            f"{response.text[:500]}"
         )
 
     github_request(
         "POST",
-        f"/repos/{owner_repo}/labels",
-        expected=(201,),
+        f"/repos/{REPOSITORY}/labels",
+        expected_statuses=(201,),
         json={
             "name": name,
             "color": color,
@@ -573,204 +1104,495 @@ def ensure_label(name: str, color: str, description: str) -> None:
     )
 
 
-def add_labels(labels: list[str]) -> None:
+def add_labels(
+    labels: list[str],
+) -> None:
+    if not labels:
+        return
+
     github_request(
         "POST",
         f"/repos/{REPOSITORY}/issues/{ISSUE_NUMBER}/labels",
-        expected=(200,),
-        json={"labels": labels},
+        expected_statuses=(200,),
+        json={
+            "labels": unique_strings(labels),
+        },
     )
 
 
-def assign_issue(usernames: list[str]) -> list[str]:
+def assign_moderators(
+    usernames: list[str],
+) -> list[str]:
     if not usernames:
         return []
-    try:
-        response = github_request(
-            "POST",
-            f"/repos/{REPOSITORY}/issues/{ISSUE_NUMBER}/assignees",
-            expected=(201,),
-            json={"assignees": usernames},
-        )
-    except RuntimeError as error:
-        print(f"Warning: moderator assignment failed: {error}")
-        return []
 
-    return [
-        assignee.get("login", "")
-        for assignee in response.json().get("assignees", [])
-        if assignee.get("login")
-    ]
-
-
-def table_value(value: Any) -> str:
-    if isinstance(value, list):
-        text = ", ".join(str(item) for item in value if item)
-    else:
-        text = str(value or "")
-    text = re.sub(r"\s+", " ", text).strip()
-    return text.replace("|", "\\|") or "Not confirmed"
-
-
-def build_intake_comment(
-    submission: dict[str, Any],
-    assigned: list[str],
-) -> str:
-    moderation = submission["moderation"]
-    missing = moderation["missing_required_fields"]
-    warnings = moderation["warnings"]
-    contradictions = moderation["contradictions"]
-
-    assigned_text = (
-        ", ".join(f"@{username}" for username in assigned)
-        if assigned
-        else "Fallback administrator review required"
+    response = requests.post(
+        f"{GITHUB_API}/repos/{REPOSITORY}/issues/{ISSUE_NUMBER}/assignees",
+        headers=HEADERS,
+        json={
+            "assignees": usernames,
+        },
+        timeout=30,
     )
 
-    review_items: list[str] = []
-    if missing:
-        review_items.append(
-            "- **Missing required fields:** "
-            + ", ".join(f"`{item}`" for item in missing)
-        )
-    if warnings:
-        review_items.extend(f"- ⚠️ {item}" for item in warnings)
-    if contradictions:
-        review_items.extend(f"- ❗ {item}" for item in contradictions)
-    if not review_items:
-        review_items.append(
-            "- The structured intake passed the first mechanical checks."
+    if response.status_code == 201:
+        data = response.json()
+        assigned = data.get(
+            "assignees",
+            [],
         )
 
-    return f"""{COMMENT_MARKER}
-## 🧭 The Guild Has Logged This Discovery
+        return [
+            item["login"]
+            for item in assigned
+            if isinstance(item, dict)
+            and isinstance(
+                item.get("login"),
+                str,
+            )
+        ]
 
-The submission has been converted into structured data and queued for human review.
+    if response.status_code == 422:
+        warn(
+            "One or more configured moderators could not be assigned. "
+            "Confirm that they are repository collaborators."
+        )
+        return []
 
-| Map detail | Submitted information |
-|---|---|
-| **Quest** | {table_value(submission["identity"]["title"])} |
-| **Category** | `{table_value(submission["identity"]["category"])}` |
-| **Organizer** | {table_value(submission["identity"]["organizer"])} |
-| **Host realm** | {table_value(submission["location"]["host_country"])} |
-| **Deadline** | {table_value(submission["dates"]["application_deadline_raw"])} |
-| **Relevant majors** | {table_value(submission["academic"]["majors_raw"])} |
-| **Audience groups** | {table_value(submission["audience"]["groups_raw"])} |
-| **Assigned cartographer(s)** | {assigned_text} |
+    fail(
+        "Could not assign moderators: "
+        f"{response.status_code} "
+        f"{response.text[:1000]}"
+    )
 
-### 🔍 Initial Checks
-
-{chr(10).join(review_items)}
-
-> This is an automated intake receipt, not verification or publication.  
-> The AI scribe and Pull Request generator will run only after the next workflow stage is connected.
-"""
+    return []
 
 
-def upsert_comment(body: str) -> None:
+# ============================================================
+# DUPLICATE-SAFE INTAKE COMMENT
+# ============================================================
+
+def intake_comment_exists() -> bool:
     response = github_request(
         "GET",
         f"/repos/{REPOSITORY}/issues/{ISSUE_NUMBER}/comments",
-        params={"per_page": 100},
     )
+
     comments = response.json()
 
-    for comment in comments:
-        if COMMENT_MARKER in comment.get("body", ""):
-            github_request(
-                "PATCH",
-                f"/repos/{REPOSITORY}/issues/comments/{comment['id']}",
-                json={"body": body},
-            )
-            return
+    if not isinstance(comments, list):
+        return False
+
+    return any(
+        INTAKE_COMMENT_MARKER
+        in str(comment.get("body", ""))
+        for comment in comments
+        if isinstance(comment, dict)
+    )
+
+
+def post_intake_comment(
+    raw_submission: dict[str, Any],
+    assigned_moderators: list[str],
+    missing_fields: list[str],
+    warnings: list[str],
+) -> None:
+    if intake_comment_exists():
+        print(
+            "Intake comment already exists. "
+            "Skipping duplicate."
+        )
+        return
+
+    title = safe_comment_value(
+        raw_submission.get(
+            "opportunity_name"
+        )
+    )
+
+    category = safe_comment_value(
+        raw_submission.get(
+            "category"
+        )
+    )
+
+    deadline = safe_comment_value(
+        raw_submission.get(
+            "application_deadline"
+        )
+    )
+
+    moderator_text = (
+        ", ".join(
+            f"@{username}"
+            for username in assigned_moderators
+        )
+        if assigned_moderators
+        else "Awaiting moderator assignment"
+    )
+
+    lines = [
+        INTAKE_COMMENT_MARKER,
+        "## 🧭 The Guild Has Logged This Discovery",
+        "",
+        f"**Quest:** {title}",
+        f"**Category:** {category}",
+        f"**Submitted deadline:** {deadline}",
+        f"**Assigned moderator:** {moderator_text}",
+        "",
+        "The original issue has been preserved as the raw submission record.",
+    ]
+
+    if missing_fields or warnings:
+        lines.extend(
+            [
+                "",
+                "### 🔍 Initial Intake Notes",
+            ]
+        )
+
+    for field_name in missing_fields:
+        lines.append(
+            f"- Missing required field: `{field_name}`"
+        )
+
+    for warning_message in warnings:
+        lines.append(
+            f"- {neutralize_mentions(warning_message)}"
+        )
+
+    lines.extend(
+        [
+            "",
+            "> This is only the intake stage. "
+            "Official-source research and human review still follow.",
+        ]
+    )
 
     github_request(
         "POST",
         f"/repos/{REPOSITORY}/issues/{ISSUE_NUMBER}/comments",
-        expected=(201,),
-        json={"body": body},
+        expected_statuses=(201,),
+        json={
+            "body": "\n".join(lines),
+        },
     )
 
 
-def write_output(submission: dict[str, Any]) -> Path:
-    base = Path(os.environ.get("RUNNER_TEMP", "build"))
-    base.mkdir(parents=True, exist_ok=True)
-    path = base / f"opportunity-submission-{ISSUE_NUMBER}.json"
+# ============================================================
+# RAW COPY CREATION
+# ============================================================
 
-    with path.open("w", encoding="utf-8") as file:
-        json.dump(submission, file, ensure_ascii=False, indent=2)
+def find_unmatched_sections(
+    all_sections: dict[str, str],
+) -> dict[str, str]:
+    recognized_labels = set(
+        FIELD_LABELS.values()
+    )
 
-    github_output = os.environ.get("GITHUB_OUTPUT")
-    if github_output:
-        with open(github_output, "a", encoding="utf-8") as output:
-            output.write(f"submission_file={path}\n")
-            output.write(
-                f"category={submission['identity']['category']}\n"
-            )
-            output.write(
-                "moderators="
-                + ",".join(submission["routing"]["selected_moderators"])
-                + "\n"
-            )
+    return {
+        label: value
+        for label, value in all_sections.items()
+        if label not in recognized_labels
+    }
 
-    return path
 
+def build_raw_record(
+    issue: dict[str, Any],
+    raw_submission: dict[str, Any],
+    unmatched_sections: dict[str, str],
+    routing_hints: dict[str, Any],
+    assigned_moderators: list[str],
+    missing_fields: list[str],
+    warnings: list[str],
+) -> dict[str, Any]:
+    user = issue.get("user", {})
+
+    author = (
+        user.get("login")
+        if isinstance(user, dict)
+        else None
+    )
+
+    return {
+        "schema_version": 1,
+        "record_type": "raw-submission",
+
+        "preservation_policy": {
+            "original_issue_is_source_of_truth": True,
+            "raw_values_may_be_overwritten": False,
+            "ai_research_must_create_separate_copy": True,
+        },
+
+        "repository": REPOSITORY,
+
+        "issue": {
+            "number": ISSUE_NUMBER,
+            "title": issue.get("title"),
+            "url": issue.get("html_url"),
+            "api_url": issue.get("url"),
+            "author": author,
+            "created_at": issue.get("created_at"),
+            "updated_at": issue.get("updated_at"),
+            "state": issue.get("state"),
+            "raw_body": issue.get("body") or "",
+        },
+
+        "raw_submission": raw_submission,
+
+        "unmatched_form_sections": unmatched_sections,
+
+        "routing_hints": routing_hints,
+
+        "moderation": {
+            "assigned_moderators": assigned_moderators,
+            "missing_required_fields": missing_fields,
+            "initial_warnings": warnings,
+            "human_review_required": True,
+        },
+
+        "processing": {
+            "parsed_at": datetime.now(
+                timezone.utc
+            ).isoformat(),
+            "parser": "scripts/process_submission.py",
+            "parser_schema_version": 1,
+            "research_completed": False,
+            "ai_publication_copy_created": False,
+            "published": False,
+        },
+    }
+
+
+def save_raw_record(
+    record: dict[str, Any],
+) -> Path:
+    OUTPUT_DIRECTORY.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    output_file = (
+        OUTPUT_DIRECTORY
+        / f"raw-submission-{ISSUE_NUMBER}.json"
+    )
+
+    output_file.write_text(
+        json.dumps(
+            record,
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    return output_file
+
+
+# ============================================================
+# MAIN
+# ============================================================
 
 def main() -> None:
-    issue = github_request(
-        "GET",
-        f"/repos/{REPOSITORY}/issues/{ISSUE_NUMBER}",
-    ).json()
+    issue = get_issue()
+    issue_body = issue.get("body") or ""
 
-    body = issue.get("body") or ""
-    raw = parse_submission(body)
-    submission = build_normalized_submission(issue, raw)
-
-    registry = load_registry()
-    selected, ranking = select_moderators(registry, submission)
-    assigned = assign_issue(selected)
-
-    submission["routing"] = {
-        "selected_moderators": selected,
-        "successfully_assigned": assigned,
-        "ranking": ranking,
-    }
-
-    category_label = f"category: {submission['identity']['category']}"
-    category_definition = {
-        "color": "6D4AFF",
-        "description": (
-            "Opportunity category: "
-            f"{submission['identity']['category']}."
-        ),
-    }
-
-    all_labels = {
-        **LABEL_DEFINITIONS,
-        category_label: category_definition,
-    }
-    for name, definition in all_labels.items():
-        ensure_label(
-            name,
-            definition["color"],
-            definition["description"],
+    if len(issue_body) > MAX_ISSUE_BODY_LENGTH:
+        fail(
+            "The submitted issue is too large to process safely. "
+            f"Maximum issue-body size: "
+            f"{MAX_ISSUE_BODY_LENGTH} characters."
         )
 
-    add_labels(
-        [
-            "new-discovery",
-            "needs-review",
-            "intake-parsed",
-            category_label,
-        ]
+    raw_submission, all_sections = (
+        extract_raw_submission(issue_body)
     )
 
-    output_path = write_output(submission)
-    upsert_comment(build_intake_comment(submission, assigned))
+    unmatched_sections = find_unmatched_sections(
+        all_sections
+    )
 
-    print(f"Structured submission written to: {output_path}")
-    print(json.dumps(submission, ensure_ascii=False, indent=2))
+    missing_fields = check_missing_required_fields(
+        raw_submission
+    )
+
+    warnings = basic_intake_warnings(
+        raw_submission
+    )
+
+    routing_hints = build_routing_hints(
+        raw_submission
+    )
+
+    host_location = raw_submission.get(
+        "host_location"
+    )
+
+    routing_hints[
+        "host_location_keywords"
+    ] = (
+        unique_strings(
+            [
+                slugify(item)
+                for item in re.split(
+                    r"[\n,;]+",
+                    host_location,
+                )
+                if slugify(item)
+            ]
+        )[:MAX_LIST_ITEMS]
+        if isinstance(host_location, str)
+        else []
+    )
+
+    moderator_config = (
+        load_moderator_configuration()
+    )
+
+    selected_moderators = choose_moderators(
+        moderator_config,
+        routing_hints,
+    )
+
+    assigned_moderators = assign_moderators(
+        selected_moderators
+    )
+
+    category_slug = routing_hints[
+        "category"
+    ]
+
+    ensure_label(
+        "new-discovery",
+        "8B5CF6",
+        "A newly submitted opportunity.",
+    )
+
+    ensure_label(
+        "needs-review",
+        "F4C542",
+        "Requires human verification before publication.",
+    )
+
+    ensure_label(
+        "intake-parsed",
+        "1D76DB",
+        "The issue form was parsed into a preserved raw record.",
+    )
+
+    category_label = (
+        f"category: {category_slug}"
+    )
+
+    ensure_label(
+        category_label,
+        "D8B4FE",
+        f"Opportunity category: {category_slug}.",
+    )
+
+    labels_to_add = [
+        "new-discovery",
+        "needs-review",
+        "intake-parsed",
+        category_label,
+    ]
+
+    if missing_fields:
+        ensure_label(
+            "missing-information",
+            "D73A4A",
+            "Important submission information is missing.",
+        )
+
+        labels_to_add.append(
+            "missing-information"
+        )
+
+    add_labels(labels_to_add)
+
+    raw_record = build_raw_record(
+        issue=issue,
+        raw_submission=raw_submission,
+        unmatched_sections=unmatched_sections,
+        routing_hints=routing_hints,
+        assigned_moderators=assigned_moderators,
+        missing_fields=missing_fields,
+        warnings=warnings,
+    )
+
+    output_file = save_raw_record(
+        raw_record
+    )
+
+    post_intake_comment(
+        raw_submission=raw_submission,
+        assigned_moderators=assigned_moderators,
+        missing_fields=missing_fields,
+        warnings=warnings,
+    )
+
+    write_github_output(
+        "submission_file",
+        str(output_file),
+    )
+
+    write_github_output(
+        "raw_submission_file",
+        str(output_file),
+    )
+
+    write_github_output(
+        "category",
+        category_slug,
+    )
+
+    write_github_output(
+        "moderators",
+        json.dumps(
+            assigned_moderators,
+            ensure_ascii=False,
+        ),
+    )
+
+    write_github_output(
+        "missing_fields",
+        json.dumps(
+            missing_fields,
+            ensure_ascii=False,
+        ),
+    )
+
+    print(
+        "Raw submission preserved successfully."
+    )
+
+    print(
+        f"Raw record path: {output_file}"
+    )
+
+    print(
+        f"Category routing hint: {category_slug}"
+    )
+
+    print(
+        "Assigned moderators: "
+        + (
+            ", ".join(
+                assigned_moderators
+            )
+            if assigned_moderators
+            else "none"
+        )
+    )
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except requests.RequestException as exc:
+        fail(
+            f"Network request failed: {exc}"
+        )
+    except KeyboardInterrupt:
+        sys.exit(130)
