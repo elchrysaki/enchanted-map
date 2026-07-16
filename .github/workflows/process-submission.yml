@@ -1,14 +1,29 @@
 name: Process Opportunity Submission
 
+run-name: >-
+  Process opportunity issue
+  #${{ github.event_name == 'workflow_dispatch' && inputs.issue_number || github.event.issue.number }}
+
 on:
   issues:
     types:
       - opened
 
-concurrency:
-  group: enchanted-map-submission-${{ github.event.issue.number }}
-  cancel-in-progress: false
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "GitHub issue number to process or retry"
+        required: true
+        type: string
 
+concurrency:
+  group: >-
+    enchanted-map-submission-${{
+      github.event_name == 'workflow_dispatch'
+      && inputs.issue_number
+      || github.event.issue.number
+    }}
+  cancel-in-progress: false
 permissions:
   contents: write
   issues: write
@@ -20,12 +35,19 @@ jobs:
     name: Research and prepare quest
     runs-on: ubuntu-latest
 
-    if: contains(github.event.issue.labels.*.name, 'new-discovery')
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || contains(github.event.issue.labels.*.name, 'new-discovery')
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       REPOSITORY: ${{ github.repository }}
-      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      ISSUE_NUMBER: >-
+        ${{
+          github.event_name == 'workflow_dispatch'
+          && inputs.issue_number
+          || github.event.issue.number
+        }}
       TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
       AI_MODEL: openai/gpt-4.1
 
@@ -36,6 +58,16 @@ jobs:
 
       - name: Check out repository
         uses: actions/checkout@v5
+
+      - name: Validate issue number
+        shell: bash
+        run: |
+          if [[ ! "$ISSUE_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error title=Invalid issue number::Issue number must be a positive integer."
+            exit 1
+          fi
+
+          echo "::notice title=Processing issue::Processing issue #$ISSUE_NUMBER"
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -75,7 +107,7 @@ jobs:
         env:
           RAW_SUBMISSION_FILE: ${{ steps.intake.outputs.raw_submission_file }}
           RESEARCH_PROMPT_FILE: .github/prompts/opportunity-researcher.md
-          RESEARCH_OUTPUT_FILE: artifacts/researched-submission-${{ github.event.issue.number }}.json
+          RESEARCH_OUTPUT_FILE: artifacts/researched-submission-${{ env.ISSUE_NUMBER }}.json
         run: |
           python scripts/research_opportunity.py
 
@@ -89,7 +121,7 @@ jobs:
         env:
           RESEARCHED_SUBMISSION_FILE: ${{ steps.research.outputs.researched_submission_file }}
           FORMATTER_PROMPT_FILE: .github/prompts/opportunity-formatter.md
-          PUBLISHABLE_OUTPUT_FILE: artifacts/publishable-content-${{ github.event.issue.number }}.json
+          PUBLISHABLE_OUTPUT_FILE: artifacts/publishable-content-${{ env.ISSUE_NUMBER }}.json
         run: |
           python scripts/format_with_ai.py
 
@@ -122,7 +154,7 @@ jobs:
           RESEARCHED_SUBMISSION_FILE: ${{ steps.research.outputs.researched_submission_file }}
           PUBLISHABLE_CONTENT_FILE: ${{ steps.formatter.outputs.publishable_content_file }}
           OPPORTUNITY_FILE: ${{ steps.generator.outputs.opportunity_file }}
-          REVIEW_REPORT_FILE: artifacts/review-report-${{ github.event.issue.number }}.md
+          REVIEW_REPORT_FILE: artifacts/review-report-${{ env.ISSUE_NUMBER }}.md
         run: |
           python scripts/build_review_report.py
           
@@ -159,7 +191,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: opportunity-${{ github.event.issue.number }}-processing-records
+          name: opportunity-${{ env.ISSUE_NUMBER }}-processing-records
           path: artifacts/
           if-no-files-found: warn
           retention-days: 7
