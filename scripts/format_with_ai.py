@@ -154,22 +154,105 @@ def write_github_output(name: str, value: str) -> None:
         output.write(f"{name}={value}\n")
 
 
+def compact_model_value(
+    value: Any,
+    *,
+    string_limit: int,
+    list_limit: int,
+) -> Any:
+    """Compact a researched record while preserving valid JSON."""
+
+    if isinstance(value, dict):
+        compacted: dict[str, Any] = {}
+
+        for key, child in value.items():
+            # Provenance is retained in the researched artifact.
+            # The formatter does not need it to write the public page.
+            if key == "provenance":
+                continue
+
+            # The formatter needs the conclusion more than every evidence
+            # paragraph. Keep at most one short evidence item per field.
+            if key == "evidence":
+                if isinstance(child, list) and child:
+                    compacted[key] = [
+                        {
+                            "url": item.get("url"),
+                            "finding": str(
+                                item.get("finding") or ""
+                            )[:string_limit],
+                            "supports": item.get("supports"),
+                        }
+                        for item in child[:1]
+                        if isinstance(item, dict)
+                    ]
+                continue
+
+            compact_child = compact_model_value(
+                child,
+                string_limit=string_limit,
+                list_limit=list_limit,
+            )
+
+            # Remove empty material, but retain statuses, zero confidence
+            # values and boolean values.
+            if compact_child in (None, "", [], {}):
+                continue
+
+            compacted[str(key)] = compact_child
+
+        return compacted
+
+    if isinstance(value, list):
+        return [
+            compact_model_value(
+                child,
+                string_limit=string_limit,
+                list_limit=list_limit,
+            )
+            for child in value[:list_limit]
+        ]
+
+    if isinstance(value, str):
+        cleaned = value.strip()
+
+        if len(cleaned) > string_limit:
+            return cleaned[:string_limit].rstrip() + "…"
+
+        return cleaned
+
+    return value
+
+
 def trim_model_input(data: dict[str, Any]) -> str:
-    serialized = json.dumps(
-        data,
-        ensure_ascii=False,
-        indent=2,
+    """Return compact, valid JSON that fits the formatter budget."""
+
+    for string_limit, list_limit in (
+        (700, 8),
+        (450, 6),
+        (250, 4),
+        (140, 3),
+        (80, 2),
+    ):
+        compacted = compact_model_value(
+            data,
+            string_limit=string_limit,
+            list_limit=list_limit,
+        )
+
+        serialized = json.dumps(
+            compacted,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+
+        if len(serialized) <= MAX_MODEL_INPUT_CHARS:
+            return serialized
+
+    fail(
+        "The researched record is still too large after safe compaction. "
+        "The formatter prompt or output schema must be shortened."
     )
-
-    if len(serialized) <= MAX_MODEL_INPUT_CHARS:
-        return serialized
-
-    warn(
-        "The researched record exceeded the formatter input limit. "
-        "The model payload was truncated."
-    )
-
-    return serialized[:MAX_MODEL_INPUT_CHARS]
 
 
 # ============================================================
