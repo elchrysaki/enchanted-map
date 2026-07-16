@@ -66,12 +66,12 @@ TAVILY_API_KEY = os.environ.get(
 
 MAX_REDIRECTS = 5
 MAX_PAGE_BYTES = 1_500_000
-MAX_PAGE_TEXT = 2_500
+MAX_PAGE_TEXT = 1_200
 MAX_SEARCH_RESULTS = 2
 MAX_SEARCH_QUERIES = 2
-MAX_EVIDENCE_PAGES = 3
-MAX_MODEL_INPUT_CHARS = 3_500
-MAX_MODEL_OUTPUT_TOKENS = 2_600
+MAX_EVIDENCE_PAGES = 2
+MAX_MODEL_INPUT_CHARS = 2_000
+MAX_MODEL_OUTPUT_TOKENS = 3_600
 
 CONNECT_TIMEOUT_SECONDS = 8
 READ_TIMEOUT_SECONDS = 20
@@ -937,13 +937,24 @@ def call_research_model(
 
     try:
         response_data = response.json()
-        content = response_data[
-            "choices"
-        ][0][
-            "message"
-        ][
-            "content"
-        ]
+        
+        choices = response_data.get("choices") or []
+        if not choices:
+            fail("Research model returned no response choices.")
+        
+        choice = choices[0]
+        content = choice.get("message", {}).get("content", "")
+        finish_reason = choice.get("finish_reason")
+        
+        if finish_reason == "length":
+            fail(
+                "Research model reached its output-token limit before completing "
+                "the JSON response. Increase MAX_MODEL_OUTPUT_TOKENS or shorten "
+                "the researcher output schema."
+            )
+        
+        if not content.strip():
+            fail("Research model returned an empty response.")
     except (
         ValueError,
         KeyError,
@@ -956,22 +967,26 @@ def call_research_model(
         )
 
     if not isinstance(content, str):
-        fail(
-            "GitHub Models returned no textual JSON result."
-        )
-
+        fail("GitHub Models returned no textual JSON result.")
+    
+    content = content.strip()
+    
+    if content.startswith("```json"):
+        content = content[len("```json"):].strip()
+    elif content.startswith("```"):
+        content = content[3:].strip()
+    
+    if content.endswith("```"):
+        content = content[:-3].strip()
+    
     try:
         result = json.loads(content)
     except json.JSONDecodeError as exc:
-        fail(
-            f"Research model returned invalid JSON: {exc}"
-        )
-
+        fail(f"Research model returned invalid JSON: {exc}")
+    
     if not isinstance(result, dict):
-        fail(
-            "Research model result must be a JSON object."
-        )
-
+        fail("Research model result must be a JSON object.")
+    
     return result
 
 
