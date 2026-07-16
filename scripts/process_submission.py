@@ -8,7 +8,8 @@ import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote
+import ipaddress
+from urllib.parse import quote, urlparse
 
 import requests
 import yaml
@@ -509,16 +510,61 @@ def check_missing_required_fields(
 
 
 def looks_like_url(value: Any) -> bool:
+    """
+    Accept only usable public HTTP or HTTPS URLs.
+
+    This rejects:
+    - ordinary text
+    - missing schemes
+    - localhost addresses
+    - private or loopback IP addresses
+    - URLs containing usernames or passwords
+    - malformed ports
+    """
+
     if not isinstance(value, str):
         return False
 
-    return bool(
-        re.match(
-            r"^https?://[^\s]+$",
-            value.strip(),
-            re.IGNORECASE,
-        )
-    )
+    candidate = value.strip()
+
+    if not candidate or any(character.isspace() for character in candidate):
+        return False
+
+    try:
+        parsed = urlparse(candidate)
+
+        # Accessing parsed.port also validates malformed ports.
+        _ = parsed.port
+    except ValueError:
+        return False
+
+    if parsed.scheme.lower() not in {"http", "https"}:
+        return False
+
+    if not parsed.netloc or not parsed.hostname:
+        return False
+
+    # Do not allow credentials inside submitted URLs.
+    if parsed.username or parsed.password:
+        return False
+
+    hostname = parsed.hostname.rstrip(".").lower()
+
+    if hostname == "localhost" or hostname.endswith(".localhost"):
+        return False
+
+    try:
+        address = ipaddress.ip_address(hostname)
+    except ValueError:
+        # Normal public domain names should contain at least one dot.
+        if "." not in hostname:
+            return False
+    else:
+        # Reject localhost, private, reserved and link-local IP addresses.
+        if not address.is_global:
+            return False
+
+    return True
 
 
 def basic_intake_warnings(
@@ -1413,12 +1459,13 @@ def main() -> None:
         all_sections
     )
 
-    missing_fields = check_missing_required_fields(
-        raw_submission
+    official_source_valid = looks_like_url(
+        raw_submission.get("official_website")
     )
-
-    warnings = basic_intake_warnings(
-        raw_submission
+    
+    safe_to_research = (
+        not missing_fields
+        and official_source_valid
     )
 
     routing_hints = build_routing_hints(
@@ -1505,9 +1552,14 @@ def main() -> None:
             "Important submission information is missing.",
         )
 
-        labels_to_add.append(
-            "missing-information"
+        labels_to_add.append("missing-information")
+    if not official_source_valid:
+        ensure_label(
+            "invalid-source-url",
+            "B60205",
+            "The submitted official source is not a valid public URL.",
         )
+        labels_to_add.append("invalid-source-url")
 
     add_labels(labels_to_add)
 
@@ -1561,6 +1613,10 @@ def main() -> None:
             missing_fields,
             ensure_ascii=False,
         ),
+    )
+    write_github_output(
+        "safe_to_research",
+        "true" if safe_to_research else "false",
     )
 
     print(
