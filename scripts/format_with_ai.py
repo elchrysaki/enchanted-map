@@ -387,6 +387,12 @@ def validate_publishable_draft(
         fail("'summary' must be a string or null.")
 
     identity = require_object(result, "identity")
+    title = identity.get("title")
+
+    if not isinstance(title, str) or not title.strip():
+        fail(
+            "'identity.title' must contain a non-empty title."
+        )
     category = identity.get("category")
 
     if category not in ALLOWED_CATEGORIES:
@@ -602,11 +608,92 @@ def validate_publishable_draft(
 
     if action not in ALLOWED_ACTIONS:
         fail(f"Invalid formatter recommended action: {action}")
+def researched_field_value(
+    researched_record: dict[str, Any],
+    section_name: str,
+    field_name: str,
+) -> str | None:
+    section = researched_record.get(section_name)
 
+    if not isinstance(section, dict):
+        return None
+
+    field = section.get(field_name)
+
+    if not isinstance(field, dict):
+        return None
+
+    researched_value = field.get("researched")
+
+    if isinstance(researched_value, str) and researched_value.strip():
+        return researched_value.strip()
+
+    raw_value = field.get("raw")
+
+    if isinstance(raw_value, str) and raw_value.strip():
+        return raw_value.strip()
+
+    return None
+
+
+def apply_identity_fallbacks(
+    formatted: dict[str, Any],
+    researched_record: dict[str, Any],
+) -> None:
+    identity = formatted.get("identity")
+
+    if not isinstance(identity, dict):
+        identity = {}
+        formatted["identity"] = identity
+
+    title = identity.get("title")
+
+    if not isinstance(title, str) or not title.strip():
+        fallback_title = researched_field_value(
+            researched_record,
+            "identity",
+            "opportunity_name",
+        )
+
+        if fallback_title:
+            identity["title"] = fallback_title
+
+    organizer = identity.get("organizer")
+
+    if not isinstance(organizer, str) or not organizer.strip():
+        fallback_organizer = researched_field_value(
+            researched_record,
+            "identity",
+            "organizer",
+        )
+
+        if fallback_organizer:
+            identity["organizer"] = fallback_organizer
+
+    category = identity.get("category")
+
+    if (
+        not isinstance(category, str)
+        or category not in ALLOWED_CATEGORIES
+    ):
+        fallback_category = researched_field_value(
+            researched_record,
+            "identity",
+            "category",
+        )
+
+        if (
+            fallback_category
+            and fallback_category in ALLOWED_CATEGORIES
+        ):
+            identity["category"] = fallback_category
+        else:
+            identity["category"] = "other"
 
 # ============================================================
 # PROVENANCE AND OUTPUT
 # ============================================================
+
 
 def attach_provenance(
     result: dict[str, Any],
@@ -688,12 +775,16 @@ def main() -> None:
     prompt = read_text(FORMATTER_PROMPT_FILE)
 
     formatted = call_formatter_model(
-        prompt,
+        prompt, 
         researched_record,
     )
 
-    # Force the actual issue number before validation.
     formatted["issue_number"] = ISSUE_NUMBER
+
+    apply_identity_fallbacks(
+        formatted,
+        researched_record,
+    )
 
     validate_publishable_draft(formatted)
 
