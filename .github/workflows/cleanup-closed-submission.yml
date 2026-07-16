@@ -1,0 +1,83 @@
+name: Clean Up Closed Submission
+
+on:
+  issues:
+    types:
+      - closed
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+
+    steps:
+      - name: Close generated pull requests and delete branches
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          branch_prefix="automated-discovery/issue-${ISSUE_NUMBER}-"
+
+          mapfile -t pull_requests < <(
+            gh pr list \
+              --repo "$REPO" \
+              --state open \
+              --limit 100 \
+              --json number,headRefName \
+              --jq \
+                ".[] |
+                select(.headRefName | startswith(\"${branch_prefix}\")) |
+                .number"
+          )
+
+          if [ "${#pull_requests[@]}" -eq 0 ]; then
+            echo "No open generated pull request found for issue #${ISSUE_NUMBER}."
+          fi
+
+          for pull_request in "${pull_requests[@]}"; do
+            echo "Closing pull request #${pull_request}."
+
+            gh pr close "$pull_request" \
+              --repo "$REPO" \
+              --delete-branch \
+              --comment \
+                "Closed automatically because submission issue #${ISSUE_NUMBER} was closed."
+          done
+
+      - name: Delete temporary processing artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          artifact_name="opportunity-${ISSUE_NUMBER}-processing-records"
+
+          mapfile -t artifact_ids < <(
+            gh api \
+              --paginate \
+              "repos/${REPO}/actions/artifacts?per_page=100" \
+              --jq \
+                ".artifacts[] |
+                select(.name == \"${artifact_name}\") |
+                .id"
+          )
+
+          if [ "${#artifact_ids[@]}" -eq 0 ]; then
+            echo "No temporary artifacts found for issue #${ISSUE_NUMBER}."
+          fi
+
+          for artifact_id in "${artifact_ids[@]}"; do
+            echo "Deleting processing artifact ${artifact_id}."
+
+            gh api \
+              --method DELETE \
+              "repos/${REPO}/actions/artifacts/${artifact_id}"
+          done
