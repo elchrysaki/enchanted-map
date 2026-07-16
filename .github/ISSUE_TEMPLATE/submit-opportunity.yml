@@ -215,31 +215,42 @@ body:
         - Other
         - Not sure
 
-  - type: dropdown
+  - type: checkboxes
     id: funding_support
     attributes:
       label: "💰 Funding, costs, and support"
-      description: "Select only what you saw mentioned. Unconfirmed details can be researched later."
-      multiple: true
+      description: "Select every option that applies. Mixed arrangements are completely normal."
       options:
-        - Free to apply
-        - Application fee required
-        - Free to participate
-        - Participation fee required
-        - Full scholarship available
-        - Partial scholarship available
-        - Travel grant available
-        - Travel fully covered
-        - Accommodation provided
-        - Accommodation support available
-        - Meals provided
-        - Stipend provided
-        - Salary provided
-        - Prize available
-        - Visa support available
-        - Accessibility support available
-        - Funding information not found
-        - Not sure
+        - label: "Free to apply"
+        - label: "Application fee required"
+        - label: "Free to participate"
+        - label: "Participation fee required"
+        - label: "Full funding available"
+        - label: "Partial funding available"
+        - label: "Scholarships or fee waivers available"
+        - label: "Travel covered or reimbursed"
+        - label: "Accommodation covered or provided"
+        - label: "Meals covered or provided"
+        - label: "Stipend or salary provided"
+        - label: "Prize money available"
+        - label: "Visa support available"
+        - label: "Accessibility support or accommodations available"
+        - label: "Funding information is not stated"
+        - label: "Other or mixed arrangement"
+    validations:
+      required: false
+  
+  - type: textarea
+    id: funding_details
+    attributes:
+      label: "💳 Funding and benefits details"
+      description: "Explain fees, reimbursements, scholarships, accessibility support, and anything else applicants should know."
+      placeholder: |
+        Example: There is a €50 participation fee, but accommodation, meals,
+        local transport, and travel reimbursement are provided. Fee waivers
+        and accessibility accommodations are available upon request.
+    validations:
+      required: false
 
   - type: dropdown
     id: audience_groups
@@ -346,16 +357,6 @@ body:
         Applicants must be enrolled at a university.
         English proficiency is required.
         Participants must be under 30.
-
-  - type: textarea
-    id: funding_details
-    attributes:
-      label: "🎒 Funding and benefits details"
-      description: "Explain fees, funding, travel, accommodation, prizes, certificates, mentoring, or other benefits."
-      placeholder: |
-        Accommodation and meals are included.
-        Travel grants are competitive and require a separate application.
-        Flights are reimbursed up to €300.
 
   - type: textarea
     id: audience_information
