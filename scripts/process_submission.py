@@ -1454,11 +1454,19 @@ def main() -> None:
     raw_submission, all_sections = (
         extract_raw_submission(issue_body)
     )
-
+    
+    missing_fields = check_missing_required_fields(
+        raw_submission
+    )
+    
+    warnings = basic_intake_warnings(
+        raw_submission
+    )
+    
     unmatched_sections = find_unmatched_sections(
         all_sections
     )
-
+    
     official_source_valid = looks_like_url(
         raw_submission.get("official_website")
     )
