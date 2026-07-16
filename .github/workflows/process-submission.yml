@@ -60,12 +60,18 @@ jobs:
         run: |
           python scripts/process_submission.py
 
+      - name: Record blocked intake
+        if: steps.intake.outputs.safe_to_research != 'true'
+        run: |
+          echo "::notice::Research was skipped because the official source URL or another required field is invalid."
+
       # ======================================================
       # COPY 2: RESEARCH AND ENRICH THE INFORMATION
       # ======================================================
 
       - name: Research official sources
         id: research
+        if: steps.intake.outputs.safe_to_research == 'true'
         env:
           RAW_SUBMISSION_FILE: ${{ steps.intake.outputs.raw_submission_file }}
           RESEARCH_PROMPT_FILE: .github/prompts/opportunity-researcher.md
@@ -79,6 +85,7 @@ jobs:
 
       - name: Format publishable quest content
         id: formatter
+        if: steps.intake.outputs.safe_to_research == 'true'
         env:
           RESEARCHED_SUBMISSION_FILE: ${{ steps.research.outputs.researched_submission_file }}
           FORMATTER_PROMPT_FILE: .github/prompts/opportunity-formatter.md
@@ -93,6 +100,7 @@ jobs:
 
       - name: Generate opportunity page
         id: generator
+        if: steps.intake.outputs.safe_to_research == 'true'
         if: steps.formatter.outputs.safe_to_generate_draft_page == 'true'
         env:
           RESEARCHED_SUBMISSION_FILE: ${{ steps.research.outputs.researched_submission_file }}
@@ -108,6 +116,7 @@ jobs:
 
       - name: Build moderator review report
         id: review
+        if: steps.intake.outputs.safe_to_research == 'true'
         if: steps.formatter.outcome == 'success'
         env:
           RESEARCHED_SUBMISSION_FILE: ${{ steps.research.outputs.researched_submission_file }}
@@ -125,11 +134,12 @@ jobs:
 
       # ======================================================
       # CREATE OR UPDATE THE DRAFT PULL REQUEST
-      Only safe drafts may reach this stage
+      # Only safe drafts may reach this stage
       # ======================================================
 
       - name: Create draft pull request
         id: pull_request
+        if: steps.intake.outputs.safe_to_research == 'true'
         if: steps.formatter.outputs.safe_to_generate_draft_page == 'true'
         env:
           RAW_SUBMISSION_FILE: ${{ steps.intake.outputs.raw_submission_file }}
