@@ -467,16 +467,33 @@ def validate_publishable_draft(
         fail("'issue_number' must be an integer.")
 
     summary = result.get("summary")
-
     if summary is not None and not isinstance(summary, str):
         fail("'summary' must be a string or null.")
+
+    moderation = require_object(result, "moderation")
+    safe_to_generate = moderation.get(
+        "safe_to_generate_draft_page"
+    )
+
+    if not isinstance(safe_to_generate, bool):
+        fail(
+            "'moderation.safe_to_generate_draft_page' "
+            "must be a boolean."
+        )
 
     identity = require_object(result, "identity")
     title = identity.get("title")
 
-    if not isinstance(title, str) or not title.strip():
+    if title is not None and not isinstance(title, str):
+        fail("'identity.title' must be a string or null.")
+
+    if safe_to_generate and (
+        not isinstance(title, str)
+        or not title.strip()
+    ):
         fail(
-            "'identity.title' must contain a non-empty title."
+            "'identity.title' must contain a non-empty title "
+            "when the draft is safe to generate."
         )
     category = identity.get("category")
 
