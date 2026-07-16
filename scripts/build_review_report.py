@@ -32,11 +32,15 @@ PUBLISHABLE_CONTENT_FILE = Path(
     )
 )
 
-OPPORTUNITY_FILE = Path(
-    os.environ.get(
-        "OPPORTUNITY_FILE",
-        "",
-    )
+OPPORTUNITY_FILE_VALUE = os.environ.get(
+    "OPPORTUNITY_FILE",
+    "",
+).strip()
+
+OPPORTUNITY_FILE: Path | None = (
+    Path(OPPORTUNITY_FILE_VALUE)
+    if OPPORTUNITY_FILE_VALUE
+    else None
 )
 
 REVIEW_REPORT_FILE = Path(
