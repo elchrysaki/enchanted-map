@@ -49,7 +49,9 @@ AI_MODEL = os.environ.get(
 
 CONNECT_TIMEOUT_SECONDS = 8
 MODEL_TIMEOUT_SECONDS = 120
-MAX_MODEL_INPUT_CHARS = 180_000
+MAX_MODEL_INPUT_CHARS = 4_000
+MAX_MODEL_OUTPUT_TOKENS = 2_400
+
 
 MODEL_HEADERS = {
     "Authorization": f"Bearer {GITHUB_TOKEN}",
@@ -192,7 +194,7 @@ def call_formatter_model(
     payload = {
         "model": AI_MODEL,
         "temperature": 0.2,
-        "max_tokens": 12_000,
+        "max_tokens": MAX_MODEL_OUTPUT_TOKENS,
         "response_format": {
             "type": "json_object",
         },
