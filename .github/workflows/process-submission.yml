@@ -88,10 +88,12 @@ jobs:
 
       # ======================================================
       # GENERATE THE CLICKABLE OPPORTUNITY PAGE
+      # Only when the formatter considers it safe
       # ======================================================
 
       - name: Generate opportunity page
         id: generator
+        if: steps.formatter.outputs.safe_to_generate_draft_page == 'true'
         env:
           RESEARCHED_SUBMISSION_FILE: ${{ steps.research.outputs.researched_submission_file }}
           PUBLISHABLE_CONTENT_FILE: ${{ steps.formatter.outputs.publishable_content_file }}
@@ -101,10 +103,12 @@ jobs:
 
       # ======================================================
       # BUILD THE HUMAN MODERATOR REPORT
+      # This still runs when page generation is skipped
       # ======================================================
 
       - name: Build moderator review report
         id: review
+        if: steps.formatter.outcome == 'success'
         env:
           RESEARCHED_SUBMISSION_FILE: ${{ steps.research.outputs.researched_submission_file }}
           PUBLISHABLE_CONTENT_FILE: ${{ steps.formatter.outputs.publishable_content_file }}
@@ -112,13 +116,21 @@ jobs:
           REVIEW_REPORT_FILE: artifacts/review-report-${{ github.event.issue.number }}.md
         run: |
           python scripts/build_review_report.py
+          
+      - name: Hold unsafe submission for human review
+        if: steps.formatter.outputs.safe_to_generate_draft_page != 'true'
+        run: |
+          echo "::notice title=Quest draft held::No opportunity page or pull request was created."
+          echo "::notice::Formatter recommendation: ${{ steps.formatter.outputs.formatter_recommended_action }}"
 
       # ======================================================
       # CREATE OR UPDATE THE DRAFT PULL REQUEST
+      Only safe drafts may reach this stage
       # ======================================================
 
       - name: Create draft pull request
         id: pull_request
+        if: steps.formatter.outputs.safe_to_generate_draft_page == 'true'
         env:
           RAW_SUBMISSION_FILE: ${{ steps.intake.outputs.raw_submission_file }}
           PUBLISHABLE_CONTENT_FILE: ${{ steps.formatter.outputs.publishable_content_file }}
