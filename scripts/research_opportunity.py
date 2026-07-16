@@ -70,7 +70,8 @@ MAX_PAGE_TEXT = 2_500
 MAX_SEARCH_RESULTS = 2
 MAX_SEARCH_QUERIES = 2
 MAX_EVIDENCE_PAGES = 3
-MAX_MODEL_INPUT_CHARS = 9_000
+MAX_MODEL_INPUT_CHARS = 3_500
+MAX_MODEL_OUTPUT_TOKENS = 2_600
 
 CONNECT_TIMEOUT_SECONDS = 8
 READ_TIMEOUT_SECONDS = 20
@@ -902,7 +903,7 @@ def call_research_model(
     payload = {
         "model": AI_MODEL,
         "temperature": 0.1,
-        "max_tokens": 2_800,
+        "max_tokens": MAX_MODEL_OUTPUT_TOKENS,
         "response_format": {
             "type": "json_object",
         },
