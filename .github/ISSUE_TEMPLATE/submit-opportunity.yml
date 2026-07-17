@@ -1,5 +1,5 @@
-name: "🗺️ Submit a New Quest"
-description: "Share a conference, hackathon, fellowship, scholarship, academy, exchange, or other student opportunity."
+name: "🗺️ Submit an Opportunity"
+description: "Share a conference, hackathon, fellowship, scholarship, academy, exchange, or other student opportunity on OffMap."
 title: "[Discovery]: "
 labels:
   - "new-discovery"
@@ -13,20 +13,20 @@ body:
   - type: markdown
     attributes:
       value: |
-        # 🦄 Add a Discovery to the Map
+        # 🗺️ Put an Opportunity on the Map
 
-        Found an opportunity worth sharing?
-
-        Start with the essential details. The quick selections and final section are optional, but they help the Guild research and publish the opportunity faster.
+        Found something students should know about? 
+        
+        Start with the essential details. The quick selections and final section are optional, but they help the OffMap research and publish the opportunity faster.
 
         After submission:
 
         1. 🔎 The official sources are researched.
-        2. 🤖 AI organizes the information and flags missing or conflicting details.
+        2. 🤖 OffMap AI organizes the information and flags missing or conflicting details.
         3. ✨ A polished quest page is prepared.
         4. 🛡️ A human moderator reviews it before publication.
 
-        Your original submission will remain preserved.
+        **Your map. Your story. Your impact**
 
   # ==========================================================
   # PART I — ESSENTIAL DETAILS
@@ -49,32 +49,86 @@ body:
       required: true
 
   - type: dropdown
-    id: category
+    id: main_category
     attributes:
-      label: "🧭 Quest category"
-      description: "Choose the closest category. A moderator can correct it later."
+      label: "🗂️ Main opportunity category"
+      description: "Choose the broad section where this opportunity belongs."
       options:
-        - Conference
-        - Hackathon
-        - Competition
-        - Fellowship
-        - Academy
-        - Scholarship
-        - Research Program
-        - Exchange Program
-        - Summer School
-        - Internship
-        - Workshop or Seminar
-        - Bootcamp
-        - Startup Program
-        - Grant
-        - Volunteering Program
-        - Leadership Program
-        - Cultural Program
+        - Events
+        - Internships
+        - Competitions
+        - Research
+        - Fellowships
+        - Scholarships
+        - Courses and Training
+        - Innovation and Entrepreneurship
+        - Creative and Open Calls
+        - Exchanges and Mobility
+        - Volunteering
         - Other or Not Sure
     validations:
       required: true
 
+  - type: dropdown
+    id: category
+    attributes:
+      label: "🧭 Quest category"
+      description: "Choose the closest specific type. Select Other or Not Sure when none fits."
+      options:
+        - "Events — Conference"
+        - "Events — Summit"
+        - "Events — Forum"
+        - "Events — Workshop or Seminar"
+        - "Events — Networking Event"
+        - "Events — Congress"
+        - "Events — Cultural Program"
+
+        - "Internships — Internship"
+        - "Internships — Apprenticeship"
+        - "Internships — Traineeship"
+
+        - "Competitions — Competition"
+        - "Competitions — Challenge"
+        - "Competitions — Hackathon"
+
+        - "Research — Research Program"
+        - "Research — Research Placement"
+        - "Research — Research Internship"
+
+        - "Fellowships — Fellowship"
+        - "Fellowships — Leadership Program"
+
+        - "Scholarships — Scholarship"
+        - "Scholarships — Grant"
+        - "Scholarships — Travel Grant"
+
+        - "Courses — Academy"
+        - "Courses — Summer School"
+        - "Courses — Winter School"
+        - "Courses — Course or Training"
+        - "Courses — Bootcamp"
+
+        - "Innovation — Startup Program"
+        - "Innovation — Accelerator"
+        - "Innovation — Incubator"
+        - "Innovation — Entrepreneurship Program"
+
+        - "Creative — Creative Call"
+        - "Creative — Media Call"
+        - "Creative — Writing Call"
+        - "Creative — Design Call"
+
+        - "Exchange — Exchange Program"
+        - "Exchange — Mobility Program"
+
+        - "Volunteering — Volunteering Program"
+        - "Volunteering — Service Program"
+
+        - "Other or Not Sure"
+    validations:
+      required: true
+
+  
   - type: input
     id: organizer
     attributes:
@@ -261,27 +315,34 @@ body:
       options:
         - Women
         - Women in STEM
-        - Black students
-        - Black women
-        - African students
-        - Students of African descent
-        - African American students
-        - LGBTQ+ students
-        - First-generation students
-        - Low-income students
-        - Students with disabilities
-        - Neurodivergent students
-        - Indigenous students
-        - Refugees or displaced students
-        - Rural or remote-community students
-        - International students
         - Underrepresented groups in STEM
-        - Ethnic or racial minorities
-        - Migrant-background students
-        - Other specified group
+        - First-generation or low-income students
+        - Students with disabilities or neurodivergent students
+        - International students
+        - Refugees, displaced students, or migrant-background students
+        - Ethnic, racial, or Indigenous minorities
+        - LGBTQ+ students
+        - Young researchers
+        - Student founders
+        - Rural or remote-community students
+        - Another specific community
         - No particular group mentioned
         - Not sure
+        
+  - type: textarea
+    id: audience_information
+    attributes:
+      label: "🫶 Exact audience or inclusion wording"
+      description: |
+        Add the organizer's exact wording or explain how the selected community relates to the opportunity.
 
+        Mention whether the group is exclusively eligible, prioritised, encouraged to apply, or simply central to the programme.
+      placeholder: |
+        The organizer especially encourages applications from women studying engineering and technology.
+
+        Or:
+
+        The scholarship is available only to first-generation students.
   # ==========================================================
   # PART III — OPTIONAL DETAILS
   # ==========================================================
@@ -407,4 +468,5 @@ body:
       value: |
         ## 🗺️ Your discovery is ready
 
-        Submit what you know. The Guild handles the research, formatting, and human review.
+        Submit what you know. OffMap handles the research, formatting, and human review.
+        **Thank you so much for your contribution, we hope to welcome you as a contributor, in due time.**
