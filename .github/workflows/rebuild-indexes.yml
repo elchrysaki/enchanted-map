@@ -1,12 +1,14 @@
-name: Publish Merged Opportunity
+name: Publish Merged OFFMAP Opportunity
 
 on:
   pull_request:
     types:
       - closed
+    paths:
+      - "opportunities/**/*.md"
 
 concurrency:
-  group: enchanted-map-publishing
+  group: offmap-publishing-${{ github.event.pull_request.base.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -15,244 +17,442 @@ permissions:
 
 jobs:
   publish-opportunity:
-    name: Publish quest and rebuild indexes
+    name: Publish opportunity and rebuild indexes
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
-    if: >
+    if: >-
       github.event.pull_request.merged == true &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.base.ref == github.event.repository.default_branch &&
       startsWith(
         github.event.pull_request.head.ref,
         'automated-discovery/'
       )
 
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
       PR_NUMBER: ${{ github.event.pull_request.number }}
+      BASE_REF: ${{ github.event.pull_request.base.ref }}
+      EXPECTED_CHANGED_FILES: ${{ github.event.pull_request.changed_files }}
+      MERGED_BY: ${{ github.event.pull_request.merged_by.login }}
 
     steps:
+      # ======================================================
+      # VERIFY THAT THE MERGED PR CONTAINS ONE OPPORTUNITY FILE
+      # ======================================================
+
+      - name: Validate merged PR scope
+        id: changed_file
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "$EXPECTED_CHANGED_FILES" != "1" ]]; then
+            echo "::error::Automated opportunity PRs must change exactly one file. Found: $EXPECTED_CHANGED_FILES"
+            exit 1
+          fi
+
+          gh api \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" \
+            > /tmp/pr-files.json
+
+          api_count="$(jq 'length' /tmp/pr-files.json)"
+
+          if [[ "$api_count" != "1" ]]; then
+            echo "::error::Expected exactly one file from the pull-request files API. Found: $api_count"
+            exit 1
+          fi
+
+          filename="$(jq -r '.[0].filename' /tmp/pr-files.json)"
+          file_status="$(jq -r '.[0].status' /tmp/pr-files.json)"
+
+          if [[ "$file_status" != "added" && "$file_status" != "modified" ]]; then
+            echo "::error::Opportunity file must be added or modified, not '$file_status'."
+            exit 1
+          fi
+
+          if [[ ! "$filename" =~ ^opportunities/(events|internships|competitions|research|fellowships|scholarships|courses|innovation|creative-calls|exchanges|volunteering|other)/[a-z0-9]+(-[a-z0-9]+)*\.md$ ]]; then
+            echo "::error::Unexpected automated PR path: $filename"
+            exit 1
+          fi
+
+          printf '%s\n' "$filename" > /tmp/opportunity-file.txt
+          printf 'opportunity_file=%s\n' "$filename" >> "$GITHUB_OUTPUT"
+
+          echo "Validated opportunity file: $filename"
+
       # ======================================================
       # SETUP
       # ======================================================
 
-      - name: Check out merged default branch
-        uses: actions/checkout@v5
+      - name: Check out current default branch
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           ref: ${{ github.event.pull_request.base.ref }}
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
         with:
           python-version: "3.12"
           cache: pip
 
       - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
-
-      # ======================================================
-      # FIND OPPORTUNITY FILES FROM THE MERGED PR
-      # ======================================================
-
-      - name: Find merged opportunity files
-        id: changed_files
         shell: bash
         run: |
-          gh api \
-            --paginate \
-            "repos/${{ github.repository }}/pulls/${PR_NUMBER}/files" \
-            --jq '.[] | select(.status != "removed") | .filename' \
-            > /tmp/pr-files.txt
-
-          echo "Files changed by merged PR:"
-          cat /tmp/pr-files.txt
-
-          grep '^opportunities/.*\.md$' /tmp/pr-files.txt \
-            | grep -v '^opportunities/README\.md$' \
-            > /tmp/opportunity-files.txt || true
-
-          echo "Opportunity files to publish:"
-          cat /tmp/opportunity-files.txt || true
-
-          if [ -s /tmp/opportunity-files.txt ]; then
-            echo "has_opportunity_files=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "has_opportunity_files=false" >> "$GITHUB_OUTPUT"
-          fi
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check -r requirements.txt
 
       # ======================================================
-      # CHANGE PENDING-REVIEW TO PUBLISHED
+      # MARK THE REVIEWED OPPORTUNITY AS PUBLISHED
       # ======================================================
 
-      - name: Mark merged quests as published
-        if: steps.changed_files.outputs.has_opportunity_files == 'true'
+      - name: Record human approval and publish opportunity
+        env:
+          OPPORTUNITY_FILE: ${{ steps.changed_file.outputs.opportunity_file }}
         shell: bash
         run: |
+          set -euo pipefail
+
           python - <<'PYTHON'
           from __future__ import annotations
 
+          import os
           import re
+          from datetime import datetime, timezone
           from pathlib import Path
 
           import yaml
 
 
-          files_list = Path("/tmp/opportunity-files.txt")
+          def fail(message: str) -> None:
+              print(f"::error::{message}")
+              raise SystemExit(1)
 
-          if not files_list.exists():
-              raise SystemExit("Opportunity file list was not found.")
 
-          file_paths = [
-              Path(line.strip())
-              for line in files_list.read_text(
-                  encoding="utf-8"
-              ).splitlines()
-              if line.strip()
-          ]
+          workspace = Path.cwd().resolve()
+          relative_path = Path(os.environ["OPPORTUNITY_FILE"])
 
-          updated_files: list[str] = []
-          skipped_files: list[str] = []
+          if relative_path.is_absolute():
+              fail("Opportunity path must be repository-relative.")
 
-          for path in file_paths:
-              if not path.exists():
-                  print(
-                      f"::warning::Merged opportunity file "
-                      f"does not exist: {path}"
-                  )
-                  continue
+          if relative_path.is_symlink():
+              fail("Opportunity file must not be a symbolic link.")
 
-              text = path.read_text(
-                  encoding="utf-8"
+          try:
+              path = relative_path.resolve(strict=True)
+          except FileNotFoundError:
+              fail(
+                  f"Merged opportunity file does not exist: "
+                  f"{relative_path}"
               )
 
-              match = re.match(
-                  r"^---\s*\n(.*?)\n---\s*(?:\n|$)(.*)$",
-                  text,
-                  flags=re.DOTALL,
+          if path != workspace and workspace not in path.parents:
+              fail(
+                  "Opportunity file resolves outside the repository."
               )
 
-              if not match:
-                  print(
-                      f"::warning::Skipping file without valid "
-                      f"YAML front matter: {path}"
-                  )
-                  continue
-
-              try:
-                  front_matter = yaml.safe_load(
-                      match.group(1)
-                  )
-              except yaml.YAMLError as exc:
-                  print(
-                      f"::warning::Skipping invalid YAML file "
-                      f"{path}: {exc}"
-                  )
-                  continue
-
-              if not isinstance(front_matter, dict):
-                  print(
-                      f"::warning::Skipping front matter that "
-                      f"is not an object: {path}"
-                  )
-                  continue
-
-              current_status = front_matter.get(
-                  "status"
-              )
-
-              if current_status != "pending-review":
-                  skipped_files.append(
-                      f"{path} ({current_status})"
-                  )
-                  continue
-
-              front_matter["status"] = "published"
-
-              verification = front_matter.get(
-                  "verification"
-              )
-
-              if isinstance(verification, dict):
-                  verification[
-                      "human_review_required"
-                  ] = False
-
-                  verification[
-                      "automatically_verified"
-                  ] = False
-
-                  verification[
-                      "approved_by_merge"
-                  ] = True
-
-              yaml_text = yaml.safe_dump(
-                  front_matter,
-                  allow_unicode=True,
-                  sort_keys=False,
-                  default_flow_style=False,
-                  width=1000,
-              ).strip()
-
-              body = match.group(2).lstrip("\n")
-
-              updated_text = (
-                  "---\n"
-                  f"{yaml_text}\n"
-                  "---\n\n"
-                  f"{body}"
-              )
-
-              path.write_text(
-                  updated_text,
-                  encoding="utf-8",
-              )
-
-              updated_files.append(
-                  str(path)
-              )
-
-          print(
-              "Published files:",
-              updated_files or "none",
+          text = path.read_text(
+              encoding="utf-8"
           )
 
+          match = re.match(
+              r"\A---\s*\n(.*?)\n---\s*(?:\n|$)(.*)\Z",
+              text,
+              flags=re.DOTALL,
+          )
+
+          if not match:
+              fail(
+                  "Opportunity file does not contain valid "
+                  f"YAML front matter: {relative_path}"
+              )
+
+          try:
+              front_matter = yaml.safe_load(
+                  match.group(1)
+              )
+          except yaml.YAMLError as exc:
+              fail(
+                  f"Invalid YAML in {relative_path}: {exc}"
+              )
+
+          if not isinstance(front_matter, dict):
+              fail(
+                  "Front matter in "
+                  f"{relative_path} must be a YAML object."
+              )
+
+          if front_matter.get("schema_version") != 2:
+              fail(
+                  "Opportunity must use schema version 2."
+              )
+
+          if front_matter.get("record_type") != "opportunity":
+              fail(
+                  "Opportunity record_type must be "
+                  "'opportunity'."
+              )
+
+          if front_matter.get("status") != "pending-review":
+              fail(
+                  "Merged automated opportunity must have "
+                  "status 'pending-review'."
+              )
+
+          main_category = front_matter.get(
+              "main_category"
+          )
+          slug = front_matter.get(
+              "slug"
+          )
+
+          if main_category != relative_path.parent.name:
+              fail(
+                  "Opportunity folder does not match "
+                  "front-matter main_category."
+              )
+
+          if slug != relative_path.stem:
+              fail(
+                  "Opportunity filename does not match "
+                  "front-matter slug."
+              )
+
+          verification = front_matter.get(
+              "verification"
+          )
+
+          if not isinstance(verification, dict):
+              fail(
+                  "Opportunity verification must be an object."
+              )
+
+          if (
+              verification.get("human_review_required")
+              is not True
+          ):
+              fail(
+                  "Opportunity must preserve "
+                  "human_review_required: true."
+              )
+
+          if (
+              verification.get(
+                  "safe_to_generate_draft_page"
+              )
+              is not True
+          ):
+              fail(
+                  "Formatter did not mark this opportunity "
+                  "safe to generate."
+              )
+
+          if (
+              verification.get(
+                  "formatter_recommended_action"
+              )
+              != "continue-to-draft-pr"
+          ):
+              fail(
+                  "Formatter did not recommend "
+                  "'continue-to-draft-pr'."
+              )
+
+          if (
+              verification.get(
+                  "automatically_verified"
+              )
+              is not False
+          ):
+              fail(
+                  "automatically_verified must remain false."
+              )
+
+          if (
+              verification.get(
+                  "automatically_published"
+              )
+              is not False
+          ):
+              fail(
+                  "automatically_published must remain false."
+              )
+
+          submission = front_matter.get(
+              "submission"
+          )
+
+          if not isinstance(submission, dict):
+              fail(
+                  "Opportunity submission must be an object."
+              )
+
+          issue_number = submission.get(
+              "issue_number"
+          )
+
+          if (
+              not isinstance(issue_number, int)
+              or isinstance(issue_number, bool)
+              or issue_number <= 0
+          ):
+              fail(
+                  "submission.issue_number must be "
+                  "a positive integer."
+              )
+
+          try:
+              pr_number = int(
+                  os.environ["PR_NUMBER"]
+              )
+          except ValueError:
+              fail(
+                  "PR_NUMBER must be an integer."
+              )
+
+          merged_by = (
+              os.environ.get(
+                  "MERGED_BY",
+                  "",
+              ).strip()
+              or None
+          )
+
+          published_at = datetime.now(
+              timezone.utc
+          ).isoformat()
+
+          front_matter["status"] = "published"
+
+          verification.update(
+              {
+                  "human_review_required": True,
+                  "human_review_completed": True,
+                  "approved_by_merge": True,
+                  "approval_method": (
+                      "merged-pull-request"
+                  ),
+                  "approval_pr_number": pr_number,
+                  "approved_by": merged_by,
+                  "published_at": published_at,
+                  "automatically_verified": False,
+                  "automatically_published": False,
+              }
+          )
+
+          provenance = front_matter.get(
+              "provenance"
+          )
+
+          if provenance is None:
+              provenance = {}
+              front_matter["provenance"] = provenance
+
+          if not isinstance(provenance, dict):
+              fail(
+                  "Opportunity provenance must be an object."
+              )
+
+          provenance.update(
+              {
+                  "published_at": published_at,
+                  "publication_pr_number": pr_number,
+                  "published_by": merged_by,
+                  "publishing_workflow": (
+                      ".github/workflows/"
+                      "rebuild-indexes.yml"
+                  ),
+              }
+          )
+
+          yaml_text = yaml.safe_dump(
+              front_matter,
+              allow_unicode=True,
+              sort_keys=False,
+              default_flow_style=False,
+              width=1000,
+          ).strip()
+
+          body = match.group(2).lstrip("\n")
+
+          updated_text = (
+              "---\n"
+              f"{yaml_text}\n"
+              "---\n\n"
+              f"{body}"
+          )
+
+          temporary_path = path.with_suffix(
+              path.suffix + ".tmp"
+          )
+
+          temporary_path.write_text(
+              updated_text,
+              encoding="utf-8",
+          )
+
+          temporary_path.replace(path)
+
           print(
-              "Files left unchanged:",
-              skipped_files or "none",
+              f"Published opportunity: {relative_path}"
+          )
+          print(
+              f"Approved through merged PR #{pr_number}"
           )
           PYTHON
 
       # ======================================================
-      # REBUILD DATABASES AND CLICKABLE LIST
+      # REBUILD PUBLIC INDEXES
       # ======================================================
 
       - name: Rebuild opportunity indexes
-        if: steps.changed_files.outputs.has_opportunity_files == 'true'
+        shell: bash
         run: |
+          set -euo pipefail
           python scripts/build_indexes.py
 
       # ======================================================
-      # COMMIT THE PUBLISHED STATUS AND INDEXES
+      # COMMIT AND PUSH THE PUBLICATION UPDATE
       # ======================================================
 
       - name: Commit publishing updates
-        if: steps.changed_files.outputs.has_opportunity_files == 'true'
+        env:
+          OPPORTUNITY_FILE: ${{ steps.changed_file.outputs.opportunity_file }}
         shell: bash
         run: |
-          git config user.name "enchanted-map-bot"
+          set -euo pipefail
+
+          git config user.name "offmap-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add \
-            opportunities/ \
-            data/
+          git add -- \
+            "$OPPORTUNITY_FILE" \
+            data/opportunities.json \
+            opportunities/README.md
 
           if git diff --cached --quiet; then
-            echo "No publishing or index changes to commit."
-            exit 0
+            echo "::error::Publishing produced no repository changes."
+            exit 1
           fi
 
           git commit \
-            -m "Publish merged opportunity from PR #${PR_NUMBER}"
+            -m "Publish OFFMAP opportunity from PR #${PR_NUMBER}"
 
-          git push
+          git fetch origin "$BASE_REF"
+          git rebase "origin/$BASE_REF"
+
+          python scripts/build_indexes.py
+
+          git add -- \
+            data/opportunities.json \
+            opportunities/README.md
+
+          if ! git diff --cached --quiet; then
+            git commit --amend --no-edit
+          fi
+
+          git push origin "HEAD:${BASE_REF}"
