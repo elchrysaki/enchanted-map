@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import html
 import json
 import os
 import re
@@ -47,28 +48,131 @@ MAX_TITLE_LENGTH = 300
 MAX_SECTION_LENGTH = 20_000
 MAX_LIST_ITEMS = 100
 MAX_TAGS = 20
+MAX_URL_LENGTH = 2_000
 
 ALLOWED_SCHEMES = {"http", "https"}
 
-ALLOWED_CATEGORIES = {
+ALLOWED_MAIN_CATEGORIES = {
+    "events",
+    "internships",
+    "competitions",
+    "research",
+    "fellowships",
+    "scholarships",
+    "courses",
+    "innovation",
+    "creative-calls",
+    "exchanges",
+    "volunteering",
+    "other",
+}
+
+ALLOWED_SPECIFIC_CATEGORIES = {
     "conference",
-    "hackathon",
-    "competition",
-    "fellowship",
-    "academy",
-    "scholarship",
-    "research-program",
-    "exchange-program",
-    "summer-school",
-    "internship",
+    "summit",
+    "forum",
     "workshop-seminar",
+    "networking-event",
+    "congress",
+    "cultural-program",
+    "internship",
+    "apprenticeship",
+    "traineeship",
+    "competition",
+    "challenge",
+    "hackathon",
+    "research-program",
+    "research-placement",
+    "research-internship",
+    "fellowship",
+    "leadership-program",
+    "scholarship",
+    "grant",
+    "travel-grant",
+    "academy",
+    "summer-school",
+    "winter-school",
+    "course-training",
     "bootcamp",
     "startup-program",
-    "grant",
+    "accelerator",
+    "incubator",
+    "entrepreneurship-program",
+    "creative-call",
+    "media-call",
+    "writing-call",
+    "design-call",
+    "exchange-program",
+    "mobility-program",
     "volunteering-program",
-    "leadership-program",
-    "cultural-program",
+    "service-program",
     "other",
+}
+
+SPECIFIC_CATEGORIES_BY_MAIN = {
+    "events": {
+        "conference",
+        "summit",
+        "forum",
+        "workshop-seminar",
+        "networking-event",
+        "congress",
+        "cultural-program",
+    },
+    "internships": {
+        "internship",
+        "apprenticeship",
+        "traineeship",
+    },
+    "competitions": {
+        "competition",
+        "challenge",
+        "hackathon",
+    },
+    "research": {
+        "research-program",
+        "research-placement",
+        "research-internship",
+    },
+    "fellowships": {
+        "fellowship",
+        "leadership-program",
+    },
+    "scholarships": {
+        "scholarship",
+        "grant",
+        "travel-grant",
+    },
+    "courses": {
+        "academy",
+        "summer-school",
+        "winter-school",
+        "course-training",
+        "bootcamp",
+    },
+    "innovation": {
+        "startup-program",
+        "accelerator",
+        "incubator",
+        "entrepreneurship-program",
+    },
+    "creative-calls": {
+        "creative-call",
+        "media-call",
+        "writing-call",
+        "design-call",
+    },
+    "exchanges": {
+        "exchange-program",
+        "mobility-program",
+    },
+    "volunteering": {
+        "volunteering-program",
+        "service-program",
+    },
+    "other": {
+        "other",
+    },
 }
 
 ALLOWED_FORMATS = {
@@ -80,18 +184,30 @@ ALLOWED_FORMATS = {
     "not-confirmed",
 }
 
+ALLOWED_AUDIENCE_ACCESS_MODELS = {
+    "eligible",
+    "encouraged",
+    "priority",
+    "exclusive",
+    "focus-unclear",
+    "not-confirmed",
+}
+
+ALLOWED_ACTIONS = {
+    "continue-to-draft-pr",
+    "manual-formatting-needed",
+    "request-more-information",
+    "hold-for-human-review",
+}
+
 
 # ============================================================
-# BASIC HELPERS
+# ERRORS AND BASIC HELPERS
 # ============================================================
 
 def fail(message: str) -> None:
     print(f"::error::{message}")
     raise SystemExit(1)
-
-
-def warn(message: str) -> None:
-    print(f"::warning::{message}")
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -120,6 +236,93 @@ def write_github_output(name: str, value: str) -> None:
         output.write(f"{name}={value}\n")
 
 
+def require_object(
+    parent: dict[str, Any],
+    key: str,
+) -> dict[str, Any]:
+    value = parent.get(key)
+
+    if not isinstance(value, dict):
+        fail(f"'{key}' must be a JSON object.")
+
+    return value
+
+
+def require_list(
+    parent: dict[str, Any],
+    key: str,
+) -> list[Any]:
+    value = parent.get(key)
+
+    if not isinstance(value, list):
+        fail(f"'{key}' must be a JSON list.")
+
+    return value
+
+
+def clean_text(
+    value: Any,
+    field_name: str,
+    *,
+    maximum: int = MAX_SECTION_LENGTH,
+    required: bool = False,
+) -> str | None:
+    if value is None:
+        if required:
+            fail(f"'{field_name}' must contain text.")
+        return None
+
+    if not isinstance(value, str):
+        fail(f"'{field_name}' must be a string or null.")
+
+    cleaned = value.strip()
+
+    if not cleaned:
+        if required:
+            fail(f"'{field_name}' must contain text.")
+        return None
+
+    if len(cleaned) > maximum:
+        fail(
+            f"'{field_name}' exceeds the maximum length "
+            f"of {maximum} characters."
+        )
+
+    return cleaned
+
+
+def clean_string_list(
+    value: Any,
+    field_name: str,
+    *,
+    maximum: int = MAX_LIST_ITEMS,
+) -> list[str]:
+    if not isinstance(value, list):
+        fail(f"'{field_name}' must be a JSON list.")
+
+    if len(value) > maximum:
+        fail(
+            f"'{field_name}' contains too many values. "
+            f"Maximum: {maximum}."
+        )
+
+    result: list[str] = []
+
+    for index, item in enumerate(value):
+        cleaned = clean_text(
+            item,
+            f"{field_name}[{index}]",
+            required=True,
+        )
+
+        if cleaned is None:
+            fail(f"'{field_name}[{index}]' must contain text.")
+
+        result.append(cleaned)
+
+    return result
+
+
 def slugify(value: str) -> str:
     normalized = unicodedata.normalize("NFKD", value)
     ascii_value = normalized.encode(
@@ -137,100 +340,49 @@ def slugify(value: str) -> str:
     return ascii_value.strip("-")
 
 
-def clean_scalar(
+def validate_web_url(
     value: Any,
-    *,
-    maximum: int = MAX_SECTION_LENGTH,
+    field_name: str,
 ) -> str | None:
     if value is None:
         return None
 
     if not isinstance(value, str):
-        value = str(value)
-
-    value = value.strip()
-
-    if not value:
-        return None
-
-    if len(value) > maximum:
-        warn(
-            f"A generated text value exceeded {maximum} characters "
-            "and was truncated."
-        )
-        value = value[:maximum].rstrip() + "â¦"
-
-    return value
-
-
-def clean_string_list(
-    value: Any,
-    *,
-    maximum: int = MAX_LIST_ITEMS,
-) -> list[str]:
-    if not isinstance(value, list):
-        return []
-
-    seen: set[str] = set()
-    result: list[str] = []
-
-    for item in value:
-        cleaned = clean_scalar(item)
-
-        if not cleaned:
-            continue
-
-        key = cleaned.casefold()
-
-        if key in seen:
-            continue
-
-        seen.add(key)
-        result.append(cleaned)
-
-        if len(result) >= maximum:
-            break
-
-    return result
-
-
-def safe_url(value: Any) -> str | None:
-    if not isinstance(value, str):
-        return None
+        fail(f"'{field_name}' must be a string or null.")
 
     candidate = value.strip()
 
-    if not candidate or len(candidate) > 2_000:
-        return None
+    if not candidate:
+        fail(f"'{field_name}' must not be an empty string.")
+
+    if len(candidate) > MAX_URL_LENGTH:
+        fail(f"'{field_name}' exceeds the URL length limit.")
+
+    if any(
+        character in candidate
+        for character in ("\r", "\n", "\t", " ", "<", ">", '"')
+    ):
+        fail(f"'{field_name}' contains unsafe URL characters.")
 
     try:
         parsed = urlparse(candidate)
-    except ValueError:
-        return None
+        port = parsed.port
+    except ValueError as exc:
+        fail(f"'{field_name}' is not a valid URL: {exc}")
 
     if parsed.scheme.lower() not in ALLOWED_SCHEMES:
-        return None
+        fail(f"'{field_name}' must use HTTP or HTTPS.")
 
     if not parsed.hostname:
-        return None
+        fail(f"'{field_name}' must include a hostname.")
 
     if parsed.username or parsed.password:
-        return None
+        fail(f"'{field_name}' must not contain credentials.")
+
+    if port not in (None, 80, 443):
+        fail(f"'{field_name}' must not use a non-standard port.")
 
     return candidate
-
-
-def markdown_escape_inline(value: str) -> str:
-    return (
-        value.replace("\\", "\\\\")
-        .replace("[", "\\[")
-        .replace("]", "\\]")
-    )
-
-
-def markdown_link(label: str, url: str) -> str:
-    safe_label = markdown_escape_inline(label)
-    return f"[{safe_label}]({url})"
 
 
 def yaml_safe_dump(data: dict[str, Any]) -> str:
@@ -244,31 +396,97 @@ def yaml_safe_dump(data: dict[str, Any]) -> str:
 
 
 # ============================================================
-# INPUT VALIDATION
+# SCHEMA VALIDATION
 # ============================================================
 
-def require_object(
-    parent: dict[str, Any],
-    key: str,
-) -> dict[str, Any]:
-    value = parent.get(key)
+def validate_issue_number(
+    record: dict[str, Any],
+    record_name: str,
+) -> None:
+    issue_number = record.get("issue_number")
 
-    if not isinstance(value, dict):
-        fail(f"'{key}' must be a JSON object.")
+    if (
+        not isinstance(issue_number, int)
+        or isinstance(issue_number, bool)
+        or issue_number != ISSUE_NUMBER
+    ):
+        fail(
+            f"{record_name} issue number must match "
+            "the workflow ISSUE_NUMBER."
+        )
 
-    return value
+
+def validate_category_pair(
+    main_category: str,
+    category: str,
+) -> None:
+    if main_category not in ALLOWED_MAIN_CATEGORIES:
+        fail(
+            f"Invalid main category: {main_category}"
+        )
+
+    if category not in ALLOWED_SPECIFIC_CATEGORIES:
+        fail(
+            f"Invalid specific category: {category}"
+        )
+
+    if category == "other":
+        return
+
+    expected_categories = SPECIFIC_CATEGORIES_BY_MAIN.get(
+        main_category,
+        set(),
+    )
+
+    if category not in expected_categories:
+        fail(
+            "Category mismatch: "
+            f"'{category}' does not belong under "
+            f"'{main_category}'. The generator will not "
+            "silently remap it."
+        )
+
+
+def researched_audience_groups(
+    researched: dict[str, Any],
+) -> list[str]:
+    audience = require_object(researched, "audience")
+
+    if (
+        audience.get("classification_source")
+        != "submitted-dropdown-only"
+    ):
+        fail(
+            "Researched audience classification_source must be "
+            "'submitted-dropdown-only'."
+        )
+
+    return clean_string_list(
+        require_list(audience, "groups"),
+        "researched.audience.groups",
+    )
 
 
 def validate_inputs(
     researched: dict[str, Any],
     publishable: dict[str, Any],
 ) -> None:
+    if researched.get("schema_version") != 2:
+        fail(
+            "Research input must use schema version 2."
+        )
+
     if (
         researched.get("record_type")
         != "researched-submission"
     ):
         fail(
             "Research input is not a researched-submission record."
+        )
+
+    if publishable.get("schema_version") != 2:
+        fail(
+            "Publishable input must use schema version 2."
         )
 
     if (
@@ -280,6 +498,175 @@ def validate_inputs(
             "publishable-opportunity-draft record."
         )
 
+    validate_issue_number(
+        researched,
+        "Research input",
+    )
+    validate_issue_number(
+        publishable,
+        "Publishable input",
+    )
+
+    identity = require_object(
+        publishable,
+        "identity",
+    )
+
+    title = clean_text(
+        identity.get("title"),
+        "identity.title",
+        maximum=MAX_TITLE_LENGTH,
+        required=True,
+    )
+
+    if title is None:
+        fail("'identity.title' must contain text.")
+
+    main_category = clean_text(
+        identity.get("main_category"),
+        "identity.main_category",
+        maximum=100,
+        required=True,
+    )
+    category = clean_text(
+        identity.get("category"),
+        "identity.category",
+        maximum=100,
+        required=True,
+    )
+
+    if main_category is None or category is None:
+        fail(
+            "Both identity categories must contain text."
+        )
+
+    validate_category_pair(
+        main_category,
+        category,
+    )
+
+    location = require_object(
+        publishable,
+        "location",
+    )
+    opportunity_format = location.get("format")
+
+    if opportunity_format not in ALLOWED_FORMATS:
+        fail(
+            f"Invalid normalized format: {opportunity_format}"
+        )
+
+    audience = require_object(
+        publishable,
+        "audience",
+    )
+
+    if (
+        audience.get("classification_source")
+        != "submitted-dropdown-only"
+    ):
+        fail(
+            "Publishable audience classification_source must be "
+            "'submitted-dropdown-only'."
+        )
+
+    access_model = audience.get("access_model")
+
+    if access_model not in ALLOWED_AUDIENCE_ACCESS_MODELS:
+        fail(
+            f"Invalid audience access model: {access_model}"
+        )
+
+    researched_groups = researched_audience_groups(
+        researched
+    )
+    publishable_groups = clean_string_list(
+        require_list(audience, "groups"),
+        "publishable.audience.groups",
+    )
+
+    if publishable_groups != researched_groups:
+        fail(
+            "Publishable audience groups must exactly match "
+            "the researched submitted-dropdown groups, "
+            "including order."
+        )
+
+    filters = require_object(
+        publishable,
+        "filters",
+    )
+
+    main_category_filters = clean_string_list(
+        require_list(filters, "main_categories"),
+        "filters.main_categories",
+    )
+    category_filters = clean_string_list(
+        require_list(filters, "categories"),
+        "filters.categories",
+    )
+    audience_filters = clean_string_list(
+        require_list(filters, "audience_groups"),
+        "filters.audience_groups",
+    )
+
+    if main_category_filters != [main_category]:
+        fail(
+            "filters.main_categories must exactly equal "
+            "[identity.main_category]."
+        )
+
+    if category_filters != [category]:
+        fail(
+            "filters.categories must exactly equal "
+            "[identity.category]."
+        )
+
+    if audience_filters != publishable_groups:
+        fail(
+            "filters.audience_groups must exactly match "
+            "audience.groups, including order."
+        )
+
+    application = require_object(
+        publishable,
+        "application",
+    )
+
+    validate_web_url(
+        application.get("official_page"),
+        "application.official_page",
+    )
+    validate_web_url(
+        application.get("application_page"),
+        "application.application_page",
+    )
+
+    require_object(
+        publishable,
+        "dates",
+    )
+    require_object(
+        publishable,
+        "eligibility",
+    )
+    require_object(
+        publishable,
+        "funding",
+    )
+    require_object(
+        publishable,
+        "program",
+    )
+    require_object(
+        publishable,
+        "page_content",
+    )
+    require_object(
+        publishable,
+        "publication_notes",
+    )
+
     moderation = require_object(
         publishable,
         "moderation",
@@ -290,37 +677,193 @@ def validate_inputs(
             "Publishable draft must require human review."
         )
 
+    if (
+        moderation.get("safe_to_generate_draft_page")
+        is not True
+    ):
+        fail(
+            "The formatter did not mark this record safe "
+            "to generate as a draft page."
+        )
+
+    action = moderation.get("recommended_action")
+
+    if action not in ALLOWED_ACTIONS:
+        fail(
+            f"Invalid formatter recommended action: {action}"
+        )
+
+    if action != "continue-to-draft-pr":
+        fail(
+            "The formatter must recommend "
+            "'continue-to-draft-pr' before generation."
+        )
+
 
 # ============================================================
 # STRUCTURED DATA EXTRACTION
 # ============================================================
 
-def value_from(
-    parent: dict[str, Any],
-    key: str,
-) -> Any:
-    return parent.get(key)
-
-
 def normalized_date(
     dates: dict[str, Any],
     key: str,
 ) -> dict[str, str | None]:
-    value = dates.get(key)
+    value = require_object(dates, key)
 
-    if not isinstance(value, dict):
-        return {
-            "display": None,
-            "normalized": None,
-        }
+    display = clean_text(
+        value.get("display"),
+        f"dates.{key}.display",
+    )
+    normalized = clean_text(
+        value.get("normalized"),
+        f"dates.{key}.normalized",
+        maximum=10,
+    )
+
+    if normalized is not None:
+        try:
+            parsed = datetime.strptime(
+                normalized,
+                "%Y-%m-%d",
+            ).date()
+        except ValueError:
+            fail(
+                f"'dates.{key}.normalized' must use "
+                "a real YYYY-MM-DD date."
+            )
+
+        if parsed.isoformat() != normalized:
+            fail(
+                f"'dates.{key}.normalized' must be "
+                "zero-padded YYYY-MM-DD."
+            )
 
     return {
-        "display": clean_scalar(value.get("display")),
-        "normalized": clean_scalar(
-            value.get("normalized"),
-            maximum=20,
-        ),
+        "display": display,
+        "normalized": normalized,
     }
+
+
+def clean_additional_dates(
+    value: Any,
+) -> list[str | dict[str, str | None]]:
+    if not isinstance(value, list):
+        fail("'dates.additional_dates' must be a JSON list.")
+
+    if len(value) > 50:
+        fail(
+            "'dates.additional_dates' contains too many values."
+        )
+
+    result: list[str | dict[str, str | None]] = []
+
+    for index, item in enumerate(value):
+        field_name = f"dates.additional_dates[{index}]"
+
+        if isinstance(item, str):
+            cleaned = clean_text(
+                item,
+                field_name,
+                required=True,
+            )
+
+            if cleaned is None:
+                fail(f"'{field_name}' must contain text.")
+
+            result.append(cleaned)
+            continue
+
+        if isinstance(item, dict):
+            display = clean_text(
+                item.get("display"),
+                f"{field_name}.display",
+            )
+            normalized = clean_text(
+                item.get("normalized"),
+                f"{field_name}.normalized",
+                maximum=10,
+            )
+
+            if normalized is not None:
+                try:
+                    parsed = datetime.strptime(
+                        normalized,
+                        "%Y-%m-%d",
+                    ).date()
+                except ValueError:
+                    fail(
+                        f"'{field_name}.normalized' must use "
+                        "a real YYYY-MM-DD date."
+                    )
+
+                if parsed.isoformat() != normalized:
+                    fail(
+                        f"'{field_name}.normalized' must be "
+                        "zero-padded YYYY-MM-DD."
+                    )
+
+            result.append(
+                {
+                    "display": display,
+                    "normalized": normalized,
+                }
+            )
+            continue
+
+        fail(
+            f"'{field_name}' must be a string "
+            "or a date object."
+        )
+
+    return result
+
+
+def raw_researched_value(
+    researched: dict[str, Any],
+    section_name: str,
+    field_name: str,
+) -> str | None:
+    section = researched.get(section_name)
+
+    if not isinstance(section, dict):
+        return None
+
+    field = section.get(field_name)
+
+    if not isinstance(field, dict):
+        return None
+
+    return clean_text(
+        field.get("raw"),
+        f"researched.{section_name}.{field_name}.raw",
+    )
+
+
+def verified_confidence(
+    researched: dict[str, Any],
+) -> int:
+    research_summary = researched.get(
+        "research_summary",
+        {},
+    )
+
+    if not isinstance(research_summary, dict):
+        return 0
+
+    value = research_summary.get(
+        "overall_confidence",
+        0,
+    )
+
+    if (
+        not isinstance(value, int)
+        or isinstance(value, bool)
+        or value < 0
+        or value > 100
+    ):
+        return 0
+
+    return value
 
 
 def build_front_matter(
@@ -332,90 +875,70 @@ def build_front_matter(
         publishable,
         "identity",
     )
-
     location = require_object(
         publishable,
         "location",
     )
-
     dates = require_object(
         publishable,
         "dates",
     )
-
     eligibility = require_object(
         publishable,
         "eligibility",
     )
-
     audience = require_object(
         publishable,
         "audience",
     )
-
     funding = require_object(
         publishable,
         "funding",
     )
-
     application = require_object(
         publishable,
         "application",
     )
-
     program = require_object(
         publishable,
         "program",
     )
-
     filters = require_object(
         publishable,
         "filters",
     )
-
     moderation = require_object(
         publishable,
         "moderation",
     )
 
-    category = clean_scalar(
+    main_category = clean_text(
+        identity.get("main_category"),
+        "identity.main_category",
+        maximum=100,
+        required=True,
+    )
+    category = clean_text(
         identity.get("category"),
+        "identity.category",
         maximum=100,
-    ) or "other"
+        required=True,
+    )
 
-    if category not in ALLOWED_CATEGORIES:
-        category = "other"
+    if main_category is None or category is None:
+        fail(
+            "Both identity categories must contain text."
+        )
 
-    opportunity_format = clean_scalar(
+    opportunity_format = clean_text(
         location.get("format"),
+        "location.format",
         maximum=100,
-    ) or "not-confirmed"
-
-    if opportunity_format not in ALLOWED_FORMATS:
-        opportunity_format = "not-confirmed"
-
-    application_deadline = normalized_date(
-        dates,
-        "application_deadline",
+        required=True,
     )
 
-    start_date = normalized_date(
-        dates,
-        "start_date",
-    )
-
-    end_date = normalized_date(
-        dates,
-        "end_date",
-    )
-
-    official_page = safe_url(
-        application.get("official_page")
-    )
-
-    application_page = safe_url(
-        application.get("application_page")
-    )
+    if opportunity_format is None:
+        fail("'location.format' must contain text.")
 
     research_summary = researched.get(
         "research_summary",
@@ -441,181 +964,309 @@ def build_front_matter(
     if not isinstance(publication_provenance, dict):
         publication_provenance = {}
 
-    raw_deadline = None
-    researched_dates = researched.get("dates")
-
-    if isinstance(researched_dates, dict):
-        raw_deadline_object = researched_dates.get(
-            "application_deadline"
-        )
-
-        if isinstance(raw_deadline_object, dict):
-            raw_deadline = clean_scalar(
-                raw_deadline_object.get("raw")
-            )
+    application_deadline = normalized_date(
+        dates,
+        "application_deadline",
+    )
+    start_date = normalized_date(
+        dates,
+        "start_date",
+    )
+    end_date = normalized_date(
+        dates,
+        "end_date",
+    )
 
     return {
-        "schema_version": 1,
+        "schema_version": 2,
+        "record_type": "opportunity",
         "slug": slug,
-        "title": clean_scalar(
+        "title": clean_text(
             identity.get("title"),
+            "identity.title",
             maximum=MAX_TITLE_LENGTH,
+            required=True,
         ),
-        "organizer": clean_scalar(
+        "organizer": clean_text(
             identity.get("organizer"),
+            "identity.organizer",
             maximum=MAX_TITLE_LENGTH,
         ),
+        "main_category": main_category,
         "category": category,
-        "edition": clean_scalar(
+        "edition": clean_text(
             identity.get("edition"),
+            "identity.edition",
             maximum=100,
         ),
         "status": "pending-review",
-        "summary": clean_scalar(
-            publishable.get("summary")
+        "summary": clean_text(
+            publishable.get("summary"),
+            "summary",
         ),
         "format": opportunity_format,
         "location": {
-            "display": clean_scalar(
-                location.get("display")
+            "display": clean_text(
+                location.get("display"),
+                "location.display",
             ),
-            "host_city": clean_scalar(
+            "host_city": clean_text(
                 location.get("host_city"),
+                "location.host_city",
                 maximum=200,
             ),
-            "host_country": clean_scalar(
+            "host_country": clean_text(
                 location.get("host_country"),
+                "location.host_country",
                 maximum=200,
             ),
-            "host_country_code": clean_scalar(
+            "host_country_code": clean_text(
                 location.get("host_country_code"),
-                maximum=10,
+                "location.host_country_code",
+                maximum=2,
             ),
             "additional_locations": clean_string_list(
-                location.get("additional_locations")
+                require_list(
+                    location,
+                    "additional_locations",
+                ),
+                "location.additional_locations",
+                maximum=50,
             ),
         },
         "dates": {
             "application_deadline": {
-                "raw": raw_deadline,
+                "raw": raw_researched_value(
+                    researched,
+                    "dates",
+                    "application_deadline",
+                ),
                 "display": application_deadline["display"],
                 "normalized": application_deadline["normalized"],
             },
             "start_date": start_date,
             "end_date": end_date,
-            "additional_dates": dates.get(
-                "additional_dates",
-                [],
-            )
-            if isinstance(
-                dates.get("additional_dates"),
-                list,
-            )
-            else [],
+            "additional_dates": clean_additional_dates(
+                require_list(
+                    dates,
+                    "additional_dates",
+                )
+            ),
         },
         "eligibility": {
             "geographic_regions": clean_string_list(
-                eligibility.get("geographic_regions")
+                require_list(
+                    eligibility,
+                    "geographic_regions",
+                ),
+                "eligibility.geographic_regions",
             ),
             "eligible_countries": clean_string_list(
-                eligibility.get("eligible_countries")
+                require_list(
+                    eligibility,
+                    "eligible_countries",
+                ),
+                "eligibility.eligible_countries",
             ),
-            "nationality_or_residency_rules": clean_scalar(
+            "nationality_or_residency_rules": clean_text(
                 eligibility.get(
                     "nationality_or_residency_rules"
-                )
+                ),
+                "eligibility.nationality_or_residency_rules",
             ),
             "academic_levels": clean_string_list(
-                eligibility.get("academic_levels")
+                require_list(
+                    eligibility,
+                    "academic_levels",
+                ),
+                "eligibility.academic_levels",
             ),
             "broad_fields": clean_string_list(
-                eligibility.get("broad_fields")
+                require_list(
+                    eligibility,
+                    "broad_fields",
+                ),
+                "eligibility.broad_fields",
             ),
             "specific_majors": clean_string_list(
-                eligibility.get("specific_majors")
+                require_list(
+                    eligibility,
+                    "specific_majors",
+                ),
+                "eligibility.specific_majors",
             ),
-            "age_requirements": clean_scalar(
-                eligibility.get("age_requirements")
+            "age_requirements": clean_text(
+                eligibility.get("age_requirements"),
+                "eligibility.age_requirements",
             ),
-            "experience_requirements": clean_scalar(
+            "experience_requirements": clean_text(
                 eligibility.get(
                     "experience_requirements"
-                )
+                ),
+                "eligibility.experience_requirements",
             ),
-            "language_requirements": clean_scalar(
-                eligibility.get("language_requirements")
+            "language_requirements": clean_text(
+                eligibility.get(
+                    "language_requirements"
+                ),
+                "eligibility.language_requirements",
+            ),
+            "display_points": clean_string_list(
+                require_list(
+                    eligibility,
+                    "display_points",
+                ),
+                "eligibility.display_points",
             ),
         },
         "audience": {
-            "groups": audience.get("groups", [])
-            if isinstance(audience.get("groups"), list)
-            else [],
+            "classification_source": (
+                "submitted-dropdown-only"
+            ),
+            "groups": clean_string_list(
+                require_list(audience, "groups"),
+                "audience.groups",
+            ),
+            "access_model": clean_text(
+                audience.get("access_model"),
+                "audience.access_model",
+                maximum=100,
+                required=True,
+            ),
+            "display_points": clean_string_list(
+                require_list(
+                    audience,
+                    "display_points",
+                ),
+                "audience.display_points",
+            ),
         },
         "funding": {
-            "application_fee": clean_scalar(
-                funding.get("application_fee")
+            "application_fee": clean_text(
+                funding.get("application_fee"),
+                "funding.application_fee",
             ),
-            "participation_fee": clean_scalar(
-                funding.get("participation_fee")
+            "participation_fee": clean_text(
+                funding.get("participation_fee"),
+                "funding.participation_fee",
             ),
-            "scholarship": clean_scalar(
-                funding.get("scholarship")
+            "scholarship": clean_text(
+                funding.get("scholarship"),
+                "funding.scholarship",
             ),
-            "travel_support": clean_scalar(
-                funding.get("travel_support")
+            "travel_support": clean_text(
+                funding.get("travel_support"),
+                "funding.travel_support",
             ),
-            "accommodation": clean_scalar(
-                funding.get("accommodation")
+            "accommodation": clean_text(
+                funding.get("accommodation"),
+                "funding.accommodation",
             ),
-            "meals": clean_scalar(
-                funding.get("meals")
+            "meals": clean_text(
+                funding.get("meals"),
+                "funding.meals",
             ),
-            "stipend": clean_scalar(
-                funding.get("stipend")
+            "stipend_or_salary": clean_text(
+                funding.get("stipend_or_salary"),
+                "funding.stipend_or_salary",
             ),
-            "salary": clean_scalar(
-                funding.get("salary")
+            "prizes": clean_text(
+                funding.get("prizes"),
+                "funding.prizes",
             ),
-            "prizes": clean_scalar(
-                funding.get("prizes")
+            "visa_support": clean_text(
+                funding.get("visa_support"),
+                "funding.visa_support",
             ),
-            "visa_support": clean_scalar(
-                funding.get("visa_support")
-            ),
-            "accessibility_support": clean_scalar(
-                funding.get("accessibility_support")
+            "accessibility_support": clean_text(
+                funding.get(
+                    "accessibility_support"
+                ),
+                "funding.accessibility_support",
             ),
             "other_support": clean_string_list(
-                funding.get("other_support")
+                require_list(
+                    funding,
+                    "other_support",
+                ),
+                "funding.other_support",
+            ),
+            "display_points": clean_string_list(
+                require_list(
+                    funding,
+                    "display_points",
+                ),
+                "funding.display_points",
             ),
         },
         "application": {
-            "official_page": official_page,
-            "application_page": application_page,
+            "official_page": validate_web_url(
+                application.get("official_page"),
+                "application.official_page",
+            ),
+            "application_page": validate_web_url(
+                application.get("application_page"),
+                "application.application_page",
+            ),
             "requirements": clean_string_list(
-                application.get("requirements")
+                require_list(
+                    application,
+                    "requirements",
+                ),
+                "application.requirements",
             ),
             "documents": clean_string_list(
-                application.get("documents")
+                require_list(
+                    application,
+                    "documents",
+                ),
+                "application.documents",
             ),
             "selection_process": clean_string_list(
-                application.get("selection_process")
+                require_list(
+                    application,
+                    "selection_process",
+                ),
+                "application.selection_process",
+            ),
+            "display_points": clean_string_list(
+                require_list(
+                    application,
+                    "display_points",
+                ),
+                "application.display_points",
             ),
         },
         "program": {
             "activities": clean_string_list(
-                program.get("activities")
+                require_list(
+                    program,
+                    "activities",
+                ),
+                "program.activities",
             ),
             "benefits": clean_string_list(
-                program.get("benefits")
+                require_list(
+                    program,
+                    "benefits",
+                ),
+                "program.benefits",
             ),
             "topics": clean_string_list(
-                program.get("topics")
+                require_list(
+                    program,
+                    "topics",
+                ),
+                "program.topics",
             ),
         },
         "filters": {
-            key: clean_string_list(filters.get(key))
+            key: clean_string_list(
+                require_list(filters, key),
+                f"filters.{key}",
+            )
             for key in (
+                "main_categories",
                 "categories",
                 "formats",
                 "host_countries",
@@ -623,26 +1274,22 @@ def build_front_matter(
                 "eligible_countries",
                 "academic_levels",
                 "academic_fields",
+                "subjects",
                 "audience_groups",
                 "funding_features",
                 "topics",
             )
         },
         "tags": clean_string_list(
-            publishable.get("tags"),
+            require_list(publishable, "tags"),
+            "tags",
             maximum=MAX_TAGS,
         ),
         "verification": {
             "human_review_required": True,
-            "safe_to_generate_draft_page": bool(
-                moderation.get(
-                    "safe_to_generate_draft_page",
-                    False,
-                )
-            ),
-            "research_confidence": research_summary.get(
-                "overall_confidence",
-                0,
+            "safe_to_generate_draft_page": True,
+            "research_confidence": verified_confidence(
+                researched
             ),
             "research_recommended_action": (
                 research_summary.get(
@@ -654,12 +1301,23 @@ def build_front_matter(
                     "recommended_action"
                 )
             ),
+            "identity_categories_locked_to_research": (
+                publication_provenance.get(
+                    "identity_categories_locked_to_research",
+                    True,
+                )
+            ),
+            "audience_groups_locked_to_research": True,
             "automatically_verified": False,
+            "automatically_published": False,
         },
         "submission": {
             "issue_number": ISSUE_NUMBER,
-            "issue_url": research_provenance.get(
-                "original_issue_url"
+            "issue_url": validate_web_url(
+                research_provenance.get(
+                    "original_issue_url"
+                ),
+                "provenance.original_issue_url",
             ),
         },
         "provenance": {
@@ -686,12 +1344,50 @@ def build_front_matter(
 # MARKDOWN GENERATION
 # ============================================================
 
+def markdown_plain_text(value: str) -> str:
+    escaped = html.escape(value, quote=False)
+    escaped = escaped.replace("\\", "\\\\")
+    escaped = escaped.replace("`", "\\`")
+    escaped = escaped.replace("*", "\\*")
+    escaped = escaped.replace("_", "\\_")
+    escaped = escaped.replace("[", "\\[")
+    escaped = escaped.replace("]", "\\]")
+
+    safe_lines: list[str] = []
+
+    for line in escaped.splitlines():
+        if re.match(
+            r"^\s*(?:#{1,6}|>|[-+]\s|\d+[.)]\s)",
+            line,
+        ):
+            line = "\\" + line
+
+        safe_lines.append(line)
+
+    return "\n".join(safe_lines)
+
+
+def markdown_inline(value: str) -> str:
+    return markdown_plain_text(
+        " ".join(value.split())
+    )
+
+
+def markdown_link(label: str, url: str) -> str:
+    safe_label = markdown_inline(label)
+    return f"[{safe_label}](<{url}>)"
+
+
 def add_text_section(
     lines: list[str],
     heading: str,
     text: Any,
+    field_name: str,
 ) -> None:
-    cleaned = clean_scalar(text)
+    cleaned = clean_text(
+        text,
+        field_name,
+    )
 
     if not cleaned:
         return
@@ -700,35 +1396,10 @@ def add_text_section(
         [
             f"## {heading}",
             "",
-            cleaned,
+            markdown_plain_text(cleaned),
             "",
         ]
     )
-
-
-def add_bullet_section(
-    lines: list[str],
-    heading: str,
-    values: Any,
-) -> None:
-    items = clean_string_list(values)
-
-    if not items:
-        return
-
-    lines.extend(
-        [
-            f"## {heading}",
-            "",
-        ]
-    )
-
-    lines.extend(
-        f"- {item}"
-        for item in items
-    )
-
-    lines.append("")
 
 
 def add_portals_section(
@@ -741,19 +1412,27 @@ def add_portals_section(
 
     lines.extend(
         [
-            "## ð Official Portals",
+            "## ð Official Links",
             "",
         ]
     )
 
     if official_page:
         lines.append(
-            f"- {markdown_link('Official opportunity page', official_page)}"
+            "- "
+            + markdown_link(
+                "Official opportunity page",
+                official_page,
+            )
         )
 
     if application_page:
         lines.append(
-            f"- {markdown_link('Direct application page', application_page)}"
+            "- "
+            + markdown_link(
+                "Direct application page",
+                application_page,
+            )
         )
 
     lines.append("")
@@ -767,116 +1446,129 @@ def build_markdown_body(
         publishable,
         "identity",
     )
-
-    quest_content = require_object(
+    page_content = require_object(
         publishable,
-        "quest_content",
+        "page_content",
     )
-
     application = require_object(
         publishable,
         "application",
     )
 
-    title = clean_scalar(
+    title = clean_text(
         identity.get("title"),
+        "identity.title",
         maximum=MAX_TITLE_LENGTH,
-    ) or "Untitled Opportunity"
+        required=True,
+    )
 
-    summary = clean_scalar(
-        publishable.get("summary")
+    if title is None:
+        fail("'identity.title' must contain text.")
+
+    summary = clean_text(
+        publishable.get("summary"),
+        "summary",
     )
 
     lines: list[str] = [
-        f"# ðºï¸ {title}",
+        f"# ð§­ {markdown_inline(title)}",
         "",
     ]
 
     if summary:
-        lines.extend(
-            [
-                f"> {summary}",
-                "",
-            ]
-        )
+        for summary_line in markdown_plain_text(
+            summary
+        ).splitlines():
+            lines.append(f"> {summary_line}")
+
+        lines.append("")
 
     add_text_section(
         lines,
-        "âï¸ The Quest",
-        quest_content.get("quest"),
+        "Opportunity Overview",
+        page_content.get("overview"),
+        "page_content.overview",
     )
-
     add_text_section(
         lines,
-        "ð° The Organizer",
-        quest_content.get("organizer"),
+        "Organizer",
+        page_content.get("organizer"),
+        "page_content.organizer",
     )
-
     add_text_section(
         lines,
-        "ð Who May Enter",
-        quest_content.get("who_may_enter"),
+        "Who Can Apply",
+        page_content.get("who_can_apply"),
+        "page_content.who_can_apply",
     )
-
     add_text_section(
         lines,
-        "ð Quest Location",
-        quest_content.get("quest_location"),
+        "Location & Format",
+        page_content.get("location_and_format"),
+        "page_content.location_and_format",
     )
-
     add_text_section(
         lines,
-        "â³ Important Dates",
-        quest_content.get("important_dates"),
+        "Important Dates",
+        page_content.get("important_dates"),
+        "page_content.important_dates",
     )
-
     add_text_section(
         lines,
-        "ð° Rewards and Support",
-        quest_content.get("rewards_and_support"),
+        "Funding & Support",
+        page_content.get("funding_and_support"),
+        "page_content.funding_and_support",
     )
-
     add_text_section(
         lines,
-        "ð¹ Application Path",
-        quest_content.get("application_path"),
+        "How to Apply",
+        page_content.get("application_path"),
+        "page_content.application_path",
     )
-
     add_text_section(
         lines,
-        "ð§­ What Participants Do",
-        quest_content.get("what_participants_do"),
+        "What Participants Do",
+        page_content.get("what_participants_do"),
+        "page_content.what_participants_do",
     )
 
     add_portals_section(
         lines,
-        safe_url(application.get("official_page")),
-        safe_url(application.get("application_page")),
+        validate_web_url(
+            application.get("official_page"),
+            "application.official_page",
+        ),
+        validate_web_url(
+            application.get("application_page"),
+            "application.application_page",
+        ),
     )
 
+    submission = front_matter.get("submission", {})
     issue_url = (
-        front_matter.get("submission", {})
-        .get("issue_url")
-        if isinstance(
-            front_matter.get("submission"),
-            dict,
-        )
+        submission.get("issue_url")
+        if isinstance(submission, dict)
         else None
     )
 
-    if safe_url(issue_url):
+    if issue_url:
         lines.extend(
             [
                 "---",
                 "",
-                "### ð¡ï¸ Review trail",
+                "### Review trail",
                 "",
                 (
-                    "This quest was prepared from a community submission, "
-                    "official-source research, and human review."
+                    "This draft was prepared from a community "
+                    "submission and official-source research. "
+                    "Human approval is still required before publication."
                 ),
                 "",
-                f"- {markdown_link('View the original submission', issue_url)}",
+                "- "
+                + markdown_link(
+                    "View the original submission",
+                    issue_url,
+                ),
                 "",
             ]
         )
@@ -884,42 +1576,67 @@ def build_markdown_body(
     return "\n".join(lines).rstrip() + "\n"
 
 
-def create_opportunity_file(
-    researched: dict[str, Any],
-    publishable: dict[str, Any],
-) -> tuple[Path, str, str]:
-    identity = require_object(
-        publishable,
-        "identity",
-    )
+# ============================================================
+# FILE CREATION
+# ============================================================
 
-    title = clean_scalar(
-        identity.get("title"),
-        maximum=MAX_TITLE_LENGTH,
-    )
+def existing_issue_number(
+    path: Path,
+) -> int | None:
+    if not path.exists():
+        return None
 
-    if not title:
-        fail(
-            "Cannot generate an opportunity page without a title."
+    try:
+        content = path.read_text(
+            encoding="utf-8"
         )
+    except OSError:
+        return None
 
-    category = clean_scalar(
-        identity.get("category"),
-        maximum=100,
-    ) or "other"
+    if not content.startswith("---\n"):
+        return None
 
-    if category not in ALLOWED_CATEGORIES:
-        category = "other"
+    closing_marker = content.find(
+        "\n---\n",
+        4,
+    )
 
-    slug = slugify(title)
+    if closing_marker == -1:
+        return None
 
-    if not slug:
-        slug = f"opportunity-{ISSUE_NUMBER}"
+    try:
+        front_matter = yaml.safe_load(
+            content[4:closing_marker]
+        )
+    except yaml.YAMLError:
+        return None
 
-    # Add the issue number only when an existing file would be overwritten.
+    if not isinstance(front_matter, dict):
+        return None
+
+    submission = front_matter.get("submission")
+
+    if not isinstance(submission, dict):
+        return None
+
+    issue_number = submission.get("issue_number")
+
+    if (
+        isinstance(issue_number, int)
+        and not isinstance(issue_number, bool)
+    ):
+        return issue_number
+
+    return None
+
+
+def choose_output_path(
+    main_category: str,
+    base_slug: str,
+) -> tuple[Path, str]:
     category_directory = (
         OPPORTUNITIES_DIRECTORY
-        / category
+        / main_category
     )
 
     category_directory.mkdir(
@@ -927,14 +1644,105 @@ def create_opportunity_file(
         exist_ok=True,
     )
 
-    output_file = category_directory / f"{slug}.md"
+    base_path = category_directory / f"{base_slug}.md"
 
-    if output_file.exists():
-        slug = f"{slug}-{ISSUE_NUMBER}"
-        output_file = (
-            category_directory
-            / f"{slug}.md"
+    if (
+        not base_path.exists()
+        or existing_issue_number(base_path)
+        == ISSUE_NUMBER
+    ):
+        return base_path, base_slug
+
+    issue_slug = f"{base_slug}-{ISSUE_NUMBER}"
+    issue_path = (
+        category_directory
+        / f"{issue_slug}.md"
+    )
+
+    if (
+        not issue_path.exists()
+        or existing_issue_number(issue_path)
+        == ISSUE_NUMBER
+    ):
+        return issue_path, issue_slug
+
+    fail(
+        "Both the normal opportunity path and the "
+        "issue-qualified path already belong to different "
+        "submissions. Refusing to overwrite either file."
+    )
+
+
+def write_text_atomically(
+    path: Path,
+    content: str,
+) -> None:
+    temporary_path = path.with_suffix(
+        path.suffix + ".tmp"
+    )
+
+    temporary_path.write_text(
+        content,
+        encoding="utf-8",
+    )
+
+    temporary_path.replace(path)
+
+
+def create_opportunity_file(
+    researched: dict[str, Any],
+    publishable: dict[str, Any],
+) -> tuple[Path, str, str, str]:
+    identity = require_object(
+        publishable,
+        "identity",
+    )
+
+    title = clean_text(
+        identity.get("title"),
+        "identity.title",
+        maximum=MAX_TITLE_LENGTH,
+        required=True,
+    )
+
+    if title is None:
+        fail(
+            "Cannot generate an opportunity page without a title."
         )
+
+    main_category = clean_text(
+        identity.get("main_category"),
+        "identity.main_category",
+        maximum=100,
+        required=True,
+    )
+    category = clean_text(
+        identity.get("category"),
+        "identity.category",
+        maximum=100,
+        required=True,
+    )
+
+    if main_category is None or category is None:
+        fail(
+            "Cannot generate an opportunity page without "
+            "both categories."
+        )
+
+    validate_category_pair(
+        main_category,
+        category,
+    )
+
+    base_slug = slugify(title)
+
+    if not base_slug:
+        base_slug = f"opportunity-{ISSUE_NUMBER}"
+
+    output_file, slug = choose_output_path(
+        main_category,
+        base_slug,
+    )
 
     front_matter = build_front_matter(
         researched,
@@ -954,12 +1762,17 @@ def create_opportunity_file(
         f"{body}"
     )
 
-    output_file.write_text(
+    write_text_atomically(
+        output_file,
         content,
-        encoding="utf-8",
     )
 
-    return output_file, category, slug
+    return (
+        output_file,
+        main_category,
+        category,
+        slug,
+    )
 
 
 # ============================================================
@@ -970,7 +1783,6 @@ def main() -> None:
     researched = read_json(
         RESEARCHED_SUBMISSION_FILE
     )
-
     publishable = read_json(
         PUBLISHABLE_CONTENT_FILE
     )
@@ -980,41 +1792,48 @@ def main() -> None:
         publishable,
     )
 
-    output_file, category, slug = (
-        create_opportunity_file(
-            researched,
-            publishable,
-        )
+    (
+        output_file,
+        main_category,
+        category,
+        slug,
+    ) = create_opportunity_file(
+        researched,
+        publishable,
     )
 
     write_github_output(
         "opportunity_file",
         str(output_file),
     )
-
+    write_github_output(
+        "main_category",
+        main_category,
+    )
     write_github_output(
         "category",
         category,
     )
-
     write_github_output(
         "slug",
         slug,
     )
-
     write_github_output(
         "generated_opportunity_file",
         str(output_file),
     )
 
     print(
-        "Opportunity Markdown page generated successfully."
+        "OFFMAP opportunity Markdown draft generated successfully."
     )
     print(
         f"Output file: {output_file}"
     )
     print(
-        f"Category: {category}"
+        f"Main category: {main_category}"
+    )
+    print(
+        f"Specific category: {category}"
     )
     print(
         f"Slug: {slug}"
