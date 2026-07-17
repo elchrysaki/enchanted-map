@@ -47,7 +47,7 @@
 
 ---
 
-> [!BUILD NY STUDENTS FOR STUDENTS]
+> [!NOTE]
 > **Built by students for students.** OffMap brings worthwhile opportunities out of forgotten newsletters, private group chats, chaotic spreadsheets, and that one Instagram post you forgot to save. Whether you are looking for your first international experience or your next impossible-sounding challenge, this is your place to start.
 
 **Find your path. Share what you discover. Help someone else begin theirs.** 
