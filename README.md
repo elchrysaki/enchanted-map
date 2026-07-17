@@ -47,7 +47,7 @@
 
 ---
 
-> [!IMPORTANT]
+> [!BUILD NY STUDENTS FOR STUDENTS]
 > **Built by students for students.** OffMap brings worthwhile opportunities out of forgotten newsletters, private group chats, chaotic spreadsheets, and that one Instagram post you forgot to save. Whether you are looking for your first international experience or your next impossible-sounding challenge, this is your place to start.
 
 **Find your path. Share what you discover. Help someone else begin theirs.** 
@@ -357,7 +357,8 @@ Share photographs, projects, team moments, awards, lessons, and short stories fr
 <div align="center">
 
 
-[![Share Your Story](https://img.shields.io/badge/SHARE%20YOUR%20STORY-Add%20photos%20and%20experiences-6C63FF?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/elchrysaki/offmap-hub/discussions/new?category=show-and-tell)[![Explore Community Stories](https://img.shields.io/badge/EXPLORE%20COMMUNITY%20STORIES-Visit%20the%20gallery-118AB2?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/elchrysaki/offmap-hub/discussions/categories/show-and-tell)
+[![Share Your Story](https://img.shields.io/badge/SHARE%20YOUR%20STORY-Add%20photos%20and%20experiences-6C63FF?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/elchrysaki/offmap-hub/discussions/new?category=show-and-tell)
+[![Explore Community Stories](https://img.shields.io/badge/EXPLORE%20COMMUNITY%20STORIES-Visit%20the%20gallery-118AB2?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/elchrysaki/offmap-hub/discussions/categories/show-and-tell)
 
 </div>
 
