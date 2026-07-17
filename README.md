@@ -15,7 +15,6 @@
 
 <br>
 
-<img src="side_logo_minimal.PNG" width="760">
 <img src=".github/media/logo/ide_logo_minimal.PNG" width="760">
 
 <br>
