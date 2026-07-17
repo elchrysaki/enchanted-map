@@ -1,10 +1,9 @@
 <div align="center">
 
-# ✨ OffMap
+# 🗺️ OFFMAP
+### Built by students. Powered by the community.
 
-### Your Student Adventure Starts Here.
-
-> Discover conferences, hackathons, fellowships, competitions, academies, exchange programs and other legendary opportunities around the world.
+> We’re creating the biggest student-powered opportunity map,  **one discovery, one application, and one story at a time.**
 
 <br>
 
@@ -18,17 +17,44 @@
 <img src=".github/media/logo/ide_logo_minimal.PNG" width="760">
 
 <br>
-
-[![🗺 Explore the Map](https://img.shields.io/badge/🗺_Explore_the_Map-6D4AFF?style=for-the-badge)](#-opportunity-board)
-[![⚔ Begin a Quest](https://img.shields.io/badge/⚔_Begin_a_Quest-00B894?style=for-the-badge)](CONTRIBUTING.md)
-[![➕ Add a Discovery](https://img.shields.io/badge/➕_Add_a_Discovery-F4C542?style=for-the-badge&logo=github&logoColor=black)](...)
-
+<p align="center">
+  <a href="#-opportunity-board">
+    <img
+      src="https://img.shields.io/badge/🗺️%20EXPLORE%20THE%20MAP-6D4AFF?style=for-the-badge"
+      alt="Explore the Map"
+      height="30"
+    >
+  </a>
+  &nbsp;
+  <a href="CONTRIBUTING.md">
+    <img
+      src="https://img.shields.io/badge/⚔️%20BEGIN%20A%20QUEST-00A878?style=for-the-badge"
+      alt="Begin a Quest"
+      height="30"
+    >
+  </a>
+  &nbsp;
+  <a href="https://github.com/elchrysaki/enchanted-map/issues/new/choose">
+    <img
+      src="https://img.shields.io/badge/➕%20ADD%20A%20DISCOVERY-F4C542?style=for-the-badge&logo=github&logoColor=black"
+      alt="Add a Discovery"
+      height="30"
+    >
+  </a>
+</p>
 </div>
+
 
 ---
 
 > [!IMPORTANT]
-> **This is not another link dump.** Every listing must have a credible organizer, a real student pathway, an official source, and a meaningful outcome. No mysterious “global leadership summit” charging €1,200 for a certificate and a lanyard. Humanity has suffered enough.
+> **Built by students for students.** OffMap brings worthwhile opportunities out of forgotten newsletters, private group chats, chaotic spreadsheets, and that one Instagram post you forgot to save. Whether you are looking for your first international experience or your next impossible-sounding challenge, this is your place to start.
+
+**Find your path. Share what you discover. Help someone else begin theirs.** 
+<div align = "center">
+
+
+</div>
 
 <table>
 <tr>
@@ -36,21 +62,22 @@
 
 ### 🔭 Discover
 
-Find worthwhile opportunities without searching through fifty newsletters, six university portals, and an Instagram poster designed during a caffeine emergency.
+Find worthwhile opportunities without searching through fifty newsletters, six university portals, and a clutter of Instagram posts.
+
 
 </td>
 <td width="33%" valign="top">
 
 ### 🧭 Compare
 
-See the deadline, location, format, eligibility, funding, and official application link in one place.
+See the deadline, location, format, eligibility, funding, and official application links in one place.
 
 </td>
 <td width="33%" valign="top">
 
 ### 🌍 Contribute
 
-Found something valuable? Submit the official link in under two minutes. Maintainers verify it before publication.
+Found something valuable? Submit the official link in <u>under two minutes</u>. **Become a contributor.**
 
 </td>
 </tr>
@@ -59,41 +86,56 @@ Found something valuable? Submit the official link in under two minutes. Maintai
 ---
 
 ## ⚡ Start here
-
+> Find the opportunity that changes what you do next. 
 <table>
 <tr>
 <td align="center" width="33%">
-<a href="#-conferences--summits"><h3>🎤 Conferences</h3></a>
-Meet researchers, recruiters, founders, and people who somehow enjoy networking before coffee.
+<a href="#-conferences--events"><h3>🎤 Conferences & Events</h3></a>
+Conferences, summits, forums, workshops, and networking events worth leaving your room for.
 </td>
 <td align="center" width="33%">
-<a href="#-hackathons--build-challenges"><h3>🛠️ Hackathons</h3></a>
-Build, test, pitch, and occasionally discover that your team has no backend developer.
+<a href="#-internships"><h3>🛠️ Internships</h3></a>
+Internships, traineeships, apprenticeships, and practical experience across different fields.
 </td>
 <td align="center" width="33%">
-<a href="#-competitions--challenges"><h3>🏆 Competitions</h3></a>
-Engineering, research, business, design, science, writing, policy, and more.
+<a href="#-hackathons--competitions"><h3>🏆 Hackathons & Competitions</h3></a>
+Build, test, pitch! Hackathons, challenges, contests, and build events where ideas become actual projects.
 </td>
 </tr>
 <tr>
 <td align="center" width="33%">
-<a href="#-academies-schools--courses"><h3>🎓 Academies</h3></a>
-Selective schools, intensive courses, technical academies, and serious short programs.
+<a href="#-research"><h3>🔬 Research </h3></a>
+Research placements, lab programs, assistantships, and opportunities.
 </td>
 <td align="center" width="33%">
-<a href="#-fellowships"><h3>🚀 Fellowships</h3></a>
-Mentorship, leadership, innovation, research, and professional development cohorts.
+<a href="#-scholarships"><h3>💰 Scholarships & Funding</h3></a>
+Grants, travel support, participation funding, and scholarships that make opportunities more accessible.
 </td>
 <td align="center" width="33%">
-<a href="#-special-programs"><h3>🧩 Programs</h3></a>
-Student programs that do not fit neatly elsewhere but are far too useful to ignore.
+<a href="#-fellowships"><h3>💼 Fellowships </h3></a>
+Mentorship, leadership, professional development, and selective international cohorts.
+</td>
+</tr>
+<tr>
+<td align="center" width="33%">
+<a href="#-courses--academies"><h3>📚 Courses & Academies
+ </h3></a>
+Selective schools, intensive courses, technical academies, simulations and serious short programs.
+</td>
+<td align="center" width="33%">
+<a href="#-entrepreneurship--innovation"><h3>🚀 Entrepreneurship & Innovation</h3></a>
+Startup programs, incubators, accelerators, entrepreneurship challenges, and idea-building opportunities.
+</td>
+<td align="center" width="33%">
+<a href="#-open-calls"><h3>🧩 Creative, Media & Open Calls</h3></a>
+Writing, media, design, art, publishing, exhibitions, and open calls for creative work.
 </td>
 </tr>
 </table>
 
 <div align="center">
 
-### One official link can open a door for thousands of students.
+### One link can open a door for thousands of students.
 
 [![Submit an opportunity](https://img.shields.io/badge/SUBMIT%20AN%20OPPORTUNITY-Open%20an%20issue-00A878?style=for-the-badge&logo=github)](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose)
 
@@ -103,54 +145,63 @@ Student programs that do not fit neatly elsewhere but are far too useful to igno
 
 ## 🧭 Navigation
 
-<table>
+<table align="center">
 <tr>
-<td valign="top" width="33%">
+<td valign="top" width="25%">
 
 **Browse by type**
 
-- [🎤 Conferences & Summits](#-conferences--summits)
-- [🛠️ Hackathons & Build Challenges](#-hackathons--build-challenges)
-- [🏆 Competitions & Challenges](#-competitions--challenges)
-- [🎓 Academies, Schools & Courses](#-academies-schools--courses)
-- [🚀 Fellowships](#-fellowships)
-- [🧩 Special Programs](#-special-programs)
+- [🎤 Events](#-events) 
+- [🛠️ Internships](#-internships) 
+- [🏆 Competitions](#-competitions) 
+- [🔬 Research](#-research) 
+- [💼 Fellowships](#-fellowships)
+- [💰 Scholarships](#-scholarships) 
+- [📚 Courses](#-courses) 
+- [🚀 Innovation](#-innovation) 
+- [🎨 Creative Calls](#-creative-calls)
 
 </td>
-<td valign="top" width="33%">
+<td valign="top" width="50%"> 
+
+### 🧠 Browse by field 
+- [⚙️ Engineering & Technology](#engineering--technology) 
+- [💻 Computing, AI & Data](#computing-ai--data) 
+- [🔬 Natural Sciences](#natural-sciences) 
+- [🩺 Health & Life Sciences](#health--life-sciences) 
+- [💼 Business & Economics](#business--economics) 
+- [🌍 Society, Policy & Law](#society-policy--law) 
+- [🌱 Environment & Sustainability](#environment--sustainability) 
+- [🎨 Arts, Media & Design](#arts-media--design) 
+- [📚 Humanities & Education](#humanities--education) 
+- [🧩 Multidisciplinary](#multidisciplinary) </td>
+
+<td valign="top" width="25%">
 
 **Browse by urgency**
 
 - [🔥 Closing Soon](#-closing-soon)
 - [✅ Open Now](#-opportunity-board)
-- [⏳ Opening Soon](#-how-to-read-the-list)
-- [🔁 Rolling Applications](#-how-to-read-the-list)
-- [🗄️ Past Cycles](ARCHIVE.md)
+- [⏳ Opening Soon](#-opening-soon)
+- [🔁 Rolling Applications](#-rolling-applications)
+- [📅 Upcoming Cycles](#-upcoming-cycles)
+- [🗄️ Past Opportunities](ARCHIVE.md)
 
 </td>
-<td valign="top" width="33%">
+<td valign="top" width="25%">
 
 **Community**
 
-- [➕ Add an Opportunity](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose)
-- [🛠️ Fix Outdated Information](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose)
-- [📖 Contribution Guide](CONTRIBUTING.md)
-- [💛 Contributors](#-contributors)
-- [📸 Opportunity Stories](#-from-the-community)
+- [➕ Add a Discovery](https://github.com/elchrysaki/enchanted-map/issues/new/choose) 
+- [🛠️ Fix Outdated Information](https://github.com/elchrysaki/enchanted-map/issues/new/choose) 
+- [📖 Read the Contribution Guide](CONTRIBUTING.md) 
+- [💛 Meet the Contributors](#-contributors) 
+- [📸 Share an Opportunity Story](#-from-the-community) 
+- [🗣️ Join the Discussion](https://github.com/elchrysaki/enchanted-map/discussions)
 
 </td>
 </tr>
 </table>
-
----
-
-## 🔥 Closing soon
-
-<!-- CLOSING_SOON_START -->
-
-> No verified opportunities are closing in the next 14 days yet. Either the calendar is being merciful, or the repository is new. [Add one here](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose).
-
-<!-- CLOSING_SOON_END -->
 
 ---
 
@@ -222,350 +273,107 @@ Listings may be removed or archived when the information becomes outdated, the o
 
 </details>
 
----
+## 🔥 Closing soon
 
-# 🌐 Opportunity board
+> [!TIP]
+> **Deadlines do not wait for motivation to arrive.**  
+> These verified opportunities are closing within the next 30 days, ordered by the nearest application deadline.
 
-> [!WARNING]
-> Deadlines, eligibility rules, locations, and funding can change. Always confirm the details on the official opportunity page before applying, booking travel, or informing your family that you are suddenly moving to Finland.
+<!-- CLOSING_SOON_START -->
 
-## 🎤 Conferences & Summits
+| Status | Category | Opportunity | Focus | When & Where | Format | Funding / Prize | Eligibility | Apply | Deadline |
+|---|---|---|---|---|---|---|---|---|---|
+| _No published opportunities are closing soon yet._ | — | — | — | — | — | — | — | [Add a discovery](https://github.com/elchrysaki/enchanted-map/issues/new/choose) | — |
 
-Academic, industry, scientific, student, leadership, policy, and innovation events with a real student participation route.
+<!-- CLOSING_SOON_END -->
 
-<!-- CONFERENCES_START -->
-
-| Status | Opportunity | Focus | When & Where | Format | Funding | Eligibility | Apply | Deadline |
-|---|---|---|---|---|---|---|---|---|
-| _No verified conferences yet_ | — | — | — | — | — | — | [Add one](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose) | — |
-
-<!-- CONFERENCES_END -->
-
-<p align="right"><a href="#-start-here">↑ Back to categories</a></p>
-
----
-
-## 🛠️ Hackathons & Build Challenges
-
-Coding, AI, data, hardware, robotics, product, design, game, startup, and social-impact build events.
-
-<!-- HACKATHONS_START -->
-
-| Status | Opportunity | Focus | When & Where | Format | Funding | Eligibility | Apply | Deadline |
-|---|---|---|---|---|---|---|---|---|
-| _No verified hackathons yet_ | — | — | — | — | — | — | [Add one](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose) | — |
-
-<!-- HACKATHONS_END -->
-
-<p align="right"><a href="#-start-here">↑ Back to categories</a></p>
-
----
-
-## 🏆 Competitions & Challenges
-
-Engineering, research, science, robotics, aerospace, business, entrepreneurship, design, writing, policy, and creative challenges.
-
-<!-- COMPETITIONS_START -->
-
-| Status | Opportunity | Focus | When & Where | Format | Funding / Prize | Eligibility | Apply | Deadline |
-|---|---|---|---|---|---|---|---|---|
-| _No verified competitions yet_ | — | — | — | — | — | — | [Add one](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose) | — |
-
-<!-- COMPETITIONS_END -->
-
-<p align="right"><a href="#-start-here">↑ Back to categories</a></p>
-
----
-
-## 🎓 Academies, Schools & Courses
-
-Selective summer schools, winter schools, technical academies, intensive courses, research schools, and institution-backed learning programs.
-
-<!-- ACADEMIES_START -->
-
-| Status | Opportunity | Focus | When & Where | Format | Funding | Eligibility | Apply | Deadline |
-|---|---|---|---|---|---|---|---|---|
-| _No verified academies yet_ | — | — | — | — | — | — | [Add one](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose) | — |
-
-<!-- ACADEMIES_END -->
-
-<p align="right"><a href="#-start-here">↑ Back to categories</a></p>
-
----
-
-## 🚀 Fellowships
-
-Structured mentorship, leadership, innovation, research, public-interest, and professional-development cohorts.
-
-<!-- FELLOWSHIPS_START -->
-
-| Status | Opportunity | Focus | When & Where | Format | Funding | Eligibility | Apply | Deadline |
-|---|---|---|---|---|---|---|---|---|
-| _No verified fellowships yet_ | — | — | — | — | — | — | [Add one](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose) | — |
-
-<!-- FELLOWSHIPS_END -->
-
-<p align="right"><a href="#-start-here">↑ Back to categories</a></p>
-
----
-
-## 🧩 Special Programs
-
-Selective student programs, innovation cohorts, research experiences, ambassador programs, incubators, mentorship programs, and unusual opportunities that refuse to fit neatly into a dropdown menu.
-
-<!-- PROGRAMS_START -->
-
-| Status | Opportunity | Focus | When & Where | Format | Funding | Eligibility | Apply | Deadline |
-|---|---|---|---|---|---|---|---|---|
-| _No verified programs yet_ | — | — | — | — | — | — | [Add one](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose) | — |
-
-<!-- PROGRAMS_END -->
-
-<p align="right"><a href="#-start-here">↑ Back to categories</a></p>
-
----
-
-## 🧪 Is an opportunity worth adding?
-
-Use this quick test before submitting:
-
-<table>
-<tr>
-<td width="50%" valign="top">
-
-### ✅ Usually a good fit
-
-- Open to students, young people, or early-career applicants
-- Run by a university, company, NGO, research institution, government body, or credible community
-- Has a real deadline, cycle, or rolling application
-- Offers funding, recognition, mentorship, learning, travel, networking, research, or portfolio value
-- Has a direct official page
-
-</td>
-<td width="50%" valign="top">
-
-### ❌ Usually not a fit
-
-- Pure advertising event
-- Generic course available forever
-- No clear organizer
-- No direct application path
-- Extremely expensive with no student route
-- Scraped from an aggregator with no official source
-- “Exclusive global summit” whose main achievement is spelling exclusive correctly
-
-</td>
-</tr>
-</table>
+<p align="right"><a href="#-find-your-way">↑ Back to navigation</a></p>
 
 ---
 
 ## ➕ Add an opportunity
+Found a conference, competition, scholarship, hackathon, course, or other opportunity worth sharing?
 
-Contributing should take about two minutes, not require a minor in Git archaeology.
+Adding it takes around <u> two minutes.</u> 
 
 ```text
-1. Open the submission form
-2. Paste the official opportunity URL
-3. Choose the opportunity type
-4. Add the details you already know
-5. A maintainer verifies and publishes it
+1. Click “Add an Opportunity” 
+2. Paste the official opportunity link 
+3. Select the opportunity type 
+4. Add any details you already know
+5. Submit the form
 ```
+A maintainer will review the information, verify it using official sources, and prepare the final opportunity page for publication.
+
+> [!IMPORTANT]
+> You do not need to know every detail. Even an official link and a few basic facts can help someone discover their next opportunity.
 
 <div align="center">
 
-[![Add Opportunity](https://img.shields.io/badge/ADD%20AN%20OPPORTUNITY-Start%20submission-6C63FF?style=for-the-badge&logo=github&logoColor=white)](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose)
-[![Read Contribution Guide](https://img.shields.io/badge/READ-CONTRIBUTING.md-118AB2?style=for-the-badge&logo=readthedocs&logoColor=white)](CONTRIBUTING.md)
+[![Add Opportunity](https://img.shields.io/badge/ADD%20AN%20OPPORTUNITY-Start%20submission-6C63FF?style=for-the-badge&logo=github&logoColor=white)](https://github.com/elchrysaki/enchanted-map/issues/new?template=submit-opportunity.yml)
+
+[![Read Contribution Guide](https://img.shields.io/badge/READ-CONTRIBUTING.md-118AB2?style=for-the-badge&logo=readthedocs&logoColor=white)](https://github.com/elchrysaki/enchanted-map/blob/main/CONTRIBUTING.md)
 
 </div>
-
-### Submission fields
-
-The issue form should ask for:
-
-- Opportunity name
-- Official URL
-- Type
-- Organizer
-- Focus areas
-- Dates
-- Location and participation format
-- Application deadline
-- Funding or prize information
-- Eligibility
-- Why it is valuable for students
-
-> [!TIP]
-> Missing some details? Submit the official link anyway. A maintainer can complete the record. The whole point is to lower the barrier, not recreate a government form.
-
----
-
-## 🛡️ Accuracy and freshness
-
-Every published opportunity should include a **last verified date** in the underlying dataset.
-
-The maintenance cycle is:
-
-```mermaid
-flowchart LR
-    A[Community submission] --> B[Official-source review]
-    B --> C[Structured opportunity record]
-    C --> D[Validation and duplicate check]
-    D --> E[Published in README]
-    E --> F{Cycle ended?}
-    F -- No --> G[Periodic re-check]
-    G --> E
-    F -- Yes --> H[Move to ARCHIVE.md]
-    H --> I{New cycle announced?}
-    I -- Yes --> B
-```
-
-> [!NOTE]
-> The README should eventually be generated from structured data rather than maintained by hand. One source of truth, fewer contradictions, less ceremonial suffering.
-
----
-
-## 🗂️ Repository structure
-
-```text
-.
-├── README.md
-├── ARCHIVE.md
-├── CONTRIBUTING.md
-├── CODE_OF_CONDUCT.md
-├── LICENSE
-├── data/
-│   └── opportunities.json
-├── assets/
-│   ├── banner.png
-│   ├── banner-dark.png
-│   ├── logo.svg
-│   ├── contributors/
-│   └── community/
-├── scripts/
-│   ├── validate-opportunities.ts
-│   ├── generate-readme.ts
-│   └── archive-expired.ts
-├── .github/
-│   ├── ISSUE_TEMPLATE/
-│   └── workflows/
-└── web/
-```
-
----
-
-## 🧑‍🚀 Ways to contribute
-
-<table>
-<tr>
-<td align="center" width="25%">
-
-### 🔎 Scout
-Find opportunities and submit official links.
-
-</td>
-<td align="center" width="25%">
-
-### ✅ Verify
-Check deadlines, eligibility, funding, and status.
-
-</td>
-<td align="center" width="25%">
-
-### 💻 Build
-Improve automation, validation, search, and the website.
-
-</td>
-<td align="center" width="25%">
-
-### 🌍 Expand
-Add overlooked regions, fields, languages, and communities.
-
-</td>
-</tr>
-</table>
-
-Good first contributions include:
-
-- adding one verified opportunity;
-- reporting a closed or outdated listing;
-- improving an unclear description;
-- checking official links;
-- translating contribution guidance;
-- helping build the data-to-README automation.
 
 ---
 
 ## 💛 Contributors
 
-Built by students and contributors who believe useful opportunities should not remain hidden inside private group chats, forgotten newsletters, and one professor's inbox.
+OffMap is built by students, volunteers, and curious people who believe valuable opportunities should be easier to find and easier to share.
 
 <!-- CONTRIBUTORS_START -->
 
 <table>
 <tr>
 <td align="center">
-<a href="https://github.com/YOUR-USERNAME">
-<img src="https://github.com/YOUR-USERNAME.png" width="96" alt="Project maintainer"><br>
-<sub><strong>Project Maintainer</strong></sub>
-</a>
-</td>
-<td align="center">
-<a href="https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/graphs/contributors">
-<img src="assets/contributors/join.png" width="96" alt="Join the contributors"><br>
-<sub><strong>Your profile here</strong></sub>
-</a>
-</td>
-</tr>
-</table>
+<a href="https://github.com/elchrysaki">
+<img src="https://github.com/elchrysaki.png" width="96" alt="Elena Chrysaki"><br> <sub><strong>Elena Chrysaki</strong></sub><br> <sub>Project Maintainer</sub> </a> </td>
+
+<td align="center"> <a href="https://github.com/elchrysaki/enchanted-map/issues/new?template=submit-opportunity.yml"> <img src="assets/contributors/join.png" width="96" alt="Become a contributor"><br> <sub><strong>Your profile could be here</strong></sub><br> <sub>Join the community</sub> </a> </td> </tr> </table>
 
 <!-- CONTRIBUTORS_END -->
+Want to help build the map?
 
-[See every contributor →](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/graphs/contributors)
+[Submit an opportunity →](https://github.com/elchrysaki/enchanted-map/issues/new?template=submit-opportunity.yml)
+
+[See every contributor →](https://github.com/elchrysaki/enchanted-map/graphs/contributors)
 
 ---
 
 ## 📸 From the community
 
-Real photos, projects, teams, awards, and stories from opportunities discovered through this repository.
+OffMap is also a place to see what students actually **built, presented, explored, competed in, and experienced** after finding an opportunity.
 
-<div align="center">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/community-title-dark.svg">
-  <img src="assets/community-title.svg" width="560" alt="From discovery to experience">
-</picture>
-
-</div>
+Share photographs, projects, team moments, awards, lessons, and short stories from events you attended. <u>Selected recent community stories may be featured here.</u>
 
 <!-- COMMUNITY_GALLERY_START -->
 
-> The gallery is waiting for its first story. Went somewhere, built something, presented research, survived a hackathon, or returned with a suspicious number of tote bags? Share it through the contribution form.
+> 🌱 **The community gallery is waiting for its first story.**
+> Attended a conference, survived a hackathon, presented research, joined a competition, or returned home with an unreasonable number of tote bags? Share your experience through GitHub Discussions.
 
 <!-- COMMUNITY_GALLERY_END -->
 
----
+<div align="center">
 
-## 🧱 Planned improvements
 
-- [ ] Structured opportunity dataset
-- [ ] Automated README generation
-- [ ] Duplicate detection
-- [ ] Deadline and stale-entry checks
-- [ ] Official-link validation
-- [ ] Searchable web interface
-- [ ] Filters for field, country, funding, format, and eligibility
-- [ ] Personal saved-opportunity lists
-- [ ] Weekly “closing soon” digest
-- [ ] Community stories and gallery submissions
+[![Share Your Story](https://img.shields.io/badge/SHARE%20YOUR%20STORY-Add%20photos%20and%20experiences-6C63FF?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/elchrysaki/offmap-hub/discussions/new?category=show-and-tell)[![Explore Community Stories](https://img.shields.io/badge/EXPLORE%20COMMUNITY%20STORIES-Visit%20the%20gallery-118AB2?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/elchrysaki/offmap-hub/discussions/categories/show-and-tell)
+
+</div>
+
+> **Photo permission:** Only upload photographs you own or have permission to share. Make sure everyone clearly visible has agreed to appear publicly.
+
 
 ---
 
 ## 🤝 Acknowledgements
+OffMap is at heart a <u> community-built</u>, so this could have never been without you. It takes inspiration from projects such as BadgeUp and by every student who chose to share an opportunity instead of keeping it hidden.
 
-Inspired by community-maintained opportunity repositories such as BadgeUp and by every student who shared a useful application link instead of hoarding it like medieval treasure.
+We believe the right opportunity should not depend on who you know, which group chat you are in, or whether the right link reaches you in time.
 
-This project is independent and community-run. Opportunity names, logos, and trademarks belong to their respective organizers.
+#### Thank you to everyone who contributes, corrects, reviews, and helps build the map.
+
+> OffMap is an independent, community-run project and is not affiliated with the organizations featured unless explicitly stated. All names, logos, and trademarks belong to their respective owners.
 
 ---
 
