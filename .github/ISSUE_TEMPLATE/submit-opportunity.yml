@@ -222,20 +222,21 @@ body:
     attributes:
       label: "🎓 Academic or career level"
       description: "Select every group that appears eligible."
-      multiple: true
       options:
-        - Secondary or high-school students
-        - Vocational students
-        - Undergraduate students
-        - Master's students
-        - Doctoral students
-        - Postdoctoral researchers
-        - Recent graduates
-        - Early-career professionals
-        - Professionals
-        - Open to several levels
-        - No academic restriction mentioned
-        - Not sure
+        - label: "Secondary or high-school students"
+        - label: "Vocational students"
+        - label: "Undergraduate students"
+        - label: "Master's students"
+        - label: "Doctoral students"
+        - label: "Postdoctoral researchers"
+        - label: "Recent graduates"
+        - label: "Early-career professionals"
+        - label: "Professionals"
+        - label: "Open to several levels"
+        - label: "No academic restriction mentioned"
+        - label: "Not sure"
+    validations:
+      required: false
 
   - type: dropdown
     id: broad_fields
