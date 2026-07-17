@@ -217,7 +217,7 @@ body:
         - No geographic restriction mentioned
         - Not sure
 
-  - type: dropdown
+  - type: checkboxes
     id: academic_levels
     attributes:
       label: "🎓 Academic or career level"
@@ -418,18 +418,6 @@ body:
         Applicants must be enrolled at a university.
         English proficiency is required.
         Participants must be under 30.
-
-  - type: textarea
-    id: audience_information
-    attributes:
-      label: "📜 Audience or inclusion wording"
-      description: "Explain how the organizer describes any intended, encouraged, prioritized, or exclusively eligible group."
-      placeholder: |
-        The organizer especially encourages applications from Black women studying technology-related subjects.
-
-        Or:
-
-        The fellowship is available only to students enrolled at African universities.
 
   - type: textarea
     id: application_requirements
