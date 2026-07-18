@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import base64
 import json
 import os
 import re
@@ -67,8 +66,26 @@ BRANCH_PREFIX = os.environ.get(
 MAX_PR_BODY_LENGTH = 60_000
 MAX_FILE_BYTES = 2_000_000
 
-PR_COMMENT_MARKER = "<!-- enchanted-map-pr-created -->"
-PR_BODY_MARKER = "<!-- enchanted-map-draft-pr -->"
+PR_COMMENT_MARKER = "<!-- offmap-pr-created -->"
+LEGACY_PR_COMMENT_MARKER = (
+    "<!-- enchanted-map-pr-created -->"
+)
+PR_BODY_MARKER = "<!-- offmap-draft-pr -->"
+
+ALLOWED_MAIN_CATEGORIES = {
+    "events",
+    "internships",
+    "competitions",
+    "research",
+    "fellowships",
+    "scholarships",
+    "courses",
+    "innovation",
+    "creative-calls",
+    "exchanges",
+    "volunteering",
+    "other",
+}
 
 HEADERS = {
     "Authorization": f"Bearer {GITHUB_TOKEN}",
@@ -116,14 +133,21 @@ def github_request(
     return response
 
 
-def write_github_output(name: str, value: str) -> None:
+def write_github_output(
+    name: str,
+    value: str,
+) -> None:
     output_path = os.environ.get("GITHUB_OUTPUT")
 
     if not output_path:
         print(f"{name}={value}")
         return
 
-    with open(output_path, "a", encoding="utf-8") as output:
+    with open(
+        output_path,
+        "a",
+        encoding="utf-8",
+    ) as output:
         output.write(f"{name}={value}\n")
 
 
@@ -132,7 +156,9 @@ def read_json(path: Path) -> dict[str, Any]:
         fail(f"Required JSON file not found: {path}")
 
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(
+            path.read_text(encoding="utf-8")
+        )
     except json.JSONDecodeError as exc:
         fail(f"Invalid JSON in {path}: {exc}")
 
@@ -150,6 +176,12 @@ def read_text_file(
     if not path.exists():
         fail(f"Required file not found: {path}")
 
+    if path.is_symlink():
+        fail(
+            "Required file must not be a symbolic link: "
+            f"{path}"
+        )
+
     size = path.stat().st_size
 
     if size > maximum_bytes:
@@ -158,30 +190,88 @@ def read_text_file(
             f"({size} bytes; maximum {maximum_bytes})"
         )
 
-    return path.read_text(encoding="utf-8")
+    try:
+        return path.read_text(
+            encoding="utf-8"
+        )
+    except UnicodeDecodeError as exc:
+        fail(
+            f"File is not valid UTF-8: {path}: {exc}"
+        )
+
+
+def require_object(
+    parent: dict[str, Any],
+    key: str,
+    *,
+    context: str,
+) -> dict[str, Any]:
+    value = parent.get(key)
+
+    if not isinstance(value, dict):
+        fail(
+            f"{context}: '{key}' must be an object."
+        )
+
+    return value
+
+
+def require_string(
+    parent: dict[str, Any],
+    key: str,
+    *,
+    context: str,
+) -> str:
+    value = parent.get(key)
+
+    if (
+        not isinstance(value, str)
+        or not value.strip()
+    ):
+        fail(
+            f"{context}: '{key}' must contain text."
+        )
+
+    return value.strip()
 
 
 def neutralize_mentions(value: str) -> str:
-    return value.replace("@", "@\u200b")
+    return value.replace(
+        "@",
+        "@\u200b",
+    )
 
 
-def sanitize_title(value: Any) -> str:
-    text = str(value or "Untitled opportunity")
-    text = re.sub(r"[\r\n\t]+", " ", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return neutralize_mentions(text[:200])
+def sanitize_title(value: str) -> str:
+    text = re.sub(
+        r"[\r\n\t]+",
+        " ",
+        value,
+    )
 
+    text = re.sub(
+        r"\s+",
+        " ",
+        text,
+    ).strip()
 
-def slugify(value: str) -> str:
-    value = value.lower()
-    value = re.sub(r"[^a-z0-9]+", "-", value)
-    return value.strip("-")
+    if not text:
+        fail(
+            "Opportunity title must not be empty."
+        )
+
+    return neutralize_mentions(
+        text[:200]
+    )
 
 
 def parse_json_list_environment(
     name: str,
 ) -> list[str]:
-    raw = os.environ.get(name, "").strip()
+    raw = os.environ.get(
+        name,
+        "",
+    ).strip()
 
     if not raw:
         return []
@@ -190,8 +280,10 @@ def parse_json_list_environment(
         value = json.loads(raw)
     except json.JSONDecodeError:
         warn(
-            f"{name} was not valid JSON. Reviewer assignment skipped."
+            f"{name} was not valid JSON. "
+            "Reviewer assignment skipped."
         )
+
         return []
 
     if not isinstance(value, list):
@@ -199,15 +291,23 @@ def parse_json_list_environment(
             f"{name} did not contain a JSON list. "
             "Reviewer assignment skipped."
         )
+
         return []
 
     result: list[str] = []
     seen: set[str] = set()
 
     for item in value:
-        username = str(item).strip().lstrip("@")
+        username = (
+            str(item)
+            .strip()
+            .lstrip("@")
+        )
 
-        if not re.fullmatch(r"[A-Za-z0-9-]{1,39}", username):
+        if not re.fullmatch(
+            r"[A-Za-z0-9-]{1,39}",
+            username,
+        ):
             continue
 
         lowered = username.casefold()
@@ -221,44 +321,359 @@ def parse_json_list_environment(
     return result[:15]
 
 
+def validate_environment() -> None:
+    if ISSUE_NUMBER <= 0:
+        fail(
+            "ISSUE_NUMBER must be a positive integer."
+        )
+
+    if not re.fullmatch(
+        r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+",
+        REPOSITORY,
+    ):
+        fail(
+            "REPOSITORY must use the form owner/name."
+        )
+
+    if not BRANCH_PREFIX:
+        fail(
+            "BRANCH_PREFIX must not be empty."
+        )
+
+    if not re.fullmatch(
+        r"[A-Za-z0-9._/-]+",
+        BRANCH_PREFIX,
+    ):
+        fail(
+            "BRANCH_PREFIX contains unsupported characters."
+        )
+
+
 # ============================================================
-# REPOSITORY AND BRANCH HELPERS
+# SCHEMA-V2 INPUT VALIDATION
+# ============================================================
+
+def get_publishable_metadata() -> dict[str, str]:
+    data = read_json(
+        PUBLISHABLE_CONTENT_FILE
+    )
+
+    if data.get("schema_version") != 2:
+        fail(
+            "PUBLISHABLE_CONTENT_FILE must use "
+            "schema version 2."
+        )
+
+    if (
+        data.get("record_type")
+        != "publishable-opportunity-draft"
+    ):
+        fail(
+            "PUBLISHABLE_CONTENT_FILE is not a "
+            "publishable-opportunity-draft record."
+        )
+
+    if data.get("issue_number") != ISSUE_NUMBER:
+        fail(
+            "Publishable issue_number does not match "
+            "ISSUE_NUMBER."
+        )
+
+    identity = require_object(
+        data,
+        "identity",
+        context="Publishable content",
+    )
+
+    moderation = require_object(
+        data,
+        "moderation",
+        context="Publishable content",
+    )
+
+    title = require_string(
+        identity,
+        "title",
+        context="Publishable identity",
+    )
+
+    main_category = require_string(
+        identity,
+        "main_category",
+        context="Publishable identity",
+    )
+
+    category = require_string(
+        identity,
+        "category",
+        context="Publishable identity",
+    )
+
+    if (
+        main_category
+        not in ALLOWED_MAIN_CATEGORIES
+    ):
+        fail(
+            f"Invalid main category: {main_category}"
+        )
+
+    if (
+        moderation.get("human_review_required")
+        is not True
+    ):
+        fail(
+            "Publishable draft must preserve "
+            "human_review_required: true."
+        )
+
+    if (
+        moderation.get(
+            "safe_to_generate_draft_page"
+        )
+        is not True
+    ):
+        fail(
+            "Publishable draft was not marked safe "
+            "to generate."
+        )
+
+    action = moderation.get(
+        "recommended_action"
+    )
+
+    if action != "continue-to-draft-pr":
+        fail(
+            "Publishable draft must recommend "
+            "'continue-to-draft-pr'."
+        )
+
+    return {
+        "title": sanitize_title(title),
+        "main_category": main_category,
+        "category": category,
+        "formatter_action": action,
+    }
+
+
+def repository_path(
+    path: Path,
+    metadata: dict[str, str],
+) -> str:
+    if not str(path):
+        fail(
+            "OPPORTUNITY_FILE was not provided."
+        )
+
+    if path.is_absolute():
+        fail(
+            "OPPORTUNITY_FILE must be a "
+            "repository-relative path."
+        )
+
+    normalized = path.as_posix()
+
+    if (
+        not normalized
+        or normalized.startswith("../")
+        or "/../" in normalized
+        or normalized.startswith("/")
+    ):
+        fail(
+            f"Unsafe repository path: {path}"
+        )
+
+    expected_directory = (
+        "opportunities/"
+        f"{metadata['main_category']}"
+    )
+
+    if (
+        path.parent.as_posix()
+        != expected_directory
+    ):
+        fail(
+            "Generated opportunity path must use "
+            "opportunities/<main_category>/<slug>.md."
+        )
+
+    if path.suffix != ".md":
+        fail(
+            "Generated opportunity file must use .md."
+        )
+
+    if not re.fullmatch(
+        r"[a-z0-9]+(?:-[a-z0-9]+)*",
+        path.stem,
+    ):
+        fail(
+            "Generated opportunity filename must be "
+            "a lowercase hyphenated slug."
+        )
+
+    return normalized
+
+
+def validate_opportunity_file(
+    content: str,
+    opportunity_path: str,
+    metadata: dict[str, str],
+) -> None:
+    match = re.match(
+        r"\A---\s*\n(.*?)\n---\s*(?:\n|$)",
+        content,
+        flags=re.DOTALL,
+    )
+
+    if not match:
+        fail(
+            "Generated opportunity file does not begin "
+            "with YAML front matter."
+        )
+
+    try:
+        front_matter = yaml.safe_load(
+            match.group(1)
+        )
+    except yaml.YAMLError as exc:
+        fail(
+            "Generated opportunity file contains "
+            f"invalid YAML: {exc}"
+        )
+
+    if not isinstance(front_matter, dict):
+        fail(
+            "Generated opportunity front matter "
+            "must be an object."
+        )
+
+    if (
+        front_matter.get("schema_version")
+        != 2
+    ):
+        fail(
+            "Generated opportunity file must use "
+            "schema version 2."
+        )
+
+    if (
+        front_matter.get("record_type")
+        != "opportunity"
+    ):
+        fail(
+            "Generated opportunity record_type must "
+            "be 'opportunity'."
+        )
+
+    if (
+        front_matter.get("status")
+        != "pending-review"
+    ):
+        fail(
+            "Generated opportunity must have "
+            "status 'pending-review'."
+        )
+
+    if (
+        front_matter.get("main_category")
+        != metadata["main_category"]
+    ):
+        fail(
+            "Generated opportunity main_category "
+            "does not match the publishable record."
+        )
+
+    if (
+        front_matter.get("category")
+        != metadata["category"]
+    ):
+        fail(
+            "Generated opportunity category does not "
+            "match the publishable record."
+        )
+
+    path = Path(
+        opportunity_path
+    )
+
+    if (
+        front_matter.get("slug")
+        != path.stem
+    ):
+        fail(
+            "Generated opportunity slug does not "
+            "match its filename."
+        )
+
+    submission = require_object(
+        front_matter,
+        "submission",
+        context="Generated opportunity",
+    )
+
+    if (
+        submission.get("issue_number")
+        != ISSUE_NUMBER
+    ):
+        fail(
+            "Generated opportunity submission issue "
+            "does not match ISSUE_NUMBER."
+        )
+
+
+# ============================================================
+# REPOSITORY AND SINGLE-FILE BRANCH HELPERS
 # ============================================================
 
 def get_repository() -> dict[str, Any]:
-    response = github_request(
+    data = github_request(
         "GET",
         f"/repos/{REPOSITORY}",
-    )
-
-    data = response.json()
+    ).json()
 
     if not isinstance(data, dict):
-        fail("GitHub returned an invalid repository object.")
+        fail(
+            "GitHub returned an invalid "
+            "repository object."
+        )
 
     return data
 
 
-def get_default_branch(repository: dict[str, Any]) -> str:
+def get_default_branch(
+    repository: dict[str, Any],
+) -> str:
     if BASE_BRANCH_OVERRIDE:
         return BASE_BRANCH_OVERRIDE
 
-    default_branch = repository.get("default_branch")
+    default_branch = repository.get(
+        "default_branch"
+    )
 
-    if not isinstance(default_branch, str) or not default_branch:
-        fail("Could not determine the repository default branch.")
+    if (
+        not isinstance(default_branch, str)
+        or not default_branch
+    ):
+        fail(
+            "Could not determine the repository "
+            "default branch."
+        )
 
     return default_branch
 
 
-def get_branch_sha(branch: str) -> str | None:
+def get_branch_sha(
+    branch: str,
+) -> str | None:
     encoded_branch = quote(
         branch,
         safe="",
     )
 
     response = requests.get(
-        f"{GITHUB_API}/repos/{REPOSITORY}/git/ref/heads/{encoded_branch}",
+        (
+            f"{GITHUB_API}/repos/{REPOSITORY}/"
+            f"git/ref/heads/{encoded_branch}"
+        ),
         headers=HEADERS,
         timeout=60,
     )
@@ -269,180 +684,175 @@ def get_branch_sha(branch: str) -> str | None:
     if response.status_code != 200:
         fail(
             f"Could not inspect branch '{branch}': "
-            f"{response.status_code} {response.text[:1000]}"
+            f"{response.status_code} "
+            f"{response.text[:1000]}"
         )
 
     data = response.json()
 
     try:
-        return str(data["object"]["sha"])
-    except (KeyError, TypeError):
-        fail(f"GitHub returned an invalid ref for branch '{branch}'.")
+        return str(
+            data["object"]["sha"]
+        )
+    except (
+        KeyError,
+        TypeError,
+    ):
+        fail(
+            "GitHub returned an invalid ref for "
+            f"branch '{branch}'."
+        )
 
     return None
 
 
-def create_branch(
-    branch: str,
-    base_sha: str,
-) -> None:
-    github_request(
-        "POST",
-        f"/repos/{REPOSITORY}/git/refs",
-        expected_statuses=(201,),
-        json={
-            "ref": f"refs/heads/{branch}",
-            "sha": base_sha,
-        },
-    )
-
-
-def ensure_branch(
+def create_single_file_branch_commit(
     branch: str,
     base_branch: str,
+    path: str,
+    content: str,
+    commit_message: str,
 ) -> None:
-    existing_sha = get_branch_sha(branch)
-
-    if existing_sha:
-        print(
-            f"Reusing existing branch: {branch}"
-        )
-        return
-
-    base_sha = get_branch_sha(base_branch)
+    base_sha = get_branch_sha(
+        base_branch
+    )
 
     if not base_sha:
         fail(
             f"Base branch was not found: {base_branch}"
         )
 
-    create_branch(
-        branch,
-        base_sha,
-    )
+    commit_data = github_request(
+        "GET",
+        (
+            f"/repos/{REPOSITORY}/git/commits/"
+            f"{base_sha}"
+        ),
+    ).json()
 
-    print(
-        f"Created branch: {branch}"
-    )
-
-
-# ============================================================
-# FILE COMMITTING
-# ============================================================
-
-def repository_path(path: Path) -> str:
-    if path.is_absolute():
-        fail(
-            "OPPORTUNITY_FILE must be a repository-relative path."
+    try:
+        base_tree_sha = str(
+            commit_data["tree"]["sha"]
         )
-
-    normalized = path.as_posix().lstrip("/")
-
-    if (
-        not normalized
-        or normalized.startswith("../")
-        or "/../" in normalized
+    except (
+        KeyError,
+        TypeError,
     ):
         fail(
-            f"Unsafe repository path: {path}"
+            "GitHub returned an invalid base commit."
         )
 
-    if not normalized.startswith("opportunities/"):
-        fail(
-            "Generated opportunity pages must be stored "
-            "under the opportunities/ directory."
-        )
-
-    return normalized
-
-
-def get_file_sha(
-    path: str,
-    branch: str,
-) -> str | None:
-    encoded_path = quote(
-        path,
-        safe="/",
-    )
-
-    response = requests.get(
-        f"{GITHUB_API}/repos/{REPOSITORY}/contents/{encoded_path}",
-        headers=HEADERS,
-        params={
-            "ref": branch,
+    blob_data = github_request(
+        "POST",
+        f"/repos/{REPOSITORY}/git/blobs",
+        expected_statuses=(201,),
+        json={
+            "content": content,
+            "encoding": "utf-8",
         },
-        timeout=60,
+    ).json()
+
+    blob_sha = blob_data.get(
+        "sha"
     )
 
-    if response.status_code == 404:
-        return None
-
-    if response.status_code != 200:
+    if not isinstance(blob_sha, str):
         fail(
-            f"Could not inspect '{path}' on '{branch}': "
-            f"{response.status_code} {response.text[:1000]}"
+            "GitHub returned an invalid blob."
         )
 
-    data = response.json()
+    tree_data = github_request(
+        "POST",
+        f"/repos/{REPOSITORY}/git/trees",
+        expected_statuses=(201,),
+        json={
+            "base_tree": base_tree_sha,
+            "tree": [
+                {
+                    "path": path,
+                    "mode": "100644",
+                    "type": "blob",
+                    "sha": blob_sha,
+                }
+            ],
+        },
+    ).json()
 
-    if not isinstance(data, dict):
+    tree_sha = tree_data.get(
+        "sha"
+    )
+
+    if not isinstance(tree_sha, str):
         fail(
-            f"GitHub returned invalid file metadata for '{path}'."
+            "GitHub returned an invalid tree."
         )
 
-    sha = data.get("sha")
+    new_commit_data = github_request(
+        "POST",
+        f"/repos/{REPOSITORY}/git/commits",
+        expected_statuses=(201,),
+        json={
+            "message": commit_message,
+            "tree": tree_sha,
+            "parents": [
+                base_sha,
+            ],
+        },
+    ).json()
 
-    if not isinstance(sha, str):
+    new_commit_sha = new_commit_data.get(
+        "sha"
+    )
+
+    if not isinstance(new_commit_sha, str):
         fail(
-            f"GitHub returned no file SHA for '{path}'."
+            "GitHub returned an invalid new commit."
         )
 
-    return sha
+    existing_branch_sha = get_branch_sha(
+        branch
+    )
 
-
-def put_file(
-    path: str,
-    content: str,
-    branch: str,
-    commit_message: str,
-) -> None:
-    existing_sha = get_file_sha(
-        path,
+    encoded_branch = quote(
         branch,
+        safe="",
     )
 
-    payload: dict[str, Any] = {
-        "message": commit_message,
-        "content": base64.b64encode(
-            content.encode("utf-8")
-        ).decode("ascii"),
-        "branch": branch,
-    }
+    if existing_branch_sha:
+        github_request(
+            "PATCH",
+            (
+                f"/repos/{REPOSITORY}/git/refs/"
+                f"heads/{encoded_branch}"
+            ),
+            json={
+                "sha": new_commit_sha,
+                "force": True,
+            },
+        )
 
-    if existing_sha:
-        payload["sha"] = existing_sha
+        print(
+            "Regenerated existing automated branch "
+            f"from {base_branch}: {branch}"
+        )
 
-    expected_statuses = (
-        (200,)
-        if existing_sha
-        else (201,)
-    )
+    else:
+        github_request(
+            "POST",
+            f"/repos/{REPOSITORY}/git/refs",
+            expected_statuses=(201,),
+            json={
+                "ref": f"refs/heads/{branch}",
+                "sha": new_commit_sha,
+            },
+        )
 
-    github_request(
-        "PUT",
-        f"/repos/{REPOSITORY}/contents/{quote(path, safe='/')}",
-        expected_statuses=expected_statuses,
-        json=payload,
-    )
-
-    action = (
-        "Updated"
-        if existing_sha
-        else "Created"
-    )
+        print(
+            f"Created branch: {branch}"
+        )
 
     print(
-        f"{action} repository file: {path}"
+        f"Committed opportunity file: {path}"
     )
 
 
@@ -454,7 +864,7 @@ def get_existing_pull_request(
     owner: str,
     branch: str,
 ) -> dict[str, Any] | None:
-    response = github_request(
+    pulls = github_request(
         "GET",
         f"/repos/{REPOSITORY}/pulls",
         params={
@@ -462,12 +872,13 @@ def get_existing_pull_request(
             "head": f"{owner}:{branch}",
             "per_page": 10,
         },
-    )
-
-    pulls = response.json()
+    ).json()
 
     if not isinstance(pulls, list):
-        fail("GitHub returned an invalid pull-request list.")
+        fail(
+            "GitHub returned an invalid "
+            "pull-request list."
+        )
 
     for pull in pulls:
         if isinstance(pull, dict):
@@ -478,51 +889,57 @@ def get_existing_pull_request(
 
 def build_pull_request_body(
     report: str,
-    issue_url: str | None,
+    issue_url: str,
     opportunity_path: str,
+    metadata: dict[str, str],
 ) -> str:
     header = [
         PR_BODY_MARKER,
-        "## ðºï¸ Automated Quest Draft",
+        "## 🧭 OFFMAP opportunity draft",
         "",
         (
-            f"This draft was generated from issue "
-            f"#{ISSUE_NUMBER}. It must be reviewed and edited "
-            "by a human before merging."
+            "This opportunity was prepared from issue "
+            f"#{ISSUE_NUMBER}, using the submitted "
+            "information and official-source research."
+        ),
+        "",
+        (
+            "**Human review is required before merging.** "
+            "Moderators may edit, request changes, reject, "
+            "or approve the draft."
         ),
         "",
         f"**Proposed page:** `{opportunity_path}`",
+        (
+            "**Classification:** "
+            f"`{metadata['main_category']}` → "
+            f"`{metadata['category']}`"
+        ),
+        f"**Original submission:** {issue_url}",
+        "",
+        "---",
+        "",
     ]
 
-    if issue_url:
-        header.extend(
-            [
-                "",
-                f"**Original submission:** {issue_url}",
-            ]
-        )
-
-    header.extend(
-        [
-            "",
-            "---",
-            "",
-        ]
+    body = (
+        "\n".join(header)
+        + report
     )
-
-    body = "\n".join(header) + report
 
     if len(body) > MAX_PR_BODY_LENGTH:
         warn(
-            "The review report exceeded the pull-request body "
-            "limit and was truncated."
+            "The review report exceeded the "
+            "pull-request body limit and was truncated."
         )
 
         body = (
-            body[: MAX_PR_BODY_LENGTH - 200]
+            body[
+                : MAX_PR_BODY_LENGTH - 220
+            ]
             + "\n\n---\n\n"
-            + "The report was truncated. Review the workflow artifact "
-            + f"`{REVIEW_REPORT_FILE.name}` for the complete copy.\n"
+            + "The report was truncated. Review the "
+            + f"workflow artifact `{REVIEW_REPORT_FILE.name}` "
+            + "for the complete copy.\n"
         )
 
     return body
@@ -534,7 +951,7 @@ def create_pull_request(
     branch: str,
     base_branch: str,
 ) -> dict[str, Any]:
-    response = github_request(
+    data = github_request(
         "POST",
         f"/repos/{REPOSITORY}/pulls",
         expected_statuses=(201,),
@@ -546,12 +963,13 @@ def create_pull_request(
             "draft": True,
             "maintainer_can_modify": True,
         },
-    )
-
-    data = response.json()
+    ).json()
 
     if not isinstance(data, dict):
-        fail("GitHub returned an invalid pull-request object.")
+        fail(
+            "GitHub returned an invalid "
+            "pull-request object."
+        )
 
     return data
 
@@ -561,19 +979,23 @@ def update_pull_request(
     title: str,
     body: str,
 ) -> dict[str, Any]:
-    response = github_request(
+    data = github_request(
         "PATCH",
-        f"/repos/{REPOSITORY}/pulls/{pull_number}",
+        (
+            f"/repos/{REPOSITORY}/pulls/"
+            f"{pull_number}"
+        ),
         json={
             "title": title,
             "body": body,
         },
-    )
-
-    data = response.json()
+    ).json()
 
     if not isinstance(data, dict):
-        fail("GitHub returned an invalid updated pull request.")
+        fail(
+            "GitHub returned an invalid updated "
+            "pull request."
+        )
 
     return data
 
@@ -589,7 +1011,10 @@ def ensure_label(
     )
 
     response = requests.get(
-        f"{GITHUB_API}/repos/{REPOSITORY}/labels/{encoded_name}",
+        (
+            f"{GITHUB_API}/repos/{REPOSITORY}/"
+            f"labels/{encoded_name}"
+        ),
         headers=HEADERS,
         timeout=60,
     )
@@ -600,7 +1025,8 @@ def ensure_label(
     if response.status_code != 404:
         fail(
             f"Could not inspect label '{name}': "
-            f"{response.status_code} {response.text[:800]}"
+            f"{response.status_code} "
+            f"{response.text[:800]}"
         )
 
     github_request(
@@ -621,7 +1047,10 @@ def add_labels_to_pull_request(
 ) -> None:
     github_request(
         "POST",
-        f"/repos/{REPOSITORY}/issues/{pull_number}/labels",
+        (
+            f"/repos/{REPOSITORY}/issues/"
+            f"{pull_number}/labels"
+        ),
         json={
             "labels": labels,
         },
@@ -652,19 +1081,27 @@ def request_reviewers(
             "Requested reviewers: "
             + ", ".join(reviewers)
         )
+
         return
 
-    if response.status_code in {403, 404, 422}:
+    if response.status_code in {
+        403,
+        404,
+        422,
+    }:
         warn(
-            "GitHub could not request one or more reviewers. "
-            "The PR was still created successfully. Confirm that "
-            "the usernames are repository collaborators."
+            "GitHub could not request one or more "
+            "reviewers. The PR was still created or "
+            "updated successfully. Confirm that the "
+            "usernames are repository collaborators."
         )
+
         return
 
     fail(
         "Could not request reviewers: "
-        f"{response.status_code} {response.text[:1000]}"
+        f"{response.status_code} "
+        f"{response.text[:1000]}"
     )
 
 
@@ -672,60 +1109,141 @@ def request_reviewers(
 # ORIGINAL ISSUE UPDATE
 # ============================================================
 
-def comment_exists() -> bool:
-    response = github_request(
-        "GET",
-        f"/repos/{REPOSITORY}/issues/{ISSUE_NUMBER}/comments",
-        params={
-            "per_page": 100,
-        },
+def get_issue_url() -> str:
+    canonical_url = (
+        f"https://github.com/{REPOSITORY}/"
+        f"issues/{ISSUE_NUMBER}"
     )
 
-    comments = response.json()
+    if not RAW_SUBMISSION_FILE.exists():
+        return canonical_url
 
-    if not isinstance(comments, list):
-        return False
-
-    return any(
-        PR_COMMENT_MARKER
-        in str(comment.get("body", ""))
-        for comment in comments
-        if isinstance(comment, dict)
+    data = read_json(
+        RAW_SUBMISSION_FILE
     )
 
+    issue = data.get(
+        "issue",
+        {},
+    )
 
-def comment_on_issue(
+    if not isinstance(issue, dict):
+        return canonical_url
+
+    value = issue.get(
+        "url"
+    )
+
+    if (
+        isinstance(value, str)
+        and value == canonical_url
+    ):
+        return value
+
+    return canonical_url
+
+
+def find_existing_issue_comment() -> int | None:
+    page = 1
+
+    while True:
+        comments = github_request(
+            "GET",
+            (
+                f"/repos/{REPOSITORY}/issues/"
+                f"{ISSUE_NUMBER}/comments"
+            ),
+            params={
+                "per_page": 100,
+                "page": page,
+            },
+        ).json()
+
+        if not isinstance(comments, list):
+            fail(
+                "GitHub returned an invalid "
+                "issue-comment list."
+            )
+
+        for comment in comments:
+            if not isinstance(comment, dict):
+                continue
+
+            body = str(
+                comment.get(
+                    "body",
+                    "",
+                )
+            )
+
+            if (
+                PR_COMMENT_MARKER in body
+                or LEGACY_PR_COMMENT_MARKER in body
+            ):
+                comment_id = comment.get(
+                    "id"
+                )
+
+                if isinstance(comment_id, int):
+                    return comment_id
+
+        if len(comments) < 100:
+            return None
+
+        page += 1
+
+
+def upsert_issue_comment(
     pull_url: str,
 ) -> None:
-    if comment_exists():
-        print(
-            "Pull-request issue comment already exists. "
-            "Skipping duplicate."
-        )
-        return
-
     body = "\n".join(
         [
             PR_COMMENT_MARKER,
-            "## â¨ A Draft Quest Is Ready",
+            "## ✨ An OFFMAP draft is ready",
             "",
             (
-                "The researched and formatted opportunity has "
-                "been placed in a draft pull request for human review."
+                "The opportunity has been researched "
+                "and placed in a draft pull request "
+                "for human review."
             ),
             "",
-            f"ð {pull_url}",
+            f"🔗 {pull_url}",
             "",
             (
-                "A moderator may edit, request changes, reject, "
-                "or merge the draft."
+                "A moderator may edit it, request "
+                "changes, reject it, or approve it "
+                "for publication."
             ),
         ]
     )
 
+    comment_id = find_existing_issue_comment()
+
+    if comment_id is not None:
+        github_request(
+            "PATCH",
+            (
+                f"/repos/{REPOSITORY}/issues/"
+                f"comments/{comment_id}"
+            ),
+            json={
+                "body": body,
+            },
+        )
+
+        print(
+            "Updated the existing pull-request "
+            "comment on the submission issue."
+        )
+
+        return
+
     github_request(
         "POST",
-        f"/repos/{REPOSITORY}/issues/{ISSUE_NUMBER}/comments",
+        (
+            f"/repos/{REPOSITORY}/issues/"
+            f"{ISSUE_NUMBER}/comments"
+        ),
         expected_statuses=(201,),
         json={
             "body": body,
@@ -738,7 +1256,10 @@ def add_labels_to_issue(
 ) -> None:
     github_request(
         "POST",
-        f"/repos/{REPOSITORY}/issues/{ISSUE_NUMBER}/labels",
+        (
+            f"/repos/{REPOSITORY}/issues/"
+            f"{ISSUE_NUMBER}/labels"
+        ),
         json={
             "labels": labels,
         },
@@ -746,92 +1267,17 @@ def add_labels_to_issue(
 
 
 # ============================================================
-# INPUT METADATA
-# ============================================================
-
-def get_publishable_metadata() -> tuple[str, str, bool]:
-    data = read_json(
-        PUBLISHABLE_CONTENT_FILE
-    )
-
-    if (
-        data.get("record_type")
-        != "publishable-opportunity-draft"
-    ):
-        fail(
-            "PUBLISHABLE_CONTENT_FILE is not a "
-            "publishable-opportunity-draft record."
-        )
-
-    identity = data.get("identity", {})
-
-    if not isinstance(identity, dict):
-        identity = {}
-
-    moderation = data.get("moderation", {})
-
-    if not isinstance(moderation, dict):
-        moderation = {}
-
-    title = sanitize_title(
-        identity.get("title")
-    )
-
-    action = str(
-        moderation.get(
-            "recommended_action",
-            "hold-for-human-review",
-        )
-    )
-
-    safe_to_generate = bool(
-        moderation.get(
-            "safe_to_generate_draft_page",
-            False,
-        )
-    )
-
-    return title, action, safe_to_generate
-
-
-def get_issue_url() -> str | None:
-    if not RAW_SUBMISSION_FILE.exists():
-        return None
-
-    data = read_json(
-        RAW_SUBMISSION_FILE
-    )
-
-    issue = data.get("issue", {})
-
-    if not isinstance(issue, dict):
-        return None
-
-    value = issue.get("url")
-
-    if not isinstance(value, str):
-        return None
-
-    if not value.startswith(
-        f"https://github.com/{REPOSITORY}/issues/"
-    ):
-        return None
-
-    return value
-
-
-# ============================================================
 # MAIN
 # ============================================================
 
 def main() -> None:
-    if not str(OPPORTUNITY_FILE):
-        fail(
-            "OPPORTUNITY_FILE was not provided."
-        )
+    validate_environment()
+
+    metadata = get_publishable_metadata()
 
     opportunity_path = repository_path(
-        OPPORTUNITY_FILE
+        OPPORTUNITY_FILE,
+        metadata,
     )
 
     opportunity_content = read_text_file(
@@ -842,39 +1288,53 @@ def main() -> None:
         REVIEW_REPORT_FILE
     )
 
-    title, formatter_action, safe_to_generate = (
-        get_publishable_metadata()
+    validate_opportunity_file(
+        opportunity_content,
+        opportunity_path,
+        metadata,
     )
 
     repository = get_repository()
-    owner = repository.get("owner", {}).get("login")
+
+    owner = (
+        repository.get(
+            "owner",
+            {},
+        ).get(
+            "login"
+        )
+    )
 
     if not isinstance(owner, str) or not owner:
-        fail("Could not determine the repository owner.")
+        fail(
+            "Could not determine the repository owner."
+        )
 
     base_branch = get_default_branch(
         repository
     )
 
-    file_slug = slugify(
-        OPPORTUNITY_FILE.stem
-    ) or f"opportunity-{ISSUE_NUMBER}"
-
+    # One stable branch per submission prevents duplicate PRs
+    # if the generated title, slug, or category changes.
     branch = (
-        f"{BRANCH_PREFIX}/issue-{ISSUE_NUMBER}-{file_slug}"
+        f"{BRANCH_PREFIX}/issue-{ISSUE_NUMBER}"
     )[:240].rstrip("-/")
 
-    ensure_branch(
+    existing_pull = get_existing_pull_request(
+        owner,
         branch,
-        base_branch,
     )
 
-    put_file(
+    # The branch is rebuilt from the latest base tree with
+    # exactly one changed opportunity file. This matches the
+    # publishing workflow's one-file safety rule.
+    create_single_file_branch_commit(
+        branch,
+        base_branch,
         opportunity_path,
         opportunity_content,
-        branch,
         (
-            f"Add {title} opportunity draft "
+            f"Add {metadata['title']} opportunity draft "
             f"(issue #{ISSUE_NUMBER})"
         ),
     )
@@ -885,16 +1345,13 @@ def main() -> None:
         review_report,
         issue_url,
         opportunity_path,
+        metadata,
     )
 
     pr_title = (
-        f"ðºï¸ Quest Review: {title}"
+        "🧭 Opportunity review: "
+        f"{metadata['title']}"
     )[:250]
-
-    existing_pull = get_existing_pull_request(
-        owner,
-        branch,
-    )
 
     if existing_pull:
         pull_number = int(
@@ -908,8 +1365,10 @@ def main() -> None:
         )
 
         print(
-            f"Updated existing draft PR #{pull_number}."
+            "Updated existing draft PR "
+            f"#{pull_number}."
         )
+
     else:
         pull = create_pull_request(
             pr_title,
@@ -927,7 +1386,8 @@ def main() -> None:
         )
 
     pull_url = str(
-        pull.get("html_url") or ""
+        pull.get("html_url")
+        or ""
     )
 
     if not pull_url:
@@ -938,34 +1398,26 @@ def main() -> None:
     ensure_label(
         "generated-discovery",
         "8B5CF6",
-        "An opportunity page generated from a community submission.",
+        (
+            "An OFFMAP opportunity draft generated "
+            "from a community submission."
+        ),
     )
 
     ensure_label(
         "needs-maintainer-review",
         "F4C542",
-        "Requires human review before merging.",
+        (
+            "Requires human review before publication."
+        ),
     )
-
-    pull_labels = [
-        "generated-discovery",
-        "needs-maintainer-review",
-    ]
-
-    if not safe_to_generate:
-        ensure_label(
-            "ai-needs-attention",
-            "D73A4A",
-            "The AI formatter marked the draft as unsafe or incomplete.",
-        )
-
-        pull_labels.append(
-            "ai-needs-attention"
-        )
 
     add_labels_to_pull_request(
         pull_number,
-        pull_labels,
+        [
+            "generated-discovery",
+            "needs-maintainer-review",
+        ],
     )
 
     reviewers = parse_json_list_environment(
@@ -980,7 +1432,10 @@ def main() -> None:
     ensure_label(
         "pull-request-created",
         "0E8A16",
-        "A draft pull request has been created for this submission.",
+        (
+            "A draft pull request has been created "
+            "for this submission."
+        ),
     )
 
     add_labels_to_issue(
@@ -989,8 +1444,8 @@ def main() -> None:
         ]
     )
 
-    comment_on_issue(
-        pull_url,
+    upsert_issue_comment(
+        pull_url
     )
 
     write_github_output(
@@ -1015,15 +1470,17 @@ def main() -> None:
 
     write_github_output(
         "formatter_recommended_action",
-        formatter_action,
+        metadata["formatter_action"],
     )
 
     print(
         f"Draft pull request: {pull_url}"
     )
+
     print(
         f"Branch: {branch}"
     )
+
     print(
         f"Base branch: {base_branch}"
     )
@@ -1032,9 +1489,11 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
+
     except requests.RequestException as exc:
         fail(
             f"Network request failed: {exc}"
         )
+
     except KeyboardInterrupt:
         sys.exit(130)
