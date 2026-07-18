@@ -183,7 +183,7 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 </td>
 <td valign="top" width="30%"> 
 
-### 🧠 Browse by field 
+**Browse by field**
 - [⚙️ Engineering & Technology](#engineering--technology) 
 - [💻 Computing, AI & Data](#computing-ai--data) 
 - [🔬 Natural Sciences](#natural-sciences) 
