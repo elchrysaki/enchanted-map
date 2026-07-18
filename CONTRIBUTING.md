@@ -1,224 +1,288 @@
-<div align="center">
+# Contributing to OFFMAP
 
-# ⚔️ Join the Guild
+> **Your map. Your story. Your impact.**
 
-### Every great map was drawn by more than one explorer.
+OFFMAP helps students find opportunities that would otherwise disappear into group chats, newsletters, and the mysterious depths of someone’s inbox.
 
-Whether you've discovered a hidden hackathon in Finland, a fellowship in Japan, a research program in Canada, or a conference with free travel grants that almost nobody knows about...
-
-**Help future adventurers discover it.**
-
-<br>
-
-> *"The map grows with every explorer."* 🦄
-
-</div>
+You can help by adding opportunities, correcting information, improving the code, or building the parts of the platform that do not exist yet. The map is useful. The roads are still under construction.
 
 ---
 
-# 🗺️ What belongs on the Enchanted Map?
+## Add an Opportunity
 
-Enchanted Map is a community-curated collection of exceptional opportunities for students and young professionals around the world.
+Use the OFFMAP submission form:
 
-You can contribute:
+[**Submit an opportunity →**](../../issues/new?template=submit-opportunity.yml)
 
-- 🏛️ Conferences
-- 💻 Hackathons
-- 🏆 Competitions
-- 🎓 Academies
-- 🤝 Fellowships
-- 🌍 Exchange Programs
-- 💼 Internships
-- 💰 Scholarships
-- 🚀 Startup Programs
-- 📚 Online Courses
-- 🔬 Research Opportunities
-- 🎤 Summer Schools
-- 🏕️ Camps & Bootcamps
-- ✈️ Student Travel Opportunities
+You do **not** need to create a Markdown file manually.
 
----
+The pipeline:
 
-# ✨ Guild Rules
+1. preserves the original submission;
+2. researches official sources;
+3. prepares a draft opportunity page;
+4. opens a draft pull request;
+5. requires human review before publication.
 
-Every opportunity should be:
+AI may research, organize, and flag problems. It may not verify or publish an opportunity by itself. We have seen what happens when software becomes overconfident.
 
-- 🌍 Open to students or early-career professionals
-- 📅 Currently active
-- 🔗 Linked to an official source
-- 📝 Accurate and up-to-date
-- 🤝 Respectful and unbiased
+### Include
 
-**Quality is always more valuable than quantity.**
+- opportunity name;
+- broad category and specific type;
+- organizer;
+- short description;
+- official source;
+- deadline;
+- format;
+- anything useful about eligibility, funding, dates, location, or applications.
+
+A reliable link and a few accurate facts are better than a dramatic paragraph assembled from vibes.
 
 ---
 
-# 🧭 Before You Submit
+## What Belongs Here
 
-Please make sure that:
+OFFMAP includes:
 
-- ✅ The opportunity isn't already listed.
-- ✅ All deadlines are correct.
-- ✅ Official links work.
-- ✅ Information comes from the organizer.
-- ✅ The opportunity is still accepting applications.
+- conferences, summits, forums, and workshops;
+- internships, traineeships, and apprenticeships;
+- competitions, challenges, and hackathons;
+- research programs and placements;
+- fellowships and leadership programs;
+- scholarships, grants, and travel grants;
+- academies, summer schools, courses, and bootcamps;
+- startup, accelerator, and entrepreneurship programs;
+- creative, writing, media, and design calls;
+- exchanges, mobility, and volunteering programs.
+
+OFFMAP does **not** include:
+
+- ordinary job listings;
+- referral schemes;
+- random promotional webinars;
+- listings without a clear organizer or official source;
+- tourism packages wearing an educational hat;
+- permanently closed opportunities with no sign of returning.
+
+Internships are welcome. General jobs are not.
 
 ---
 
-# ⚔️ Your Quest
+## Correct the Map
 
-### 1. Fork the repository
+Found a broken link, changed deadline, cancelled program, or inaccurate detail?
 
-Click **Fork** in the top-right corner.
+Submit a correction and include the updated official source.
+
+Do not change published facts without evidence. Confidence is not a citation, no matter how confidently it is typed.
 
 ---
 
-### 2. Create a branch
+## Contribute Code or Documentation
 
-```bash
-git checkout -b feature/add-google-summer-of-code
-```
+Useful areas include:
 
-Use descriptive names whenever possible.
+- submission and research workflows;
+- validation and moderation;
+- generated opportunity pages;
+- category and subject indexes;
+- archives and deadline handling;
+- accessibility;
+- testing and security;
+- documentation;
+- the future website and filtering system.
 
-Examples:
+### Current structure
 
 ```text
-feature/add-neurips
-feature/update-erasmus-deadline
-fix/broken-links
-docs/improve-readme
+.github/
+scripts/
+opportunities/
+  <main_category>/
+    <slug>.md
+data/
+  opportunities.json
 ```
 
----
+Opportunity files live at:
 
-### 3. Add your discovery
-
-Navigate to the correct category.
+```text
+opportunities/<main_category>/<slug>.md
+```
 
 Example:
 
-```text
-hackathons/
-conferences/
-fellowships/
+```yaml
+main_category: events
+category: conference
 ```
 
-Create a new Markdown file or update an existing one.
+The folder uses `main_category`. The specific `category` stays in the file data.
 
 ---
 
-### 4. Commit your changes
+## The Front End Is Not Finished Yet
+
+OFFMAP does **not yet have** the final public pages for:
+
+- Events;
+- Conferences and other specific types;
+- academic fields and subjects;
+- Closing Soon;
+- search;
+- filter buttons and panels;
+- opportunity cards;
+- archive pages.
+
+These are planned features.
+
+Future pages should use the existing schema:
+
+```text
+main_category
+category
+format
+host_country
+eligible_regions
+eligible_countries
+academic_levels
+academic_fields
+subjects
+audience_groups
+funding_features
+topics
+deadline
+```
+
+Contributions to category pages, filters, search, sorting, mobile layouts, and accessibility are especially welcome.
+
+Before adding a major framework, database, or cloud service, open a proposal first. Six filter buttons do not require the infrastructure of a space agency.
+
+---
+
+## Development Workflow
+
+1. Fork the repository.
+2. Create a focused branch.
+3. Make one clear change.
+4. Test it.
+5. Open a pull request explaining what changed and why.
+
+Good branch names:
+
+```text
+feature/category-pages
+feature/opportunity-filters
+fix/deadline-validation
+docs/update-contributing
+```
+
+For Python files, run:
 
 ```bash
-git add .
-
-git commit -m "Add Google Summer of Code"
-
-git push origin feature/add-google-summer-of-code
+python -m py_compile scripts/<file>.py
 ```
 
----
+When relevant:
 
-### 5. Open a Pull Request
-
-We'll review it as soon as possible.
-
-Every accepted contribution helps another student somewhere in the world.
-
----
-
-# 📜 Opportunity Template
-
-```markdown
-# Opportunity Name
-
-**Category**
-Conference
-
-**Location**
-Berlin, Germany
-
-**Dates**
-12–15 July 2027
-
-**Application Deadline**
-30 March 2027
-
-**Eligibility**
-
-- Undergraduate
-- Graduate
-- Worldwide
-
-**Funding**
-
-- Free
-- Scholarship Available
-- Travel Grant Available
-
-**Fields**
-
-AI • Robotics • Engineering
-
-**Official Website**
-
-https://...
-
-## Description
-
-One or two paragraphs explaining what makes this opportunity valuable and who should apply.
+```bash
+python scripts/build_indexes.py
 ```
 
----
+Check that:
 
-# 🎖️ Guild Etiquette
-
-Please:
-
-- Be respectful.
-- Help improve existing opportunities.
-- Welcome new contributors.
-- Accept constructive feedback.
-- Credit official sources.
-
-We're building a resource for thousands of students together.
+- YAML and JSON remain valid;
+- `main_category` and `category` stay separate;
+- category mismatches are flagged, not silently rewritten;
+- filters match their structured fields;
+- audience groups come only from submitted dropdown selections;
+- human review remains required;
+- unrelated files are untouched.
 
 ---
 
-# ⭐ Other Ways to Help
+## Rules That Must Not Break
 
-Not every contribution needs to be a new opportunity.
+### Categories
 
-You can also:
+`main_category` and `category` are separate.
 
-- 🐞 Report broken links
-- 📅 Update deadlines
-- 🌍 Translate pages
-- ✍️ Improve descriptions
-- 💡 Suggest new categories
-- 🎨 Improve the design
-- ⚙️ Build GitHub automations
-- 📢 Share the repository
+```yaml
+main_category: events
+category: conference
+```
+
+Do not silently replace mismatches with `other`.
+
+### Audience Groups
+
+Audience tags come only from the submitter’s dropdown selections.
+
+Do not infer them from:
+
+- website prose;
+- eligibility text;
+- images;
+- organizer language;
+- free-text audience notes;
+- model judgment.
+
+Research may flag a selected group as unsupported. It may not add or remove tags.
+
+### Human Review
+
+These values must remain truthful:
+
+```yaml
+human_review_required: true
+automatically_verified: false
+automatically_published: false
+```
+
+Merging may record that review was completed. It must not pretend review was never needed.
 
 ---
 
-# 🦄 Contributor Hall of Fame
+## Write for the Student Applying
 
-Every merged Pull Request helps another student discover opportunities they might never have found.
+Opportunity pages should be:
 
-Whether it's your first contribution or your hundredth...
+- accurate;
+- easy to scan;
+- practical;
+- honest about uncertainty;
+- clear about deadlines, eligibility, funding, and application links.
 
-**You're now part of the Guild.**
+Avoid:
+
+- fake urgency;
+- invented benefits;
+- unsupported prestige claims;
+- copied website essays;
+- repetitive AI filler;
+- decorative language that hides useful details.
+
+OFFMAP can have personality. It still needs to tell people where to apply.
 
 ---
 
-<div align="center">
+## Security
 
-## 🌟 Thank you for helping students discover life-changing opportunities.
+Read [SECURITY.md](SECURITY.md).
 
-**Happy Questing.**
+Never place secrets, tokens, private information, or credentials in code, issues, pull requests, screenshots, logs, or artifacts.
 
-🗺️✨
+---
 
-</div>
+## Help Someone Find the Next Step
+
+A submitted link can become someone’s first conference.
+
+A corrected deadline can save an application.
+
+A better filter can uncover the right opportunity at the right moment.
+
+> **Your map. Your story. Your impact.**
+
+**Find what is possible. Share what should not stay hidden.**
