@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🗺️ OFFMAP
+# 🗺️ OffMap
 ### Built by students. Powered by the community.
 
 > We’re creating the biggest student-powered opportunity map,  **one discovery, one application, and one story at a time.**
