@@ -166,7 +166,7 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 
 <table align="center">
 <tr>
-<td valign="top" width="25%">
+<td valign="top" width="20%">
 
 **Browse by type**
 
@@ -181,7 +181,7 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 - [🎨 Open Calls](#-creative-calls)
 
 </td>
-<td valign="top" width="50%"> 
+<td valign="top" width="30%"> 
 
 ### 🧠 Browse by field 
 - [⚙️ Engineering & Technology](#engineering--technology) 
