@@ -1,4 +1,23 @@
 <div align="center">
+  
+[**🏠 README**](README.md) ·
+[**🤝 Contributing**](CONTRIBUTING.md) ·
+[**🎤 Events**](opportunities/events/) ·
+[**🧰 Internships**](opportunities/internships/) ·
+[**🏆 Competitions**](opportunities/competitions/) ·
+[**🔬 Research**](opportunities/research/)
+
+[**💰 Scholarships & Funding**](opportunities/scholarships/) ·
+[**🌱 Fellowships**](opportunities/fellowships/) ·
+[**📚 Courses & Training**](opportunities/courses/) ·
+[**🚀 Innovation**](opportunities/innovation/) ·
+[**🎨 Open Calls**](opportunities/creative-calls/) ·
+[**🌍 Exchanges**](https://github.com/elchrysaki/offmap-travels/README.md) ·
+[**❤️ Volunteering**](https://github.com/elchrysaki/offmap-travels/README.md)
+
+</div>
+
+<div align="center">
 
 # 🗺️ OffMap
 ### Built by students. Powered by the community.
