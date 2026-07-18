@@ -7,9 +7,9 @@
 [**🏆 Competitions**](opportunities/competitions/) ·
 [**🔬 Research**](opportunities/research/)
 
-[**💰 Scholarships & Funding**](opportunities/scholarships/) ·
+[**💰 Scholarships**](opportunities/scholarships/) ·
 [**🌱 Fellowships**](opportunities/fellowships/) ·
-[**📚 Courses & Training**](opportunities/courses/) ·
+[**📚 Courses**](opportunities/courses/) ·
 [**🚀 Innovation**](opportunities/innovation/) ·
 [**🎨 Open Calls**](opportunities/creative-calls/) ·
 [**🌍 Exchanges**](https://github.com/elchrysaki/offmap-travels/README.md) ·
