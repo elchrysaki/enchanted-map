@@ -7,7 +7,7 @@ organizer: EUROAVIA (hosted by AS Oostende)
 main_category: competitions
 category: hackathon
 edition: '2026'
-status: pending-review
+status: published
 summary: EUROAVIA Ideathon 2026 is an in-person hackathon-style competition in Brugge, Belgium, where teams of bachelor’s and master’s students tackle real-world aerospace industry challenges. Participants collaborate, innovate, and present their solutions to a jury of industry and academic experts. The event is conducted in English and welcomes students aged 18 and above.
 format: in-person
 location:
@@ -124,6 +124,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 25
+  approved_by: elchrysaki
+  published_at: '2026-07-18T20:19:12.768027+00:00'
 submission:
   issue_number: 24
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/24
@@ -133,6 +139,10 @@ provenance:
   researched_at: '2026-07-18T20:16:19.778931+00:00'
   formatted_at: '2026-07-18T20:16:29.036872+00:00'
   generated_at: '2026-07-18T20:16:29.135194+00:00'
+  published_at: '2026-07-18T20:19:12.768027+00:00'
+  publication_pr_number: 25
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 EUROAVIA Ideathon 2026
