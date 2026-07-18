@@ -172,6 +172,7 @@ Applicants must be bachelor’s or master’s students enrolled at a university 
 
 ## 📍 Where and how it happens
 
+
 The event takes place in person in Brugge, Belgium.
 
 ## 🗓️ Dates to remember
