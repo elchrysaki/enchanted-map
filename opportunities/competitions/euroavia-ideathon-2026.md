@@ -102,7 +102,7 @@ filters:
   formats:
   - in-person
   host_countries:
-  - belgium
+  - Belgium
   eligible_regions: []
   eligible_countries: []
   academic_levels:
