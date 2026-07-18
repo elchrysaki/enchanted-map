@@ -53,7 +53,7 @@ audience:
   display_points: []
 funding:
   application_fee: none
-  participation_fee: yes
+  participation_fee: true
   scholarship: none
   travel_support: none
   accommodation: provided
@@ -165,6 +165,8 @@ OFFMAP-METADATA-END -->
 EUROAVIA Ideathon 2026 invites university students to Brugge, Belgium, for a hackathon-style challenge. Teams compete to solve real-world aerospace engineering problems, gaining valuable industry exposure and networking opportunities.
 **[🌐 Explore the official page](https://ideathon.euroavia.eu)**
 
+🌐 **[Visit the official opportunity website →](https://ideathon.euroavia.eu)**
+
 ## 🏛️ Meet the organizer
 
 EUROAVIA is a European association for aerospace students, organizing events and competitions to foster innovation and industry connections.
@@ -173,6 +175,8 @@ EUROAVIA is a European association for aerospace students, organizing events and
 
 Bachelor’s and master’s students aged 18 or older, enrolled at a university, are eligible. Teams must consist of 3–5 students, with a focus on aerospace engineering.
 **[🚀 Start your application](https://ideathon.euroavia.eu/applications)**
+
+🚀 **[Open the official application page →](https://ideathon.euroavia.eu/applications)**
 
 ## 📍 Where and how it happens
 
