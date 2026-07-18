@@ -117,9 +117,31 @@ jobs:
           set -euo pipefail
           python scripts/process_submission.py
 
+      - name: Verify intake produced its records
+        run: |
+          set -euo pipefail
+
+          RAW_FILE="artifacts/raw-submission-${ISSUE_NUMBER}.json"
+
+          if [[ ! -f "$RAW_FILE" ]]; then
+            echo "::error title=Intake produced no record::$RAW_FILE was not created."
+            exit 1
+          fi
+
+          SAFE_TO_RESEARCH="${{ steps.intake.outputs.safe_to_research }}"
+
+          if [[ "$SAFE_TO_RESEARCH" != "true" && "$SAFE_TO_RESEARCH" != "false" ]]; then
+            echo "::error title=Missing intake result::safe_to_research was not set to true or false."
+            exit 1
+          fi
+
+          echo "Intake record verified: $RAW_FILE"
+          echo "safe_to_research=$SAFE_TO_RESEARCH"
+
       - name: Record blocked intake
         if: >-
-          steps.intake.outputs.safe_to_research != 'true'
+          steps.intake.outcome == 'success'
+          && steps.intake.outputs.safe_to_research == 'false'
         run: |
           set -euo pipefail
 

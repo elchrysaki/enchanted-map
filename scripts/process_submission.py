@@ -1901,3 +1901,7 @@ def main() -> None:
     issue_body = issue.get(
         "body"
     ) or ""
+
+
+if __name__ == "__main__":
+    main()
