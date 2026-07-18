@@ -51,18 +51,18 @@ MAIN_CATEGORY_ORDER = [
 ]
 
 MAIN_CATEGORY_TITLES = {
-    "events": "ð¤ Events",
-    "internships": "ð§° Internships",
-    "competitions": "ð Competitions",
-    "research": "ð¬ Research",
-    "fellowships": "ð¤ Fellowships",
-    "scholarships": "ð Scholarships & Grants",
-    "courses": "ð Courses & Schools",
-    "innovation": "ð Innovation & Startups",
-    "creative-calls": "ð¨ Creative Calls",
-    "exchanges": "ð Exchanges & Mobility",
-    "volunteering": "â¤ï¸ Volunteering",
-    "other": "â¨ Other Opportunities",
+    "events": "🎤 Events",
+    "internships": "🧰 Internships",
+    "competitions": "🏆 Competitions",
+    "research": "🔬 Research",
+    "fellowships": "🤝 Fellowships",
+    "scholarships": "🎓 Scholarships & Grants",
+    "courses": "📚 Courses & Schools",
+    "innovation": "🚀 Innovation & Startups",
+    "creative-calls": "🎨 Creative Calls",
+    "exchanges": "🌍 Exchanges & Mobility",
+    "volunteering": "❤️ Volunteering",
+    "other": "✨ Other Opportunities",
 }
 
 SPECIFIC_CATEGORY_ORDER = [
@@ -1576,7 +1576,7 @@ def build_markdown(
         ].append(record)
 
     lines = [
-        "# ðºï¸ OFFMAP Opportunity Index",
+        "# 🗺️ OffMap Opportunity Index",
         "",
         (
             "This index is generated automatically from reviewed "
@@ -1611,7 +1611,7 @@ def build_markdown(
     ):
         title = MAIN_CATEGORY_TITLES.get(
             main_category,
-            f"â¨ {humanize(main_category)}",
+            f"✨ {humanize(main_category)}",
         )
         anchor = f"main-{main_category}"
 
@@ -1628,7 +1628,7 @@ def build_markdown(
     ):
         title = MAIN_CATEGORY_TITLES.get(
             main_category,
-            f"â¨ {humanize(main_category)}",
+            f"✨ {humanize(main_category)}",
         )
         anchor = f"main-{main_category}"
 
@@ -1697,7 +1697,7 @@ def build_markdown(
             [
                 "",
                 (
-                    "[â Back to main categories]"
+                    "[↑ Back to main categories]"
                     "(#jump-to-a-main-category)"
                 ),
                 "",
@@ -1766,7 +1766,7 @@ def main() -> None:
     )
 
     print(
-        "OFFMAP opportunity indexes rebuilt successfully."
+        "OffMap opportunity indexes rebuilt successfully."
     )
     print(
         f"Published opportunities: {len(records)}"
