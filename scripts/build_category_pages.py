@@ -566,17 +566,17 @@ def display_status(
     today: date,
 ) -> str:
     if is_rolling(record):
-        return "🔄 **ROLLING**"
+        return "ð **ROLLING**"
 
     deadline = normalized_deadline(record)
     if deadline is None:
-        return "⚠️ **VERIFY**"
+        return "â ï¸ **VERIFY**"
 
     days_remaining = (deadline - today).days
     if days_remaining <= CLOSING_SOON_DAYS:
-        return "🔥 **CLOSING SOON**"
+        return "ð¥ **CLOSING SOON**"
 
-    return "✅ **OPEN**"
+    return "â **OPEN**"
 
 
 def first_date_text(
@@ -601,7 +601,7 @@ def display_program_dates(record: dict[str, Any]) -> str:
     )
 
     if start and end and start != end:
-        return f"{start} – {end}"
+        return f"{start} â {end}"
     if start:
         return start
     if end:
@@ -824,8 +824,8 @@ def build_navigation(
     )
 
     links = [
-        markdown_link("🏠 Home", home_link),
-        markdown_link("🤝 Contributing", contributing_link),
+        markdown_link("ð  Home", home_link),
+        markdown_link("ð¤ Contributing", contributing_link),
     ]
 
     for main_key in navigation:
@@ -848,9 +848,9 @@ def build_navigation(
     return [
         '<div align="center">',
         "",
-        " · ".join(links[:midpoint]),
+        " Â· ".join(links[:midpoint]),
         "",
-        " · ".join(links[midpoint:]),
+        " Â· ".join(links[midpoint:]),
         "",
         "</div>",
     ]
@@ -869,7 +869,7 @@ def empty_state(category_title: str) -> list[str]:
         ),
         ">",
         (
-            f"> {markdown_link('Add one to the map →', submission_url)}"
+            f"> {markdown_link('Add one to the map â', submission_url)}"
         ),
     ]
 
@@ -963,7 +963,7 @@ def build_main_category_page(
                     + markdown_link(
                         "View all active "
                         + category["title"].lower()
-                        + " →",
+                        + " â",
                         category["route"] + "/",
                     )
                     + "**"
@@ -978,7 +978,7 @@ def build_main_category_page(
                 "",
                 (
                     '<p align="right">'
-                    '<a href="#top">↑ Back to the top</a>'
+                    '<a href="#top">â Back to the top</a>'
                     '</p>'
                 ),
                 "",
@@ -1040,7 +1040,7 @@ def build_full_category_page(
         "---",
         "",
         markdown_link(
-            f"← Back to {main['title']}",
+            f"â Back to {main['title']}",
             back_link,
         ),
         "",
@@ -1146,23 +1146,6 @@ def main() -> None:
             atomic_write(page_path, page_content)
             generated_paths.append(page_path)
 
-    print("OFFMAP category pages rebuilt successfully.")
-    print(
-        f"Generated pages: {len(generated_paths)}"
-    )
-    active_visible_opportunities = sum(
-        len(records)
-        for main_groups in grouped.values()
-        for records in main_groups.values()
-    )
-    print(
-        f"Active visible opportunities: "
-        f"{active_visible_opportunities}"
-    )
-
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        sys.exit(130)
+    main()

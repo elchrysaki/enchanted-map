@@ -1,0 +1,12 @@
+{
+  "schema_version": 2,
+  "record_type": "opportunity-index",
+  "source": "opportunities/*/*.md",
+  "public_status": "published",
+  "total_published": 0,
+  "main_category_counts": {},
+  "category_counts": {},
+  "main_category_category_counts": {},
+  "source_status_counts": {},
+  "opportunities": []
+}
