@@ -1,14 +1,13 @@
-name: Process OFFMAP Opportunity Submission
+name: Process OffMap Opportunity Submission
 
 run-name: >-
-  Process OFFMAP opportunity issue
+  Process OffMap opportunity issue
   #${{ github.event_name == 'workflow_dispatch' && inputs.issue_number || github.event.issue.number }}
 
-on:
+"on":
   issues:
     types:
       - opened
-
   workflow_dispatch:
     inputs:
       issue_number:
@@ -39,7 +38,7 @@ jobs:
   process-submission:
     name: Research and prepare opportunity
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
 
     if: >-
       github.event_name == 'workflow_dispatch'
@@ -51,22 +50,16 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ github.token }}
       REPOSITORY: ${{ github.repository }}
-
       ISSUE_NUMBER: >-
         ${{
           github.event_name == 'workflow_dispatch'
           && inputs.issue_number
           || github.event.issue.number
         }}
-
       TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
       AI_MODEL: openai/gpt-4.1
 
     steps:
-      # ======================================================
-      # SETUP
-      # ======================================================
-
       - name: Check out repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -87,7 +80,9 @@ jobs:
             exit 1
           fi
 
-          echo "::notice title=Processing issue::Processing OFFMAP issue #$ISSUE_NUMBER"
+          mkdir -p artifacts
+
+          echo "::notice title=Processing issue::Processing OffMap issue #$ISSUE_NUMBER"
 
       - name: Set up Python
         uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
@@ -99,195 +94,184 @@ jobs:
       - name: Install Python dependencies
         run: |
           set -euo pipefail
-
           python -m pip install \
             --disable-pip-version-check \
             -r requirements.txt
 
-      # ======================================================
-      # COPY 1: PRESERVE THE ORIGINAL SUBMISSION
-      # ======================================================
+      # Only severe technical abuse or repeated automated spam stops here.
+      # Missing, incorrect, suspicious, or incomplete information continues
+      # to a human-review pull request.
+      - name: Classify severe submission risk
+        id: risk
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          python scripts/classify_submission_risk.py \
+            2>&1 | tee artifacts/risk.log
 
       - name: Preserve and parse raw submission
         id: intake
+        if: >-
+          always()
+          && steps.risk.outputs.risk_outcome != 'security-rejected'
+        continue-on-error: true
         env:
           OUTPUT_DIRECTORY: artifacts
           MODERATOR_FILE: .github/moderators.yml
         run: |
           set -euo pipefail
-          python scripts/process_submission.py
-
-      - name: Verify intake produced its records
-        run: |
-          set -euo pipefail
-
-          RAW_FILE="artifacts/raw-submission-${ISSUE_NUMBER}.json"
-
-          if [[ ! -f "$RAW_FILE" ]]; then
-            echo "::error title=Intake produced no record::$RAW_FILE was not created."
-            exit 1
-          fi
-
-          SAFE_TO_RESEARCH="${{ steps.intake.outputs.safe_to_research }}"
-
-          if [[ "$SAFE_TO_RESEARCH" != "true" && "$SAFE_TO_RESEARCH" != "false" ]]; then
-            echo "::error title=Missing intake result::safe_to_research was not set to true or false."
-            exit 1
-          fi
-
-          echo "Intake record verified: $RAW_FILE"
-          echo "safe_to_research=$SAFE_TO_RESEARCH"
-
-      - name: Record blocked intake
-        if: >-
-          steps.intake.outcome == 'success'
-          && steps.intake.outputs.safe_to_research == 'false'
-        run: |
-          set -euo pipefail
-
-          echo "::notice title=Submission held::Research was skipped because intake validation did not mark the submission safe to research."
-
-      # ======================================================
-      # COPY 2: RESEARCH AND ENRICH OFFICIAL INFORMATION
-      # ======================================================
+          python scripts/process_submission.py \
+            2>&1 | tee artifacts/intake.log
 
       - name: Research official sources
         id: research
         if: >-
-          steps.intake.outputs.safe_to_research == 'true'
+          always()
+          && steps.risk.outputs.risk_outcome != 'security-rejected'
+          && steps.intake.outcome == 'success'
+          && steps.intake.outputs.safe_to_research == 'true'
+        continue-on-error: true
         env:
-          RAW_SUBMISSION_FILE: ${{ steps.intake.outputs.raw_submission_file }}
-
+          RAW_SUBMISSION_FILE: >-
+            ${{ steps.intake.outputs.raw_submission_file }}
           RESEARCH_PROMPT_FILE: >-
             .github/prompts/opportunity-researcher.md
-
           RESEARCH_OUTPUT_FILE: >-
             artifacts/researched-submission-${{ env.ISSUE_NUMBER }}.json
         run: |
           set -euo pipefail
-          python scripts/research_opportunity.py
+          python scripts/research_opportunity.py \
+            2>&1 | tee artifacts/research.log
 
-      # ======================================================
-      # COPY 3: FORMAT THE PUBLISHABLE DRAFT
-      # ======================================================
+      - name: Reconcile researched category pair
+        id: reconcile
+        if: >-
+          always()
+          && steps.research.outcome == 'success'
+        continue-on-error: true
+        env:
+          RESEARCHED_SUBMISSION_FILE: >-
+            ${{ steps.research.outputs.researched_submission_file }}
+        run: |
+          set -euo pipefail
+          python scripts/reconcile_researched_output.py \
+            2>&1 | tee artifacts/reconcile.log
 
       - name: Format publishable opportunity content
         id: formatter
         if: >-
-          steps.intake.outputs.safe_to_research == 'true'
-          && steps.research.outcome == 'success'
+          always()
+          && steps.reconcile.outcome == 'success'
+        continue-on-error: true
         env:
           RESEARCHED_SUBMISSION_FILE: >-
-            ${{ steps.research.outputs.researched_submission_file }}
-
+            ${{ steps.reconcile.outputs.researched_submission_file }}
           FORMATTER_PROMPT_FILE: >-
             .github/prompts/opportunity-formatter.md
-
           PUBLISHABLE_OUTPUT_FILE: >-
             artifacts/publishable-content-${{ env.ISSUE_NUMBER }}.json
         run: |
           set -euo pipefail
-          python scripts/format_with_ai.py
-
-      # ======================================================
-      # GENERATE A REVIEWABLE MARKDOWN PAGE
-      # ======================================================
+          python scripts/format_with_ai.py \
+            2>&1 | tee artifacts/formatter.log
 
       - name: Generate opportunity page
         id: generator
         if: >-
-          steps.formatter.outcome == 'success'
+          always()
+          && steps.formatter.outcome == 'success'
           && steps.formatter.outputs.safe_to_generate_draft_page == 'true'
           && steps.formatter.outputs.formatter_recommended_action == 'continue-to-draft-pr'
+        continue-on-error: true
         env:
           RESEARCHED_SUBMISSION_FILE: >-
-            ${{ steps.research.outputs.researched_submission_file }}
-
+            ${{ steps.reconcile.outputs.researched_submission_file }}
           PUBLISHABLE_CONTENT_FILE: >-
             ${{ steps.formatter.outputs.publishable_content_file }}
-
           OPPORTUNITIES_DIRECTORY: opportunities
         run: |
           set -euo pipefail
-          python scripts/generate_opportunity.py
-
-      # ======================================================
-      # BUILD THE HUMAN MODERATOR REPORT
-      #
-      # This runs after successful formatting even when the
-      # formatter holds the record and no page is generated.
-      # ======================================================
+          python scripts/generate_opportunity.py \
+            2>&1 | tee artifacts/generator.log
 
       - name: Build moderator review report
         id: review
         if: >-
           always()
           && steps.formatter.outcome == 'success'
+        continue-on-error: true
         env:
           RESEARCHED_SUBMISSION_FILE: >-
-            ${{ steps.research.outputs.researched_submission_file }}
-
+            ${{ steps.reconcile.outputs.researched_submission_file }}
           PUBLISHABLE_CONTENT_FILE: >-
             ${{ steps.formatter.outputs.publishable_content_file }}
-
           OPPORTUNITY_FILE: >-
             ${{ steps.generator.outputs.opportunity_file }}
-
           REVIEW_REPORT_FILE: >-
             artifacts/review-report-${{ env.ISSUE_NUMBER }}.md
         run: |
           set -euo pipefail
-          python scripts/build_review_report.py
+          python scripts/build_review_report.py \
+            2>&1 | tee artifacts/review.log
 
-      - name: Record formatter hold
-        if: >-
-          always()
-          && steps.formatter.outcome == 'success'
-          && (
-            steps.formatter.outputs.safe_to_generate_draft_page != 'true'
-            || steps.formatter.outputs.formatter_recommended_action != 'continue-to-draft-pr'
-          )
-        run: |
-          set -euo pipefail
-
-          echo "::notice title=Opportunity held::No Markdown page or pull request was created."
-          echo "::notice::Formatter recommendation: ${{ steps.formatter.outputs.formatter_recommended_action }}"
-
-      # ======================================================
-      # CREATE OR UPDATE THE DRAFT PULL REQUEST
-      # ======================================================
-
-      - name: Create or update draft pull request
-        id: pull_request
-        if: >-
-          steps.generator.outcome == 'success'
-          && steps.review.outcome == 'success'
-          && steps.formatter.outputs.safe_to_generate_draft_page == 'true'
-          && steps.formatter.outputs.formatter_recommended_action == 'continue-to-draft-pr'
+      # This is the only terminal decision-maker.
+      #
+      # It creates:
+      # - a full draft PR when an opportunity page exists;
+      # - a review-only PR for missing information or any human-fixable error;
+      # - no PR only for severe technical abuse or repeated automated spam.
+      #
+      # It closes the issue only after the PR is created successfully, or
+      # after a severe-risk rejection is recorded and locked.
+      - name: Finalize submission outcome
+        id: finalizer
+        if: always()
         env:
+          RISK_OUTCOME: >-
+            ${{ steps.risk.outputs.risk_outcome }}
+          RISK_REASON_CODE: >-
+            ${{ steps.risk.outputs.risk_reason_code }}
+
+          INTAKE_OUTCOME: >-
+            ${{ steps.intake.outcome }}
+          RESEARCH_OUTCOME: >-
+            ${{ steps.research.outcome }}
+          RECONCILE_OUTCOME: >-
+            ${{ steps.reconcile.outcome }}
+          FORMATTER_OUTCOME: >-
+            ${{ steps.formatter.outcome }}
+          GENERATOR_OUTCOME: >-
+            ${{ steps.generator.outcome }}
+          REVIEW_OUTCOME: >-
+            ${{ steps.review.outcome }}
+
+          SAFE_TO_RESEARCH: >-
+            ${{ steps.intake.outputs.safe_to_research }}
+          SAFE_TO_GENERATE: >-
+            ${{ steps.formatter.outputs.safe_to_generate_draft_page }}
+
+          RESEARCH_RECOMMENDATION: >-
+            ${{ steps.research.outputs.research_recommended_action }}
+          FORMATTER_RECOMMENDATION: >-
+            ${{ steps.formatter.outputs.formatter_recommended_action }}
+
           RAW_SUBMISSION_FILE: >-
             ${{ steps.intake.outputs.raw_submission_file }}
-
+          RESEARCHED_SUBMISSION_FILE: >-
+            ${{ steps.reconcile.outputs.researched_submission_file }}
           PUBLISHABLE_CONTENT_FILE: >-
             ${{ steps.formatter.outputs.publishable_content_file }}
-
           OPPORTUNITY_FILE: >-
             ${{ steps.generator.outputs.opportunity_file }}
-
           REVIEW_REPORT_FILE: >-
             ${{ steps.review.outputs.review_report_file }}
 
           MODERATORS: >-
             ${{ steps.intake.outputs.moderators }}
-
           BRANCH_PREFIX: automated-discovery
         run: |
           set -euo pipefail
-          python scripts/create_pull_request.py
-
-      # ======================================================
-      # PRESERVE DEBUGGING RECORDS FOR SEVEN DAYS
-      # ======================================================
+          python scripts/finalize_submission.py
 
       - name: Upload processing artifacts
         if: always()
