@@ -1,14 +1,17 @@
-# Contributing to OFFMAP
+# 🧭 Contributing to OFFMAP
 
 > **Your map. Your story. Your impact.**
 
 OFFMAP helps students find opportunities that would otherwise disappear into group chats, newsletters, and the mysterious depths of someone’s inbox.
 
-You can help by adding opportunities, correcting information, improving the code, or building the parts of the platform that do not exist yet. The map is useful. The roads are still under construction.
+You can help by adding opportunities, correcting information, improving the code, or building the parts of the platform that do not exist yet.
+
+> [!NOTE]
+> The map is useful. The roads are still under construction.
 
 ---
 
-## Add an Opportunity
+## ✨ Add an Opportunity
 
 Use the OFFMAP submission form:
 
@@ -16,17 +19,18 @@ Use the OFFMAP submission form:
 
 You do **not** need to create a Markdown file manually.
 
-The pipeline:
+### 🛠️ What happens next
 
-1. preserves the original submission;
-2. researches official sources;
-3. prepares a draft opportunity page;
-4. opens a draft pull request;
-5. requires human review before publication.
+1. The original submission is preserved.
+2. Official sources are researched.
+3. A draft opportunity page is prepared.
+4. A draft pull request is opened.
+5. A human reviews it before publication.
 
-AI may research, organize, and flag problems. It may not verify or publish an opportunity by itself. We have seen what happens when software becomes overconfident.
+> [!IMPORTANT]
+> AI may research, organize, and flag problems. It may not verify or publish an opportunity by itself. We have seen what happens when software becomes overconfident.
 
-### Include
+### 📌 Include
 
 - opportunity name;
 - broad category and specific type;
@@ -41,22 +45,22 @@ A reliable link and a few accurate facts are better than a dramatic paragraph as
 
 ---
 
-## What Belongs Here
+## 🗺️ What Belongs on the Map
 
 OFFMAP includes:
 
-- conferences, summits, forums, and workshops;
-- internships, traineeships, and apprenticeships;
-- competitions, challenges, and hackathons;
-- research programs and placements;
-- fellowships and leadership programs;
-- scholarships, grants, and travel grants;
-- academies, summer schools, courses, and bootcamps;
-- startup, accelerator, and entrepreneurship programs;
-- creative, writing, media, and design calls;
-- exchanges, mobility, and volunteering programs.
+- 🎤 conferences, summits, forums, and workshops;
+- 🧰 internships, traineeships, and apprenticeships;
+- 🏆 competitions, challenges, and hackathons;
+- 🔬 research programs and placements;
+- 🤝 fellowships and leadership programs;
+- 🎓 scholarships, grants, and travel grants;
+- 📚 academies, summer schools, courses, and bootcamps;
+- 🚀 startup, accelerator, and entrepreneurship programs;
+- 🎨 creative, writing, media, and design calls;
+- 🌍 exchanges, mobility, and volunteering programs.
 
-OFFMAP does **not** include:
+### 🚧 What usually does not belong
 
 - ordinary job listings;
 - referral schemes;
@@ -65,21 +69,22 @@ OFFMAP does **not** include:
 - tourism packages wearing an educational hat;
 - permanently closed opportunities with no sign of returning.
 
-Internships are welcome. General jobs are not.
+**Internships are welcome. General jobs are not.**
 
 ---
 
-## Correct the Map
+## 🧹 Correct the Map
 
 Found a broken link, changed deadline, cancelled program, or inaccurate detail?
 
 Submit a correction and include the updated official source.
 
-Do not change published facts without evidence. Confidence is not a citation, no matter how confidently it is typed.
+> [!TIP]
+> Do not change published facts without evidence. Confidence is not a citation, no matter how confidently it is typed.
 
 ---
 
-## Contribute Code or Documentation
+## 💻 Contribute Code or Documentation
 
 Useful areas include:
 
@@ -93,7 +98,7 @@ Useful areas include:
 - documentation;
 - the future website and filtering system.
 
-### Current structure
+### 🗂️ Current structure
 
 ```text
 .github/
@@ -122,7 +127,7 @@ The folder uses `main_category`. The specific `category` stays in the file data.
 
 ---
 
-## The Front End Is Not Finished Yet
+## 🏗️ The Front End Is Not Finished Yet
 
 OFFMAP does **not yet have** the final public pages for:
 
@@ -137,7 +142,7 @@ OFFMAP does **not yet have** the final public pages for:
 
 These are planned features.
 
-Future pages should use the existing schema:
+### 🔎 Future pages should use
 
 ```text
 main_category
@@ -157,11 +162,12 @@ deadline
 
 Contributions to category pages, filters, search, sorting, mobile layouts, and accessibility are especially welcome.
 
-Before adding a major framework, database, or cloud service, open a proposal first. Six filter buttons do not require the infrastructure of a space agency.
+> [!WARNING]
+> Before adding a major framework, database, or cloud service, open a proposal first. Six filter buttons do not require the infrastructure of a space agency.
 
 ---
 
-## Development Workflow
+## 🧪 Development Workflow
 
 1. Fork the repository.
 2. Create a focused branch.
@@ -169,7 +175,7 @@ Before adding a major framework, database, or cloud service, open a proposal fir
 4. Test it.
 5. Open a pull request explaining what changed and why.
 
-Good branch names:
+### 🌿 Good branch names
 
 ```text
 feature/category-pages
@@ -178,7 +184,7 @@ fix/deadline-validation
 docs/update-contributing
 ```
 
-For Python files, run:
+### ✅ Test Python files
 
 ```bash
 python -m py_compile scripts/<file>.py
@@ -202,9 +208,9 @@ Check that:
 
 ---
 
-## Rules That Must Not Break
+## 🛡️ Rules That Must Not Break
 
-### Categories
+### 🗂️ Categories
 
 `main_category` and `category` are separate.
 
@@ -215,7 +221,7 @@ category: conference
 
 Do not silently replace mismatches with `other`.
 
-### Audience Groups
+### 🌈 Audience Groups
 
 Audience tags come only from the submitter’s dropdown selections.
 
@@ -230,7 +236,7 @@ Do not infer them from:
 
 Research may flag a selected group as unsupported. It may not add or remove tags.
 
-### Human Review
+### 👀 Human Review
 
 These values must remain truthful:
 
@@ -244,7 +250,7 @@ Merging may record that review was completed. It must not pretend review was nev
 
 ---
 
-## Write for the Student Applying
+## ✍️ Write for the Student Applying
 
 Opportunity pages should be:
 
@@ -263,11 +269,12 @@ Avoid:
 - repetitive AI filler;
 - decorative language that hides useful details.
 
-OFFMAP can have personality. It still needs to tell people where to apply.
+> [!NOTE]
+> OFFMAP can have personality. It still needs to tell people where to apply.
 
 ---
 
-## Security
+## 🔐 Security
 
 Read [SECURITY.md](SECURITY.md).
 
@@ -275,7 +282,7 @@ Never place secrets, tokens, private information, or credentials in code, issues
 
 ---
 
-## Help Someone Find the Next Step
+## 🌟 Help Someone Find the Next Step
 
 A submitted link can become someone’s first conference.
 
