@@ -11,6 +11,11 @@ from urllib.parse import urlparse
 
 import yaml
 
+from opportunity_document import (
+    OpportunityDocumentError,
+    parse_opportunity_document,
+)
+
 
 # ============================================================
 # PATHS AND INDEX SETTINGS
@@ -478,28 +483,16 @@ def parse_file(path: Path) -> dict[str, Any]:
     except OSError as exc:
         fail(f"Could not read {path}: {exc}")
 
-    match = FRONT_MATTER.match(content)
-
-    if not match:
-        fail(
-            f"{path} does not begin with YAML front matter."
-        )
-
     try:
-        record = yaml.safe_load(match.group(1))
-    except yaml.YAMLError as exc:
-        fail(f"Invalid YAML in {path}: {exc}")
-
-    if not isinstance(record, dict):
-        fail(
-            f"Front matter in {path} must be a YAML object."
-        )
+        record, _body = parse_opportunity_document(content)
+    except OpportunityDocumentError as exc:
+        fail(f"Invalid opportunity document {path}: {exc}")
 
     safe_record = json_safe(record)
 
     if not isinstance(safe_record, dict):
         fail(
-            f"Front matter in {path} could not be normalized."
+            f"Metadata in {path} could not be normalized."
         )
 
     return safe_record

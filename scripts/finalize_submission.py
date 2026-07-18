@@ -917,7 +917,7 @@ after this draft pull request is created successfully.
 - Verify the official evidence.
 - Correct anything uncertain or conflicting.
 - Keep the opportunity page at `pending-review` until approved.
-- Remove `review-packets/issue-{ISSUE_NUMBER}.md` before merging.
+- The temporary review packet is removed automatically after merge.
 - Merge only when the page is publishable.
 - Close this pull request without merging if the opportunity is unsuitable.
 """

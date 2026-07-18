@@ -1,4 +1,4 @@
----
+<!-- OFFMAP-METADATA
 schema_version: 2
 record_type: opportunity
 slug: euroavia-ideathon-2026
@@ -115,9 +115,9 @@ filters:
   audience_groups: []
   funding_features: []
   topics:
-  - aerospace-industry-challenges
-  - innovation
-  - engineering
+  - Aerospace industry challenges
+  - Innovation
+  - Engineering
 tags:
 - hackathon
 - aerospace
@@ -143,33 +143,49 @@ provenance:
   researched_at: '2026-07-18T17:52:12.946027+00:00'
   formatted_at: '2026-07-18T17:52:23.416294+00:00'
   generated_at: '2026-07-18T17:52:23.525970+00:00'
----
+OFFMAP-METADATA-END -->
 
-# ð§­ EUROAVIA Ideathon 2026
+<!-- offmap-public-page-v2 -->
+# 🧭 EUROAVIA Ideathon 2026
 
+**EUROAVIA (hosted by AS Oostende)**
+
+🎯 **Hackathon** · 💻 **In Person** · 📍 **In-person in Brugge, Belgium**
+
+**[🌐 Official page](https://ideathon.euroavia.eu)** · **[🚀 Apply now](https://ideathon.euroavia.eu/applications)**
+
+> [!TIP]
 > EUROAVIA Ideathon 2026 is an in-person hackathon in Brugge, Belgium, where bachelor’s and master’s students tackle real-world aerospace industry challenges in teams. Participants gain industry exposure, networking opportunities, and hands-on innovation experience. The event is conducted in English and welcomes students aged 18 and above enrolled at a university.
 
-## Opportunity Overview
+> [!IMPORTANT]
+> **Application deadline:** 27 July 2026  
+> **Program dates:** 3 November 2026 to 8 November 2026  
+> **Location:** In-person in Brugge, Belgium  
+> **Format:** In Person
+
+---
+
+## ✨ Why this opportunity is worth your attention
 
 EUROAVIA Ideathon 2026 invites university students to Brugge, Belgium for a hackathon focused on aerospace industry challenges. Teams collaborate to solve real-world problems, connect with industry professionals, and gain valuable innovation experience.
 
-## Organizer
+## 🏛️ Meet the organizer
 
 EUROAVIA is a European association for aerospace students, with AS Oostende hosting the 2026 Ideathon.
 
-## Who Can Apply
+## 👥 Who can apply
 
 Bachelor’s and master’s students enrolled at any university, aged 18 or older, are eligible. No nationality restriction is mentioned. The event is conducted in English and is relevant for those studying engineering or aerospace.
 
-## Location & Format
+## 📍 Where and how it happens
 
 The event takes place in person in Brugge, Belgium.
 
-## Important Dates
+## 🗓️ Dates to remember
 
 Applications close on 27 July 2026. The Ideathon runs from 3 to 8 November 2026.
 
-## Funding & Support
+## 💸 Fees, funding and support
 
 For EUROAVIA members a fee of 120 euros; for non-EUROAVIA members a fee of 160 euros. Covers participation, 5 nights’ shared accommodation, all meals during the competition, and event transportation if applicable.
 
@@ -178,23 +194,26 @@ For EUROAVIA members a fee of 95 euros; for non-EUROAVIA members a fee of 75 eur
 Personal participation fee (per person)
 Travel to Belgium and personal expenses aren’t included in either tier. No refunds once payment is complete, and participants are responsible for their own health/travel insurance.
 
-## How to Apply
-
-Apply online through the official portal. Form a team of 3–5 members or apply individually to be grouped. Solutions are evaluated by a jury of industry and academic experts.
-
-## What Participants Do
+## 🛠️ What you will do
 
 Participants work in teams to solve four real-world aerospace industry challenges, engage in innovation activities, and network with peers and professionals.
 
-## ð Official Links
+## 🚀 How to apply
 
-- [Official opportunity page](<https://ideathon.euroavia.eu>)
-- [Direct application page](<https://ideathon.euroavia.eu/applications>)
+Apply online through the official portal. Form a team of 3–5 members or apply individually to be grouped. Solutions are evaluated by a jury of industry and academic experts.
+
+## 🔗 Official links
+
+- **[🌐 Explore the official page](https://ideathon.euroavia.eu)**
+- **[🚀 Start your application](https://ideathon.euroavia.eu/applications)**
 
 ---
 
-### Review trail
+<details>
+<summary><strong>🧾 Research and review trail</strong></summary>
 
-This draft was prepared from a community submission and official-source research. Human approval is still required before publication.
+This page was prepared from a community submission, checked against official sources, and routed through human moderator review before publication.
 
-- [View the original submission](<https://github.com/elchrysaki/offmap-hub/issues/19>)
+- [View the original submission](https://github.com/elchrysaki/offmap-hub/issues/19)
+
+</details>

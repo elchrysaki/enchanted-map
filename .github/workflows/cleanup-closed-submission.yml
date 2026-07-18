@@ -1,4 +1,4 @@
-name: Clean Up Closed OFFMAP Submission
+name: Clean Up Closed OffMap Submission
 
 on:
   issues:
@@ -17,6 +17,9 @@ permissions:
 jobs:
   cleanup:
     name: Remove abandoned submission drafts
+    if: >-
+      !contains(github.event.issue.labels.*.name, 'draft-created')
+      && !contains(github.event.issue.labels.*.name, 'processed')
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -79,7 +82,7 @@ jobs:
             gh pr close "$pull_request" \
               --repo "$REPO" \
               --comment \
-              "Closed automatically because OFFMAP submission issue #${ISSUE_NUMBER} was closed."
+              "Closed automatically because OffMap submission issue #${ISSUE_NUMBER} was closed."
           done
 
       # ======================================================
@@ -171,4 +174,4 @@ jobs:
           set -euo pipefail
 
           echo \
-            "Cleanup completed for OFFMAP submission issue #${ISSUE_NUMBER}."
+            "Cleanup completed for OffMap submission issue #${ISSUE_NUMBER}."

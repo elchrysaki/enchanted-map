@@ -13,6 +13,12 @@ from urllib.parse import urlparse
 
 import yaml
 
+from opportunity_document import (
+    OpportunityDocumentError,
+    parse_opportunity_document,
+    render_opportunity_document,
+)
+
 
 # ============================================================
 # ENVIRONMENT
@@ -1340,6 +1346,69 @@ def build_front_matter(
     }
 
 
+def synchronize_filter_mirrors(
+    record: dict[str, Any],
+) -> None:
+    """Copy structured source fields into mirrored filters exactly."""
+
+    location = require_object(record, "location")
+    eligibility = require_object(record, "eligibility")
+    audience = require_object(record, "audience")
+    program = require_object(record, "program")
+    filters = require_object(record, "filters")
+
+    main_category = clean_text(
+        record.get("main_category"),
+        "main_category",
+        maximum=100,
+        required=True,
+    )
+    category = clean_text(
+        record.get("category"),
+        "category",
+        maximum=100,
+        required=True,
+    )
+    opportunity_format = clean_text(
+        record.get("format"),
+        "format",
+        maximum=100,
+        required=True,
+    )
+    host_country = clean_text(
+        location.get("host_country"),
+        "location.host_country",
+        maximum=200,
+    )
+
+    if main_category is None or category is None or opportunity_format is None:
+        fail("Cannot synchronize filters without identity fields.")
+
+    filters["main_categories"] = [main_category]
+    filters["categories"] = [category]
+    filters["formats"] = [opportunity_format]
+    filters["host_countries"] = [host_country] if host_country else []
+    filters["eligible_regions"] = list(
+        eligibility.get("geographic_regions") or []
+    )
+    filters["eligible_countries"] = list(
+        eligibility.get("eligible_countries") or []
+    )
+    filters["academic_levels"] = list(
+        eligibility.get("academic_levels") or []
+    )
+    filters["academic_fields"] = list(
+        eligibility.get("broad_fields") or []
+    )
+    filters["subjects"] = list(
+        eligibility.get("specific_majors") or []
+    )
+    filters["audience_groups"] = list(
+        audience.get("groups") or []
+    )
+    filters["topics"] = list(program.get("topics") or [])
+
+
 # ============================================================
 # MARKDOWN GENERATION
 # ============================================================
@@ -1354,28 +1423,35 @@ def markdown_plain_text(value: str) -> str:
     escaped = escaped.replace("]", "\\]")
 
     safe_lines: list[str] = []
-
     for line in escaped.splitlines():
         if re.match(
             r"^\s*(?:#{1,6}|>|[-+]\s|\d+[.)]\s)",
             line,
         ):
             line = "\\" + line
-
         safe_lines.append(line)
 
     return "\n".join(safe_lines)
 
 
 def markdown_inline(value: str) -> str:
-    return markdown_plain_text(
-        " ".join(value.split())
-    )
+    return markdown_plain_text(" ".join(value.split()))
 
 
 def markdown_link(label: str, url: str) -> str:
-    safe_label = markdown_inline(label)
-    return f"[{safe_label}](<{url}>)"
+    return f"[{markdown_inline(label)}]({url})"
+
+
+def display_value(value: Any, fallback: str = "Not confirmed") -> str:
+    if isinstance(value, str) and value.strip():
+        return markdown_inline(value.strip())
+    return fallback
+
+
+def category_label(value: Any) -> str:
+    if not isinstance(value, str) or not value.strip():
+        return "Opportunity"
+    return value.replace("-", " ").title()
 
 
 def add_text_section(
@@ -1384,14 +1460,9 @@ def add_text_section(
     text: Any,
     field_name: str,
 ) -> None:
-    cleaned = clean_text(
-        text,
-        field_name,
-    )
-
+    cleaned = clean_text(text, field_name)
     if not cleaned:
         return
-
     lines.extend(
         [
             f"## {heading}",
@@ -1402,39 +1473,26 @@ def add_text_section(
     )
 
 
-def add_portals_section(
+def add_official_links(
     lines: list[str],
     official_page: str | None,
     application_page: str | None,
 ) -> None:
-    if not official_page and not application_page:
+    links: list[str] = []
+    if official_page:
+        links.append(
+            markdown_link("🌐 Explore the official page", official_page)
+        )
+    if application_page:
+        links.append(
+            markdown_link("🚀 Start your application", application_page)
+        )
+    if not links:
         return
 
-    lines.extend(
-        [
-            "## ð Official Links",
-            "",
-        ]
-    )
-
-    if official_page:
-        lines.append(
-            "- "
-            + markdown_link(
-                "Official opportunity page",
-                official_page,
-            )
-        )
-
-    if application_page:
-        lines.append(
-            "- "
-            + markdown_link(
-                "Direct application page",
-                application_page,
-            )
-        )
-
+    lines.extend(["## 🔗 Official links", ""])
+    for link in links:
+        lines.append(f"- **{link}**")
     lines.append("")
 
 
@@ -1442,18 +1500,9 @@ def build_markdown_body(
     front_matter: dict[str, Any],
     publishable: dict[str, Any],
 ) -> str:
-    identity = require_object(
-        publishable,
-        "identity",
-    )
-    page_content = require_object(
-        publishable,
-        "page_content",
-    )
-    application = require_object(
-        publishable,
-        "application",
-    )
+    identity = require_object(publishable, "identity")
+    page_content = require_object(publishable, "page_content")
+    application = require_object(publishable, "application")
 
     title = clean_text(
         identity.get("title"),
@@ -1461,114 +1510,161 @@ def build_markdown_body(
         maximum=MAX_TITLE_LENGTH,
         required=True,
     )
-
     if title is None:
         fail("'identity.title' must contain text.")
 
-    summary = clean_text(
-        publishable.get("summary"),
-        "summary",
+    summary = clean_text(publishable.get("summary"), "summary")
+    organizer = display_value(front_matter.get("organizer"), "Organizer not confirmed")
+    category = category_label(front_matter.get("category"))
+    opportunity_format = category_label(front_matter.get("format"))
+
+    location = front_matter.get("location")
+    location_display = (
+        display_value(location.get("display"))
+        if isinstance(location, dict)
+        else "Not confirmed"
+    )
+
+    dates = front_matter.get("dates")
+    deadline = "Not confirmed"
+    program_dates = "Not confirmed"
+    if isinstance(dates, dict):
+        deadline_field = dates.get("application_deadline")
+        if isinstance(deadline_field, dict):
+            deadline = display_value(deadline_field.get("display"))
+
+        start_field = dates.get("start_date")
+        end_field = dates.get("end_date")
+        start_display = (
+            display_value(start_field.get("display"), "")
+            if isinstance(start_field, dict)
+            else ""
+        )
+        end_display = (
+            display_value(end_field.get("display"), "")
+            if isinstance(end_field, dict)
+            else ""
+        )
+        if start_display and end_display:
+            program_dates = f"{start_display} to {end_display}"
+        elif start_display or end_display:
+            program_dates = start_display or end_display
+
+    official_page = validate_web_url(
+        application.get("official_page"),
+        "application.official_page",
+    )
+    application_page = validate_web_url(
+        application.get("application_page"),
+        "application.application_page",
     )
 
     lines: list[str] = [
-        f"# ð§­ {markdown_inline(title)}",
+        f"# 🧭 {markdown_inline(title)}",
+        "",
+        f"**{organizer}**",
+        "",
+        f"🎯 **{markdown_inline(category)}** · "
+        f"💻 **{markdown_inline(opportunity_format)}** · "
+        f"📍 **{location_display}**",
         "",
     ]
 
-    if summary:
-        for summary_line in markdown_plain_text(
-            summary
-        ).splitlines():
-            lines.append(f"> {summary_line}")
+    top_links: list[str] = []
+    if official_page:
+        top_links.append(markdown_link("🌐 Official page", official_page))
+    if application_page:
+        top_links.append(markdown_link("🚀 Apply now", application_page))
+    if top_links:
+        lines.extend([" · ".join(f"**{link}**" for link in top_links), ""])
 
+    if summary:
+        lines.extend(["> [!TIP]"])
+        summary_lines = markdown_plain_text(summary).splitlines() or [""]
+        lines.extend(f"> {line}" for line in summary_lines)
         lines.append("")
+
+    lines.extend(
+        [
+            "> [!IMPORTANT]",
+            f"> **Application deadline:** {deadline}  ",
+            f"> **Program dates:** {program_dates}  ",
+            f"> **Location:** {location_display}  ",
+            f"> **Format:** {markdown_inline(opportunity_format)}",
+            "",
+            "---",
+            "",
+        ]
+    )
 
     add_text_section(
         lines,
-        "Opportunity Overview",
+        "✨ Why this opportunity is worth your attention",
         page_content.get("overview"),
         "page_content.overview",
     )
     add_text_section(
         lines,
-        "Organizer",
+        "🏛️ Meet the organizer",
         page_content.get("organizer"),
         "page_content.organizer",
     )
     add_text_section(
         lines,
-        "Who Can Apply",
+        "👥 Who can apply",
         page_content.get("who_can_apply"),
         "page_content.who_can_apply",
     )
     add_text_section(
         lines,
-        "Location & Format",
+        "📍 Where and how it happens",
         page_content.get("location_and_format"),
         "page_content.location_and_format",
     )
     add_text_section(
         lines,
-        "Important Dates",
+        "🗓️ Dates to remember",
         page_content.get("important_dates"),
         "page_content.important_dates",
     )
     add_text_section(
         lines,
-        "Funding & Support",
+        "💸 Fees, funding and support",
         page_content.get("funding_and_support"),
         "page_content.funding_and_support",
     )
     add_text_section(
         lines,
-        "How to Apply",
-        page_content.get("application_path"),
-        "page_content.application_path",
-    )
-    add_text_section(
-        lines,
-        "What Participants Do",
+        "🛠️ What you will do",
         page_content.get("what_participants_do"),
         "page_content.what_participants_do",
     )
-
-    add_portals_section(
+    add_text_section(
         lines,
-        validate_web_url(
-            application.get("official_page"),
-            "application.official_page",
-        ),
-        validate_web_url(
-            application.get("application_page"),
-            "application.application_page",
-        ),
+        "🚀 How to apply",
+        page_content.get("application_path"),
+        "page_content.application_path",
     )
+
+    add_official_links(lines, official_page, application_page)
 
     submission = front_matter.get("submission", {})
-    issue_url = (
-        submission.get("issue_url")
-        if isinstance(submission, dict)
-        else None
-    )
-
-    if issue_url:
+    issue_url = submission.get("issue_url") if isinstance(submission, dict) else None
+    if isinstance(issue_url, str) and issue_url.strip():
         lines.extend(
             [
                 "---",
                 "",
-                "### Review trail",
+                "<details>",
+                "<summary><strong>🧾 Research and review trail</strong></summary>",
                 "",
-                (
-                    "This draft was prepared from a community "
-                    "submission and official-source research. "
-                    "Human approval is still required before publication."
-                ),
+                "This page was prepared from a community submission, "
+                "checked against official sources, and routed through "
+                "human moderator review before publication.",
                 "",
-                "- "
-                + markdown_link(
-                    "View the original submission",
-                    issue_url,
-                ),
+                "- " + markdown_link("View the original submission", issue_url),
+                "",
+                "</details>",
                 "",
             ]
         )
@@ -1587,44 +1683,17 @@ def existing_issue_number(
         return None
 
     try:
-        content = path.read_text(
-            encoding="utf-8"
-        )
-    except OSError:
+        content = path.read_text(encoding="utf-8")
+        metadata, _body = parse_opportunity_document(content)
+    except (OSError, OpportunityDocumentError):
         return None
 
-    if not content.startswith("---\n"):
-        return None
-
-    closing_marker = content.find(
-        "\n---\n",
-        4,
-    )
-
-    if closing_marker == -1:
-        return None
-
-    try:
-        front_matter = yaml.safe_load(
-            content[4:closing_marker]
-        )
-    except yaml.YAMLError:
-        return None
-
-    if not isinstance(front_matter, dict):
-        return None
-
-    submission = front_matter.get("submission")
-
+    submission = metadata.get("submission")
     if not isinstance(submission, dict):
         return None
 
     issue_number = submission.get("issue_number")
-
-    if (
-        isinstance(issue_number, int)
-        and not isinstance(issue_number, bool)
-    ):
+    if isinstance(issue_number, int) and not isinstance(issue_number, bool):
         return issue_number
 
     return None
@@ -1750,16 +1819,16 @@ def create_opportunity_file(
         slug,
     )
 
+    synchronize_filter_mirrors(front_matter)
+
     body = build_markdown_body(
         front_matter,
         publishable,
     )
 
-    content = (
-        "---\n"
-        f"{yaml_safe_dump(front_matter)}\n"
-        "---\n\n"
-        f"{body}"
+    content = render_opportunity_document(
+        front_matter,
+        body,
     )
 
     write_text_atomically(
@@ -1824,7 +1893,7 @@ def main() -> None:
     )
 
     print(
-        "OFFMAP opportunity Markdown draft generated successfully."
+        "OffMap opportunity Markdown draft generated successfully."
     )
     print(
         f"Output file: {output_file}"
