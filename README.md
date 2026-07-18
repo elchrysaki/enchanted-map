@@ -113,7 +113,7 @@ Found something valuable? Submit the official link in <u>under two minutes</u>. 
 Conferences, summits, forums, workshops, and networking events worth leaving your room for.
 </td>
 <td align="center" width="33%">
-<a href="#-internships"><h3>🛠️ Internships</h3></a>
+<a href="#-internships"><h3>🧰 Internships</h3></a>
 Internships, traineeships, apprenticeships, and practical experience across different fields.
 </td>
 <td align="center" width="33%">
@@ -131,7 +131,7 @@ Research placements, lab programs, assistantships, and opportunities.
 Grants, travel support, participation funding, and scholarships that make opportunities more accessible.
 </td>
 <td align="center" width="33%">
-<a href="#-fellowships"><h3>💼 Fellowships </h3></a>
+<a href="#-fellowships"><h3>🌱 Fellowships </h3></a>
 Mentorship, leadership, professional development, and selective international cohorts.
 </td>
 </tr>
@@ -146,7 +146,7 @@ Selective schools, intensive courses, technical academies, simulations and serio
 Startup programs, incubators, accelerators, entrepreneurship challenges, and idea-building opportunities.
 </td>
 <td align="center" width="33%">
-<a href="#-open-calls"><h3>🧩 Creative, Media & Open Calls</h3></a>
+<a href="#-open-calls"><h3>🎨 Creative, Media & Open Calls</h3></a>
 Writing, media, design, art, publishing, exhibitions, and open calls for creative work.
 </td>
 </tr>
@@ -171,14 +171,14 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 **Browse by type**
 
 - [🎤 Events](#-events) 
-- [🛠️ Internships](#-internships) 
+- [🧰 Internships](#-internships) 
 - [🏆 Competitions](#-competitions) 
 - [🔬 Research](#-research) 
-- [💼 Fellowships](#-fellowships)
+- [🌱 Fellowships](#-fellowships)
 - [💰 Scholarships](#-scholarships) 
 - [📚 Courses](#-courses) 
 - [🚀 Innovation](#-innovation) 
-- [🎨 Creative Calls](#-creative-calls)
+- [🎨 Open Calls](#-creative-calls)
 
 </td>
 <td valign="top" width="50%"> 
