@@ -54,16 +54,16 @@ audience:
   access_model: not-confirmed
   display_points: []
 funding:
-  application_fee: null
-  participation_fee: null
-  scholarship: null
-  travel_support: null
-  accommodation: null
-  meals: null
-  stipend_or_salary: null
-  prizes: null
-  visa_support: null
-  accessibility_support: null
+  application_fee: none
+  participation_fee: 160/120/95/75 euros
+  scholarship: none
+  travel_support: none
+  accommodation: optional
+  meals: provided
+  stipend_or_salary: none
+  prizes: provided
+  visa_support: provided
+  accessibility_support: optional
   other_support: []
   display_points: []
 application:
@@ -171,7 +171,12 @@ Applications close on 27 July 2026. The Ideathon runs from 3 to 8 November 2026.
 
 ## Funding & Support
 
-No information about fees, scholarships, or travel/accommodation support is confirmed. Applicants should check the official website for updates.
+For EUROAVIA members a fee of 120 euros; for non-EUROAVIA members a fee of 160 euros. Covers participation, 5 nights’ shared accommodation, all meals during the competition, and event transportation if applicable.
+
+For EUROAVIA members a fee of 95 euros; for non-EUROAVIA members a fee of 75 euros. Covers participation and competition meals, but not accommodation or daily commuting.
+
+Personal participation fee (per person)
+Travel to Belgium and personal expenses aren’t included in either tier. No refunds once payment is complete, and participants are responsible for their own health/travel insurance.
 
 ## How to Apply
 
