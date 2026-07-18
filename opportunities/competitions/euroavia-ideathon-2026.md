@@ -52,15 +52,15 @@ audience:
   access_model: not-confirmed
   display_points: []
 funding:
-  application_fee: null
-  participation_fee: null
-  scholarship: null
-  travel_support: null
-  accommodation: null
-  meals: null
-  stipend_or_salary: null
-  prizes: null
-  visa_support: null
+  application_fee: none
+  participation_fee: yes
+  scholarship: none
+  travel_support: none
+  accommodation: provided
+  meals: provided
+  stipend_or_salary: none
+  prizes: provided
+  visa_support: provided
   accessibility_support: null
   other_support: []
   display_points: []
@@ -163,6 +163,7 @@ OFFMAP-METADATA-END -->
 ## ✨ Why this opportunity is worth your attention
 
 EUROAVIA Ideathon 2026 invites university students to Brugge, Belgium, for a hackathon-style challenge. Teams compete to solve real-world aerospace engineering problems, gaining valuable industry exposure and networking opportunities.
+**[🌐 Explore the official page](https://ideathon.euroavia.eu)**
 
 ## 🏛️ Meet the organizer
 
@@ -171,6 +172,7 @@ EUROAVIA is a European association for aerospace students, organizing events and
 ## 👥 Who can apply
 
 Bachelor’s and master’s students aged 18 or older, enrolled at a university, are eligible. Teams must consist of 3–5 students, with a focus on aerospace engineering.
+**[🚀 Start your application](https://ideathon.euroavia.eu/applications)**
 
 ## 📍 Where and how it happens
 
@@ -179,6 +181,19 @@ The event takes place in person in Brugge, Belgium.
 ## 🗓️ Dates to remember
 
 Applications close on 27 July 2026. The event runs from 3 to 8 November 2026.
+
+## 💰 Participation fee
+
+With Accomodation - Covers participation, 5 nights’ shared accommodation, all meals during the competition, and event transportation if applicable.
+For EUROAVIA Members: 160€  
+For NON-EUROAVIA Members: 120€
+
+WithOUT Accomodation - Covers participation and competition meals, but not accommodation or daily commuting.
+For EUROAVIA Members: 95€  
+For NON-EUROAVIA Members: 75€
+
+> Personal participation fee (per person)
+> Travel to Belgium and personal expenses aren’t included in either tier. No refunds once payment is complete, and participants are responsible for their own health/travel insurance.
 
 ## 🛠️ What you will do
 
