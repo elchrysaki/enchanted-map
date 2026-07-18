@@ -15,6 +15,7 @@ permissions:
   contents: write
   pull-requests: read
 
+  issues: write
 jobs:
   publish-opportunity:
     name: Publish opportunity and rebuild browse pages
@@ -326,7 +327,10 @@ jobs:
             opportunities/
 
           if [[ -n "$REVIEW_PACKET" ]]; then
-            git add -A -- "$REVIEW_PACKET"
+            if [[ -e "$REVIEW_PACKET" ]] || \
+              git ls-files --error-unmatch "$REVIEW_PACKET" >/dev/null 2>&1; then
+              git add -A -- "$REVIEW_PACKET"
+            fi
           fi
 
           if git diff --cached --quiet; then
@@ -344,7 +348,10 @@ jobs:
 
           git add -A -- data/opportunities.json opportunities/
           if [[ -n "$REVIEW_PACKET" ]]; then
-            git add -A -- "$REVIEW_PACKET"
+            if [[ -e "$REVIEW_PACKET" ]] || \
+              git ls-files --error-unmatch "$REVIEW_PACKET" >/dev/null 2>&1; then
+              git add -A -- "$REVIEW_PACKET"
+            fi
           fi
 
           if ! git diff --cached --quiet; then
@@ -352,3 +359,35 @@ jobs:
           fi
 
           git push origin "HEAD:${BASE_REF}"
+
+
+      - name: Close source issue after successful publication
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "$HEAD_REF" =~ issue-([0-9]+)$ ]]; then
+            ISSUE_NUMBER="${BASH_REMATCH[1]}"
+          else
+            echo "::error::Could not determine the source issue from $HEAD_REF"
+            exit 1
+          fi
+
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "/repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments" \
+            -f body="## OffMap opportunity published
+
+          Pull request #${PR_NUMBER} was merged successfully. The opportunity was published and the public indexes were rebuilt."
+
+          gh api \
+            --method PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "/repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" \
+            -f state="closed" \
+            -f state_reason="completed"

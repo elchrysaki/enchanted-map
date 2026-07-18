@@ -1035,7 +1035,7 @@ pull request.
         PROCESS_COMMENT_MARKER,
         comment,
     )
-    close_issue(state_reason="completed")
+    keep_issue_open()
 
     return pr_url, pr_number
 
