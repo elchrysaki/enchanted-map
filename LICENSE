@@ -1,21 +1,187 @@
-MIT License
+OFFMAP LICENSING NOTICE
 
-Copyright (c) 2026 Elena Chrysaki
+Copyright © 2026 Elena Chrysaki.
+All rights reserved except where permission is expressly granted below.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This repository contains different kinds of material governed by
+different licensing terms.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+============================================================
+1. SOFTWARE CODE
+============================================================
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Unless a file states otherwise, the software code in this repository,
+including scripts, workflows, configuration files, templates, and
+software components, is licensed under the:
+
+PolyForm Noncommercial License 1.0.0
+
+Official terms:
+https://polyformproject.org/licenses/noncommercial/1.0.0/
+
+Required Notice:
+Copyright © 2026 Elena Chrysaki.
+OFFMAP software is licensed for permitted noncommercial purposes under
+the PolyForm Noncommercial License 1.0.0.
+
+The source code may be viewed, used, copied, modified, and distributed
+only for purposes permitted by that license.
+
+Commercial use is not automatically permitted.
+
+============================================================
+2. WRITTEN CONTENT AND OPPORTUNITY DATA
+============================================================
+
+Unless otherwise stated, original written and editorial content and the
+original compilation of opportunity data in this repository are
+licensed under:
+
+Creative Commons Attribution-NonCommercial 4.0 International
+(CC BY-NC 4.0)
+
+Official terms:
+https://creativecommons.org/licenses/by-nc/4.0/legalcode
+
+This includes, where applicable:
+
+- original documentation;
+- original opportunity descriptions and summaries;
+- editorial organization and presentation;
+- original indexes and curated datasets;
+- original guides and explanatory materials.
+
+You may share and adapt this material for noncommercial purposes,
+provided that you:
+
+- give clear attribution to OFFMAP and Elena Chrysaki;
+- preserve the applicable copyright and licence notice;
+- link back to the official OFFMAP repository where practical;
+- identify meaningful changes;
+- do not imply endorsement by OFFMAP or its contributors.
+
+This licence does not grant rights over third-party material, facts,
+names, logos, trademarks, photographs, or content owned by others.
+
+============================================================
+3. OFFMAP NAME, BRAND, AND VISUAL IDENTITY
+============================================================
+
+The OFFMAP name, logo, visual identity, distinctive brand elements,
+original promotional graphics, and other clearly identifiable brand
+assets are not licensed under the software or content licences above.
+
+All rights in those materials are reserved.
+
+You may refer to OFFMAP accurately and may link to the official project.
+You may not, without separate written permission:
+
+- present another project, product, service, or organization as OFFMAP;
+- use OFFMAP branding in a way that suggests endorsement, partnership,
+  sponsorship, or official status;
+- sell or commercially exploit OFFMAP brand assets;
+- register confusingly similar names, logos, domains, or accounts;
+- remove or misrepresent ownership notices.
+
+Any expressly permitted noncommercial use must preserve attribution and
+must not imply OFFMAP endorsement.
+
+============================================================
+4. THIRD-PARTY MATERIAL
+============================================================
+
+Opportunity names, organizer names, logos, trademarks, linked material,
+and other third-party content remain the property of their respective
+owners.
+
+Their appearance in OFFMAP does not transfer ownership, grant a licence,
+or imply affiliation or endorsement.
+
+Users are responsible for obtaining any permissions required for their
+use of third-party material.
+
+============================================================
+5. COMMERCIAL USE AND SPECIAL PERMISSION
+============================================================
+
+Commercial reuse is not automatically permitted.
+
+A person or organization seeking commercial use, a special exception,
+or clarification about an ambiguous use may request separate written
+permission from Elena Chrysaki through the repository owner's official
+GitHub profile.
+
+A permission request should explain:
+
+- who is requesting permission;
+- which OFFMAP material they want to use;
+- the intended purpose;
+- how the material will be distributed or monetized;
+- what changes will be made;
+- why permission should be granted.
+
+Permission may be approved, rejected, limited, conditioned, or revoked
+according to its written terms.
+
+Silence, repository access, public availability, or acceptance of a
+contribution does not constitute commercial permission.
+
+============================================================
+6. CONTRIBUTIONS
+============================================================
+
+Unless explicitly agreed otherwise in writing, contributions submitted
+to this repository are offered under the licence that applies to the
+part of the project being modified.
+
+By submitting a contribution, the contributor represents that:
+
+- they have the right to submit it;
+- it does not knowingly violate another person's rights;
+- it may be used and distributed under the applicable OFFMAP terms.
+
+Contributors retain copyright in their original contributions unless
+they separately transfer those rights in writing.
+
+============================================================
+7. NO ENDORSEMENT
+============================================================
+
+Permission to use OFFMAP material does not include permission to claim
+or imply that OFFMAP, Elena Chrysaki, or any contributor endorses a
+person, organization, opportunity, product, or service.
+
+============================================================
+8. NO WARRANTY
+============================================================
+
+TO THE FULLEST EXTENT PERMITTED BY LAW, OFFMAP MATERIALS ARE PROVIDED
+"AS IS" AND "AS AVAILABLE", WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY.
+
+OFFMAP DOES NOT GUARANTEE THAT OPPORTUNITY INFORMATION IS COMPLETE,
+CURRENT, ACCURATE, AVAILABLE, SAFE, OR SUITABLE FOR A PARTICULAR USER.
+
+USERS MUST VERIFY DEADLINES, ELIGIBILITY, COSTS, FUNDING, APPLICATION
+REQUIREMENTS, AND OTHER DETAILS THROUGH THE OFFICIAL ORGANIZER.
+
+TO THE FULLEST EXTENT PERMITTED BY LAW, THE COPYRIGHT HOLDERS AND
+CONTRIBUTORS WILL NOT BE LIABLE FOR CLAIMS, LOSSES, DAMAGES, COSTS, OR
+OTHER LIABILITY ARISING FROM THE USE OF THIS REPOSITORY OR RELIANCE ON
+ITS CONTENT.
+
+============================================================
+9. INTERPRETATION
+============================================================
+
+When a file contains a more specific licence notice, that notice governs
+that file.
+
+Where material falls into more than one category, the more specific
+applicable section of this notice governs.
+
+Nothing in this notice limits rights that cannot legally be restricted,
+including applicable exceptions and limitations under copyright law.
+
+For commercial licensing or written permission, contact the repository
+owner through their official GitHub profile.
