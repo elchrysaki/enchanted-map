@@ -1,0 +1,326 @@
+schema_version: 1
+
+navigation:
+  - events
+  - internships
+  - competitions
+  - research
+  - fellowships
+  - scholarships
+  - courses
+  - innovation
+  - creative-calls
+
+main_categories:
+  events:
+    title: Events
+    emoji: "🎤"
+    description: >
+      Conferences, summits, forums, workshops, networking events,
+      congresses, and cultural programs that help students meet ideas,
+      people, and possibilities.
+    categories:
+      conference:
+        title: Conferences
+        emoji: "🎙️"
+        route: conferences
+        description: >
+          Gatherings where students, researchers, professionals, and
+          organisations share work, exchange ideas, and build networks.
+      summit:
+        title: Summits
+        emoji: "🌐"
+        route: summits
+        description: >
+          Large thematic gatherings focused on leadership,
+          collaboration, policy, or shared global challenges.
+      forum:
+        title: Forums
+        emoji: "💬"
+        route: forums
+        description: >
+          Discussion-led events where participants exchange perspectives,
+          debate ideas, and contribute to a wider conversation.
+      workshop-seminar:
+        title: Workshops & Seminars
+        emoji: "🛠️"
+        route: workshops-seminars
+        description: >
+          Practical or focused learning sessions built around skills,
+          discussion, training, and hands-on participation.
+      networking-event:
+        title: Networking Events
+        emoji: "🤝"
+        route: networking-events
+        description: >
+          Events designed to help students meet peers, mentors,
+          researchers, recruiters, founders, and future collaborators.
+      congress:
+        title: Congresses
+        emoji: "🏛️"
+        route: congresses
+        description: >
+          Formal gatherings that bring together large communities,
+          associations, or professional and academic groups.
+      cultural-program:
+        title: Cultural Programs
+        emoji: "🎭"
+        route: cultural-programs
+        description: >
+          Programs centred on culture, exchange, creativity, heritage,
+          dialogue, and shared experiences.
+
+  internships:
+    title: Internships
+    emoji: "🧰"
+    description: >
+      Internships, apprenticeships, and traineeships that help students
+      gain practical experience and understand a field from the inside.
+    categories:
+      internship:
+        title: Internships
+        emoji: "🧰"
+        route: internships
+        description: >
+          Structured work experiences that help students apply their
+          knowledge, develop skills, and explore a professional path.
+      apprenticeship:
+        title: Apprenticeships
+        emoji: "🔧"
+        route: apprenticeships
+        description: >
+          Work-based learning opportunities combining practical
+          experience with structured training and guidance.
+      traineeship:
+        title: Traineeships
+        emoji: "📋"
+        route: traineeships
+        description: >
+          Short- or medium-term placements focused on professional
+          development, training, and supervised experience.
+
+  competitions:
+    title: Competitions
+    emoji: "🏆"
+    description: >
+      Competitions, challenges, and hackathons where students test ideas,
+      build projects, solve problems, and occasionally forget what sleep is.
+    categories:
+      competition:
+        title: Competitions
+        emoji: "🏆"
+        route: competitions
+        description: >
+          Structured contests where individuals or teams submit work,
+          demonstrate skills, and compete for recognition or awards.
+      challenge:
+        title: Challenges
+        emoji: "🎯"
+        route: challenges
+        description: >
+          Problem-focused opportunities inviting students to develop
+          practical, creative, technical, or social solutions.
+      hackathon:
+        title: Hackathons
+        emoji: "💻"
+        route: hackathons
+        description: >
+          Fast-paced collaborative events where teams design, build,
+          test, and present solutions within a limited time.
+
+  research:
+    title: Research
+    emoji: "🔬"
+    description: >
+      Research programs, placements, and internships for students ready
+      to investigate questions, contribute to projects, and learn how
+      knowledge is actually made.
+    categories:
+      research-program:
+        title: Research Programs
+        emoji: "🧪"
+        route: research-programs
+        description: >
+          Structured programs involving research training, supervised
+          projects, academic collaboration, or laboratory experience.
+      research-placement:
+        title: Research Placements
+        emoji: "📍"
+        route: research-placements
+        description: >
+          Placements within laboratories, institutes, universities, or
+          research teams where students contribute to ongoing work.
+      research-internship:
+        title: Research Internships
+        emoji: "🔬"
+        route: research-internships
+        description: >
+          Internship-style research experiences combining project work,
+          mentorship, training, and exposure to academic or applied research.
+
+  fellowships:
+    title: Fellowships
+    emoji: "🌱"
+    description: >
+      Fellowships and leadership programs offering mentorship, networks,
+      development, and room to turn potential into something less theoretical.
+    categories:
+      fellowship:
+        title: Fellowships
+        emoji: "🌱"
+        route: fellowships
+        description: >
+          Selective programs combining development, mentorship, community,
+          project work, funding, or professional opportunities.
+      leadership-program:
+        title: Leadership Programs
+        emoji: "🧭"
+        route: leadership-programs
+        description: >
+          Programs focused on leadership skills, public impact,
+          collaboration, responsibility, and community building.
+
+  scholarships:
+    title: Scholarships
+    emoji: "💰"
+    description: >
+      Scholarships, grants, and travel grants that help students access
+      education, projects, research, and international opportunities.
+    categories:
+      scholarship:
+        title: Scholarships
+        emoji: "🎓"
+        route: scholarships
+        description: >
+          Financial awards supporting study, participation, development,
+          or access to a specific educational opportunity.
+      grant:
+        title: Grants
+        emoji: "💶"
+        route: grants
+        description: >
+          Funding provided for projects, research, learning, participation,
+          or other clearly defined student and early-career activities.
+      travel-grant:
+        title: Travel Grants
+        emoji: "✈️"
+        route: travel-grants
+        description: >
+          Funding that helps cover travel connected to conferences,
+          research, study, training, competitions, or other opportunities.
+
+  courses:
+    title: Courses & Training
+    emoji: "📚"
+    description: >
+      Academies, schools, courses, training programs, and bootcamps for
+      students who would rather learn by doing than collect another open tab.
+    categories:
+      academy:
+        title: Academies
+        emoji: "🏛️"
+        route: academies
+        description: >
+          Structured learning programs combining teaching, projects,
+          mentorship, discussion, and a focused participant community.
+      summer-school:
+        title: Summer Schools
+        emoji: "☀️"
+        route: summer-schools
+        description: >
+          Intensive seasonal programs offering academic, professional,
+          cultural, or practical learning during the summer.
+      winter-school:
+        title: Winter Schools
+        emoji: "❄️"
+        route: winter-schools
+        description: >
+          Intensive winter programs built around specialised study,
+          training, discussion, projects, or international exchange.
+      course-training:
+        title: Courses & Training
+        emoji: "📘"
+        route: courses-training
+        description: >
+          Focused courses and training programs offering structured
+          instruction, practical skills, or recognised development.
+      bootcamp:
+        title: Bootcamps
+        emoji: "⚡"
+        route: bootcamps
+        description: >
+          Intensive, practical programs designed to build skills,
+          projects, and confidence within a short period.
+
+  innovation:
+    title: Innovation & Entrepreneurship
+    emoji: "🚀"
+    description: >
+      Startup programs, accelerators, incubators, and entrepreneurship
+      opportunities for students trying to build something that exists
+      outside a slide deck.
+    categories:
+      startup-program:
+        title: Startup Programs
+        emoji: "💡"
+        route: startup-programs
+        description: >
+          Programs supporting students and early-stage teams as they
+          develop ideas, validate problems, and build new ventures.
+      accelerator:
+        title: Accelerators
+        emoji: "🚀"
+        route: accelerators
+        description: >
+          Time-limited programs helping ventures grow through mentoring,
+          resources, networks, investment preparation, or intensive support.
+      incubator:
+        title: Incubators
+        emoji: "🌱"
+        route: incubators
+        description: >
+          Longer-term support environments helping early ideas develop
+          through workspace, guidance, community, and shared resources.
+      entrepreneurship-program:
+        title: Entrepreneurship Programs
+        emoji: "📈"
+        route: entrepreneurship-programs
+        description: >
+          Programs teaching entrepreneurial thinking, venture development,
+          innovation, business design, and practical execution.
+
+  creative-calls:
+    title: Creative & Open Calls
+    emoji: "🎨"
+    description: >
+      Creative, media, writing, and design calls for students ready to
+      submit work, share ideas, and stop keeping everything in drafts.
+    categories:
+      creative-call:
+        title: Creative Calls
+        emoji: "🎨"
+        route: creative-calls
+        description: >
+          Open invitations for creative work across disciplines,
+          formats, exhibitions, publications, and collaborative projects.
+      media-call:
+        title: Media Calls
+        emoji: "🎬"
+        route: media-calls
+        description: >
+          Opportunities for photography, film, journalism, audio,
+          digital storytelling, and other media-based work.
+      writing-call:
+        title: Writing Calls
+        emoji: "✍️"
+        route: writing-calls
+        description: >
+          Calls for essays, articles, fiction, poetry, scripts,
+          research communication, and other written work.
+      design-call:
+        title: Design Calls
+        emoji: "🖌️"
+        route: design-calls
+        description: >
+          Calls for graphic, product, industrial, architectural,
+          digital, visual, and interdisciplinary design work.
