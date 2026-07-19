@@ -60,7 +60,7 @@ Fast-paced collaborative events where teams design, build, test, and present sol
 
 | Status | Category | Opportunity | Focus | When & Where | Format | Funding | Eligibility | Apply | Deadline |
 |---|---|---|---|---|---|---|---|---|---|
-| 🔥 **CLOSING SOON** | Hackathons | [EUROAVIA Ideathon 2026](<euroavia-ideathon-2026.md>) | Aerospace Innovation, Industrial Challenges | 3–8 Nov 2026 / Brugge, Belgium | In Person | Not stated | Bachelor’s, Master’s | [Apply](<https://ideathon.euroavia.eu/applications>) | 27 July 2026 |
+| 🔥 **CLOSING SOON** | Hackathons | [EUROAVIA Ideathon 2026](<euroavia-ideathon-2026.md>) | Aerospace Innovation, Industrial Challenges | 3–8 Nov 2026 / Brugge, Belgium | In Person | Participation fee, Accommodation | Bachelor’s, Master’s | [Apply](<https://ideathon.euroavia.eu/applications>) | 27 July 2026 |
 
 **[View all active hackathons →](<hackathons/>)**
 
