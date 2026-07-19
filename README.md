@@ -31,6 +31,7 @@
 [![🗺 Opportunities](https://img.shields.io/badge/Verified-0-blueviolet?style=for-the-badge)](opportunities/README.md)
 [![🔥 Closing Soon](https://img.shields.io/badge/Closing%20Soon-0-orange?style=for-the-badge)](#closing-soon)
 
+
 <br>
 
 <img src=".github/media/logo/ide_logo_minimal.PNG" width="760">
