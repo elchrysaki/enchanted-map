@@ -7,7 +7,7 @@ organizer: L'SPACE
 main_category: courses
 category: academy
 edition: null
-status: pending-review
+status: published
 summary: Mission Concept Academy (MCA) is a free, online technical training program organized by L'SPACE. It offers undergraduate and graduate students from US colleges and universities hands-on experience in mission planning, proposal writing, and technical skills relevant to NASA and space careers.
 format: online
 location:
@@ -129,6 +129,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 28
+  approved_by: elchrysaki
+  published_at: '2026-07-19T20:31:43.039080+00:00'
 submission:
   issue_number: 27
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/27
@@ -138,6 +144,10 @@ provenance:
   researched_at: '2026-07-19T20:30:07.304871+00:00'
   formatted_at: '2026-07-19T20:30:16.631332+00:00'
   generated_at: '2026-07-19T20:30:16.729649+00:00'
+  published_at: '2026-07-19T20:31:43.039080+00:00'
+  publication_pr_number: 28
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 Mission Concept Academy (MCA)

@@ -1,20 +1,13 @@
-<div align="center">
-
-[🏠 Home](<../../README.md>) · [🤝 Contributing](<../../CONTRIBUTING.md>) · [🎤 Events](<../events/>) · [🧰 Internships](<../internships/>) · [🏆 Competitions](<../competitions/>) · [🔬 Research](<../research/>)
-
-[🌱 Fellowships](<../fellowships/>) · [💰 Scholarships](<./>) · [📚 Courses & Training](<../courses/>) · [🚀 Innovation & Entrepreneurship](<../innovation/>) · [🎨 Creative & Open Calls](<../creative-calls/>)
-
-</div>
-
 # 🗺️ OffMap Opportunity Index
 
 This index is generated automatically from reviewed opportunity files. Edit the individual opportunity pages, not this index.
 
-**Published opportunities:** 1
+**Published opportunities:** 2
 
 ## Jump to a main category
 
 - [🏆 Competitions](#main-competitions) (1)
+- [📚 Courses & Schools](#main-courses) (1)
 
 <a id="main-competitions"></a>
 
@@ -23,6 +16,16 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 | Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
 |---|---|---|---|---|---|---|---|---|
 | [EUROAVIA Ideathon 2026](<competitions/euroavia-ideathon-2026.md>) | Hackathon | EUROAVIA (hosted by AS Oostende) | 27 July 2026 | In Person | In-person event in Brugge, Belgium | Participation Fee, Accommodation, Meals | Undergraduate, Master | [Apply](<https://ideathon.euroavia.eu/applications>) |
+
+[↑ Back to main categories](#jump-to-a-main-category)
+
+<a id="main-courses"></a>
+
+## 📚 Courses & Schools
+
+| Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
+|---|---|---|---|---|---|---|---|---|
+| [Mission Concept Academy (MCA)](<courses/mission-concept-academy-mca.md>) | Academy | L'SPACE | 2 August 2026, 11:59 PM PT | Online | Online (hosted from the United States) | No Application Fee, No Participation Fee | Undergraduate, Graduate | [Official page](<https://www.lspace.asu.edu/mission-concept-academy>) |
 
 [↑ Back to main categories](#jump-to-a-main-category)
 
