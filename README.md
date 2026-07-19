@@ -34,7 +34,7 @@
 
 <br>
 
-<img src=".github/media/logo/ide_logo_minimal.PNG" width="760">
+<img src=".github/media/logo/logo.png" width="760">
 
 <br>
 <p align="center">
@@ -184,7 +184,7 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 </td>
 <td valign="top" width="30%"> 
 
-### 🧠 Browse by field 
+**Browse by field** 
 - [⚙️ Engineering & Technology](...)
 - [💻 Computing, AI & Data](...)
 - [🔬 Natural Sciences](...)
@@ -202,9 +202,9 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 
 - [🔥 Closing Soon](#closing-soon)
 - [✅ Open Now](opportunities/README.md)
-- [⏳ Opening Soon](...)
-- [🔁 Rolling Applications](...)
-- [📅 Upcoming Cycles](...)
+- [⏳ Opening Soon]
+- [🔁 Rolling Applications]
+- [📅 Upcoming Cycles]
 - [🗄️ Past Opportunities](ARCHIVE.md)
 
 </td>
