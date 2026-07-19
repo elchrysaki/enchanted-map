@@ -1,5 +1,62 @@
 <div align="center">
 
+# 🧭 OffMap
+
+### Built by students. Powered by the community.
+
+> We’re creating the biggest student-powered opportunity map, **one discovery, one application, and one story at a time.**
+
+<br>
+
+[![⭐ Stars](https://img.shields.io/github/stars/elchrysaki/offmap-hub?style=for-the-badge&color=F4C542)](https://github.com/elchrysaki/offmap-hub/stargazers)
+[![Contributors](https://img.shields.io/github/contributors/elchrysaki/offmap-hub?style=for-the-badge&color=8B5CF6)](https://github.com/elchrysaki/offmap-hub/graphs/contributors)
+[![Opportunities](https://img.shields.io/badge/Verified-1-blueviolet?style=for-the-badge)](opportunities/README.md)
+[![Closing Soon](https://img.shields.io/badge/Closing%20Soon-1-orange?style=for-the-badge)](#closing-soon)
+
+<br>
+
+<img src=".github/media/logo/ide_logo_minimal.PNG" width="760">
+
+<br>
+
+<p align="center">
+
+<a href="opportunities/README.md">
+<img
+src="https://img.shields.io/badge/%F0%9F%97%BA%EF%B8%8F%20EXPLORE%20THE%20MAP-6D4AFF?style=for-the-badge"
+alt="Explore the Map"
+height="30"
+>
+</a>
+
+&nbsp;
+
+<a href="CONTRIBUTING.md">
+<img
+src="https://img.shields.io/badge/%E2%9A%94%EF%B8%8F%20BEGIN%20A%20QUEST-00A878?style=for-the-badge"
+alt="Begin a Quest"
+height="30"
+>
+</a>
+
+&nbsp;
+
+<a href="https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml">
+<img
+src="https://img.shields.io/badge/%E2%9E%95%20ADD%20A%20DISCOVERY-F4C542?style=for-the-badge&logo=github&logoColor=black"
+alt="Add a Discovery"
+height="30"
+>
+</a>
+
+</p>
+
+</div>
+
+---
+
+<div align="center">
+
 [**README**](README.md) ·
 [**CONTRIBUTING**](CONTRIBUTING.md) ·
 [**EVENTS**](opportunities/events/) ·
@@ -12,52 +69,6 @@
 [**INNOVATION**](opportunities/innovation/) ·
 [**CREATIVE & OPEN CALLS**](opportunities/creative-calls/)
 
-<!-- Add external Travel and Volunteering repository buttons here once those repositories are live. -->
-
-# 🗺️ OffMap
-
-### Built by students. Powered by the community.
-
-> We’re creating the biggest student-powered opportunity map, **one discovery, one application, and one story at a time.**
-
-<br>
-
-[![⭐ Stars](https://img.shields.io/github/stars/elchrysaki/offmap-hub?style=for-the-badge&color=F4C542)](https://github.com/elchrysaki/offmap-hub/stargazers)
-[![Contributors](https://img.shields.io/github/contributors/elchrysaki/offmap-hub?style=for-the-badge&color=8B5CF6)](https://github.com/elchrysaki/offmap-hub/graphs/contributors)
-[![Opportunity Index](https://img.shields.io/badge/OPPORTUNITY%20INDEX-BROWSE-blueviolet?style=for-the-badge)](opportunities/README.md)
-[![Closing Soon](https://img.shields.io/badge/CLOSING%20SOON-VIEW-orange?style=for-the-badge)](#closing-soon)
-
-<br>
-
-<img src=".github/media/logo/ide_logo_minimal.PNG" width="760" alt="OffMap — Your map to what is possible">
-
-<br>
-
-<a href="opportunities/README.md">
-<img
-src="https://img.shields.io/badge/🗺️%20EXPLORE%20THE%20MAP-6D4AFF?style=for-the-badge"
-alt="Explore the Map"
-height="30">
-</a>
-
-&nbsp;
-
-<a href="CONTRIBUTING.md">
-<img
-src="https://img.shields.io/badge/⚔️%20BEGIN%20A%20QUEST-00A878?style=for-the-badge"
-alt="Begin a Quest"
-height="30">
-</a>
-
-&nbsp;
-
-<a href="https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml">
-<img
-src="https://img.shields.io/badge/➕%20ADD%20A%20DISCOVERY-F4C542?style=for-the-badge&logo=github&logoColor=black"
-alt="Add a Discovery"
-height="30">
-</a>
-
 </div>
 
 ---
@@ -67,30 +78,40 @@ height="30">
 
 **Find your path. Share what you discover. Help someone else begin theirs.**
 
+<div align="center">
+
+</div>
+
 <table>
+
 <tr>
+
 <td width="33%" valign="top">
 
-### 🔎 Discover
+### Discover
 
 Find worthwhile opportunities without searching through fifty newsletters, six university portals, and a clutter of Instagram posts.
 
 </td>
+
 <td width="33%" valign="top">
 
-### ⚖️ Compare
+### Compare
 
 See the deadline, location, format, eligibility, funding, and official application links in one place.
 
 </td>
+
 <td width="33%" valign="top">
 
-### 🧭 Contribute
+### Contribute
 
-Found something valuable? Submit the official link in under two minutes. **Become a contributor.**
+Found something valuable? Submit the official link in <u>under two minutes</u>. **Become a contributor.**
 
 </td>
+
 </tr>
+
 </table>
 
 ---
@@ -100,14 +121,17 @@ Found something valuable? Submit the official link in under two minutes. **Becom
 > Find the opportunity that changes what you do next.
 
 <table>
+
 <tr>
+
 <td align="center" width="33%">
 
-<a href="opportunities/events/"><h3>🎤 Conferences & Events</h3></a>
+<a href="opportunities/events/"><h3>🎤 Events</h3></a>
 
 Conferences, summits, forums, workshops, networking events, congresses, and cultural programs worth leaving your room for.
 
 </td>
+
 <td align="center" width="33%">
 
 <a href="opportunities/internships/"><h3>🧰 Internships</h3></a>
@@ -115,69 +139,80 @@ Conferences, summits, forums, workshops, networking events, congresses, and cult
 Internships, traineeships, apprenticeships, and practical experience across different fields.
 
 </td>
+
 <td align="center" width="33%">
 
-<a href="opportunities/competitions/"><h3>🏆 Hackathons & Competitions</h3></a>
+<a href="opportunities/competitions/"><h3>🏆 Competitions</h3></a>
 
-Build, test, pitch. Hackathons, challenges, and competitions where ideas become actual projects.
+Build, test, pitch! Competitions, challenges, and hackathons where ideas become actual projects.
 
 </td>
+
 </tr>
 
 <tr>
+
 <td align="center" width="33%">
 
 <a href="opportunities/research/"><h3>🔬 Research</h3></a>
 
-Research programs, placements, internships, and supervised opportunities to contribute to real projects.
+Research programs, research placements, research internships, and related opportunities.
 
 </td>
+
 <td align="center" width="33%">
 
-<a href="opportunities/scholarships/"><h3>💰 Scholarships & Funding</h3></a>
+<a href="opportunities/scholarships/"><h3>💰 Scholarships</h3></a>
 
-Scholarships, grants, and travel grants that make worthwhile opportunities more accessible.
+Scholarships, grants, and travel grants that make opportunities more accessible.
 
 </td>
+
 <td align="center" width="33%">
 
 <a href="opportunities/fellowships/"><h3>🌱 Fellowships</h3></a>
 
-Mentorship, leadership, professional development, and selective international cohorts.
+Fellowships, leadership programs, mentorship, professional development, and selective international cohorts.
 
 </td>
+
 </tr>
 
 <tr>
+
 <td align="center" width="33%">
 
 <a href="opportunities/courses/"><h3>📚 Courses & Training</h3></a>
 
-Academies, summer and winter schools, intensive courses, training programs, and bootcamps.
+Academies, summer schools, winter schools, courses, training programs, and bootcamps.
 
 </td>
+
 <td align="center" width="33%">
 
 <a href="opportunities/innovation/"><h3>🚀 Innovation & Entrepreneurship</h3></a>
 
-Startup programs, incubators, accelerators, entrepreneurship programs, and idea-building opportunities.
+Startup programs, accelerators, incubators, entrepreneurship programs, and idea-building opportunities.
 
 </td>
+
 <td align="center" width="33%">
 
 <a href="opportunities/creative-calls/"><h3>🎨 Creative & Open Calls</h3></a>
 
-Writing, media, design, art, publishing, exhibitions, and open calls for creative work.
+Creative, media, writing, and design calls for work that deserves somewhere to go.
 
 </td>
+
 </tr>
+
 </table>
 
 <div align="center">
 
 ### One link can open a door for thousands of students.
 
-[![Submit an opportunity](https://img.shields.io/badge/SUBMIT%20AN%20OPPORTUNITY-Open%20the%20form-00A878?style=for-the-badge&logo=github)](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
+[![Submit an opportunity](https://img.shields.io/badge/SUBMIT%20AN%20OPPORTUNITY-Open%20an%20issue-00A878?style=for-the-badge&logo=github)](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
 
 </div>
 
@@ -185,11 +220,13 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 
 ## Navigation
 
-<table>
+<table align="center">
+
 <tr>
+
 <td valign="top" width="25%">
 
-### Browse by type
+**Browse by type**
 
 - [🎤 Events](opportunities/events/)
 - [🧰 Internships](opportunities/internships/)
@@ -202,7 +239,8 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 - [🎨 Creative & Open Calls](opportunities/creative-calls/)
 
 </td>
-<td valign="top" width="25%">
+
+<td valign="top" width="50%">
 
 ### Browse by field
 
@@ -217,36 +255,36 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 - 📚 Humanities & Education
 - 🧩 Multidisciplinary
 
-<sub>Field-specific links will be added when the generated filter pages are ready.</sub>
-
 </td>
+
 <td valign="top" width="25%">
 
-### Browse by urgency
+**Browse by urgency**
 
 - [🔥 Closing Soon](#closing-soon)
-- [✅ All Published Opportunities](opportunities/README.md)
+- [✅ Open Now](opportunities/README.md)
 - ⏳ Opening Soon
 - 🔄 Rolling Applications
 - 📅 Upcoming Cycles
 - 🗃️ Past Opportunities
 
-<sub>Additional urgency pages will be linked once they exist.</sub>
-
 </td>
+
 <td valign="top" width="25%">
 
-### Community
+**Community**
 
 - [➕ Add a Discovery](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
-- [🛠️ Fix Outdated Information](https://github.com/elchrysaki/offmap-hub/issues/new/choose)
+- [🛠️ Fix Outdated Information](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
 - [📖 Read the Contribution Guide](CONTRIBUTING.md)
 - [👥 Meet the Contributors](#contributors)
 - [📸 Share an Opportunity Story](#from-the-community)
 - [💬 Join the Discussion](https://github.com/elchrysaki/offmap-hub/discussions)
 
 </td>
+
 </tr>
+
 </table>
 
 ---
@@ -254,7 +292,9 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 ## How to read the list
 
 <table>
+
 <tr>
+
 <td valign="top" width="50%">
 
 ### Status
@@ -262,12 +302,13 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 | Badge | Meaning |
 |---|---|
 | ✅ **OPEN** | Applications or registration are open now |
-| 🔥 **CLOSING SOON** | The confirmed deadline is approaching |
+| 🔥 **CLOSING SOON** | The deadline is within roughly 14 days |
 | ⏳ **OPENS SOON** | The next cycle is announced but not open yet |
 | 🔄 **ROLLING** | Applications are reviewed continuously |
 | ⚠️ **VERIFY** | Information needs a fresh official check |
 
 </td>
+
 <td valign="top" width="50%">
 
 ### Funding
@@ -282,10 +323,13 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 | **Stipend** | Participants receive financial support |
 
 </td>
+
 </tr>
+
 </table>
 
 <details>
+
 <summary><strong>What we verify before publishing</strong></summary>
 <br>
 
@@ -303,7 +347,9 @@ Listings may be removed or archived when the information becomes outdated, the o
 </details>
 
 <details>
+
 <summary><strong>What does not belong here</strong></summary>
+
 <br>
 
 - Ordinary job-board listings
@@ -317,20 +363,19 @@ Listings may be removed or archived when the information becomes outdated, the o
 
 </details>
 
----
-
-## 🔥 Closing soon
+## Closing soon
 
 > [!TIP]
+>
 > **Deadlines do not wait for motivation to arrive.**
 >
-> This section shows up to **six published opportunities with the nearest confirmed deadlines**. Distinct main categories are prioritised first, then any remaining spaces are filled by deadline order. If fewer than six qualifying opportunities are published, fewer will appear. No imaginary listings are added merely to make the table look emotionally complete.
+> These verified opportunities are closing within the next 30 days, ordered by the nearest application deadline.
 
 <!-- CLOSING_SOON_START -->
 
 | Status | Category | Opportunity | Focus | When & Where | Format | Funding / Prize | Eligibility | Apply | Deadline |
 |---|---|---|---|---|---|---|---|---|---|
-| 🔥 Closing soon | Challenge | [EUROAVIA Ideathon 2026](opportunities/competitions/euroavia-ideathon-2026.md) | Aerospace engineering, innovation and teamwork | 3–8 Nov 2026 · Brugge, Belgium | In person | Participation fee; accommodation packages available | Bachelor’s and master’s students, 18+, teams of 3–5 | [Apply](https://ideathon.euroavia.eu/applications) | **27 Jul 2026** |
+| 🔥 **CLOSING SOON** | Hackathon | [EUROAVIA Ideathon 2026](opportunities/competitions/euroavia-ideathon-2026.md) | Aerospace innovation and industrial challenges | 3–8 November 2026 · Brugge, Belgium | In person | Not stated | Bachelor’s and master’s students · 18+ | [Apply](https://ideathon.euroavia.eu/applications) | **27 July 2026** |
 
 <!-- CLOSING_SOON_END -->
 
@@ -340,9 +385,9 @@ Listings may be removed or archived when the information becomes outdated, the o
 
 ## ➕ Add an opportunity
 
-Found a conference, competition, scholarship, hackathon, course, or another opportunity worth sharing?
+Found a conference, competition, scholarship, hackathon, course, or other opportunity worth sharing?
 
-Adding it takes around **two minutes**.
+Adding it takes around <u>two minutes.</u>
 
 ```text
 1. Click “Add an Opportunity”
@@ -383,7 +428,7 @@ OffMap is built by students, volunteers, and curious people who believe valuable
 </td>
 <td align="center">
 <a href="https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml">
-<img src=".github/media/logo/side_logo_gamy.PNG" width="96" alt="Become an OffMap contributor"><br>
+<img src="assets/contributors/join.png" width="96" alt="Become a contributor"><br>
 <sub><strong>Your profile could be here</strong></sub><br>
 <sub>Join the community</sub>
 </a>
@@ -405,7 +450,7 @@ Want to help build the map?
 
 OffMap is also a place to see what students actually **built, presented, explored, competed in, and experienced** after finding an opportunity.
 
-Share photographs, projects, team moments, awards, lessons, and short stories from events you attended. Selected recent community stories may be featured here.
+Share photographs, projects, team moments, awards, lessons, and short stories from events you attended. <u>Selected recent community stories may be featured here.</u>
 
 <!-- COMMUNITY_GALLERY_START -->
 
@@ -428,13 +473,13 @@ Share photographs, projects, team moments, awards, lessons, and short stories fr
 
 ## Acknowledgements
 
-OffMap is, at heart, a **community-built project**, so it could not exist without the people who contribute, correct, review, and share. It takes inspiration from projects such as BadgeUp and from every student who chose to pass an opportunity on instead of keeping it hidden.
+OffMap is at heart a <u>community-built</u> project, so this could never have existed without you. It takes inspiration from projects such as BadgeUp and from every student who chose to share an opportunity instead of keeping it hidden.
 
 We believe the right opportunity should not depend on who you know, which group chat you are in, or whether the right link reaches you in time.
 
-#### Thank you to everyone who helps build the map.
+#### Thank you to everyone who contributes, corrects, reviews, and helps build the map.
 
-> OffMap is an independent, community-run project and is not affiliated with the organisations featured unless explicitly stated. All names, logos, and trademarks belong to their respective owners.
+> OffMap is an independent, community-run project and is not affiliated with the organizations featured unless explicitly stated. All names, logos, and trademarks belong to their respective owners.
 
 ---
 
@@ -442,16 +487,9 @@ We believe the right opportunity should not depend on who you know, which group 
 
 ### Find it. Apply. Build something worth remembering.
 
-[![Explore](https://img.shields.io/badge/EXPLORE-THE%20MAP-6C63FF?style=for-the-badge)](opportunities/README.md)
+[![Explore](https://img.shields.io/badge/EXPLORE-THE%20BOARD-6C63FF?style=for-the-badge)](opportunities/README.md)
+
 [![Contribute](https://img.shields.io/badge/CONTRIBUTE-AN%20OPPORTUNITY-00A878?style=for-the-badge)](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
-
-<br><br>
-
-[Contribution Guide](CONTRIBUTING.md) ·
-[License](LICENSE) ·
-[Security](SECURITY.md) ·
-[Issues](https://github.com/elchrysaki/offmap-hub/issues) ·
-[Discussions](https://github.com/elchrysaki/offmap-hub/discussions)
 
 <br><br>
 
