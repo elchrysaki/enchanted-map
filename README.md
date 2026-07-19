@@ -349,7 +349,7 @@ OffMap is built by students, volunteers, and curious people who believe valuable
 <a href="https://github.com/elchrysaki">
 <img src="https://github.com/elchrysaki.png" width="96" alt="Elena Chrysaki"><br> <sub><strong>Elena Chrysaki</strong></sub><br> <sub>Project Maintainer</sub> </a> </td>
 
-<td align="center"> <a href="https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml"> <img src="assets/contributors/join.png" width="96" alt="Become a contributor"><br> <sub><strong>Your profile could be here</strong></sub><br> <sub>Join the community</sub> </a> </td> </tr> </table>
+<td align="center"> <a href="https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml"> <img src=".github/media/logo/blank-profile-picture-973460_960_720.png" width="96" alt="Become a contributor"><br> <sub><strong>Your profile could be here</strong></sub><br> <sub>Join the community</sub> </a> </td> </tr> </table>
 
 <!-- CONTRIBUTORS_END -->
 Want to help build the map?
