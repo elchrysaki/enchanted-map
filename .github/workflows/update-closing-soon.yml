@@ -1,0 +1,61 @@
+name: Update OffMap Closing Soon
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "17 4 * * *"
+
+  push:
+    branches:
+      - main
+    paths:
+      - "data/opportunities.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-offmap-closing-soon
+  cancel-in-progress: false
+
+jobs:
+  update-closing-soon:
+    name: Refresh README Closing Soon
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Update Closing Soon table
+        run: |
+          set -euo pipefail
+          python scripts/update_closing_soon.py
+
+      - name: Commit refreshed README
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet -- README.md; then
+            echo "Closing Soon table is already current."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config \
+            user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add README.md
+          git commit -m "Update closing soon opportunities [skip ci]"
+
+          git pull --rebase origin main
+          git push origin main
