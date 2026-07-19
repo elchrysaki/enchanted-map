@@ -14,7 +14,7 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 
 | Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
 |---|---|---|---|---|---|---|---|---|
-| [EUROAVIA Ideathon 2026](<competitions/euroavia-ideathon-2026.md>) | Hackathon | EUROAVIA (hosted by AS Oostende) | 27 July 2026 | In Person | In-person event in Brugge, Belgium | Not confirmed | Undergraduate, Master | [Apply](<https://ideathon.euroavia.eu/applications>) |
+| [EUROAVIA Ideathon 2026](<competitions/euroavia-ideathon-2026.md>) | Hackathon | EUROAVIA (hosted by AS Oostende) | 27 July 2026 | In Person | In-person event in Brugge, Belgium | Participation Fee, Accommodation, Meals | Undergraduate, Master | [Apply](<https://ideathon.euroavia.eu/applications>) |
 
 [↑ Back to main categories](#jump-to-a-main-category)
 

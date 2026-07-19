@@ -8,7 +8,7 @@ main_category: competitions
 category: hackathon
 edition: '2026'
 status: published
-summary: EUROAVIA Ideathon 2026 is an in-person hackathon-style competition in Brugge, Belgium, where teams of bachelor’s and master’s students tackle real-world aerospace industry challenges. Participants collaborate, innovate, and present their solutions to a jury of industry and academic experts. The event is conducted in English and welcomes students aged 18 and above.
+summary: EUROAVIA Ideathon 2026 is an in-person hackathon-style competition in Brugge, Belgium, where teams of bachelor’s, master’s, and PhD students tackle real-world aerospace industry challenges. Participants collaborate, innovate, and present their solutions to a jury of industry and academic experts. The event is conducted in English and welcomes students aged 18 and above.
 format: in-person
 location:
   display: In-person event in Brugge, Belgium
@@ -31,59 +31,73 @@ dates:
 eligibility:
   geographic_regions: []
   eligible_countries: []
-  nationality_or_residency_rules: Open to bachelor’s and master’s students enrolled at a university at the time of application (18+).
+  nationality_or_residency_rules: Open to bachelor’s, master’s, and PhD students aged 18 or older who are enrolled at a university at the time of application.
   academic_levels:
   - undergraduate
   - master
+  - doctoral
   broad_fields: []
   specific_majors: []
   age_requirements: 18+
-  experience_requirements: Must be enrolled at a university as bachelor’s or master’s student.
-  language_requirements: English (official event language)
+  experience_requirements: Applicants must be enrolled as bachelor’s, master’s, or PhD students. Teams must contain 3–5 members.
+  language_requirements: English is the official event language.
   display_points:
-  - Open to bachelor’s and master’s students enrolled at a university
-  - Applicants must be at least 18 years old
-  - Event language is English
+  - Bachelor’s, master’s, and PhD students may apply
+  - Applicants must be 18+ and enrolled at a university
+  - Teams contain 3–5 members; individuals may also apply
 audience:
   classification_source: submitted-dropdown-only
   groups: []
   access_model: not-confirmed
   display_points: []
 funding:
-  application_fee: null
-  participation_fee: null
-  scholarship: null
-  travel_support: null
-  accommodation: null
-  meals: null
+  application_fee: No application fee stated.
+  participation_fee: 'Per person: with accommodation, €160 for non-EUROAVIA participants or €120 for EUROAVIA members; without accommodation, €95 for non-EUROAVIA participants or €75 for EUROAVIA members.'
+  scholarship: No scholarship stated.
+  travel_support: Travel to Belgium and personal expenses are not included.
+  accommodation: The accommodation tier includes five nights of shared accommodation.
+  meals: The accommodation tier includes all meals during the competition. The non-accommodation tier includes competition meals.
   stipend_or_salary: null
   prizes: null
   visa_support: null
   accessibility_support: null
-  other_support: []
-  display_points: []
+  other_support:
+  - Event transportation is included where applicable in the accommodation tier
+  - Participants must arrange their own health and travel insurance
+  - Fees are non-refundable after payment
+  display_points:
+  - 'With accommodation: €160 non-EUROAVIA / €120 EUROAVIA'
+  - 'Without accommodation: €95 non-EUROAVIA / €75 EUROAVIA'
+  - Fees are per person and non-refundable after payment
+  - Travel to Belgium, personal expenses, and insurance are not included
 application:
   official_page: https://ideathon.euroavia.eu
   application_page: https://ideathon.euroavia.eu/applications
   requirements:
-  - Teams of 3–5 members (individual applicants will be grouped into teams)
-  - Bachelor’s or master’s student enrolled at a university
-  - 18+ years old
+  - Bachelor’s, master’s, or PhD student enrolled at a university
+  - Applicants must be at least 18 years old
+  - Teams must contain 3–5 members
+  - Each team must appoint one Team Leader as the sole contact
+  - Applicants must participate in English
   documents: []
   selection_process:
-  - Solutions evaluated by a jury of industry and academic experts
-  - Team applications prioritized over individual applications
+  - Team applications are prioritised over individual applications
+  - Individual applicants may be grouped into teams
+  - Solutions are evaluated by industry and academic experts
   display_points:
-  - Apply online via the official application portal
-  - Teams of 3–5 members; individual applicants will be grouped
-  - Solutions are evaluated by a jury
+  - Apply through the official application portal
+  - Teams of 3–5 are prioritised
+  - Individual applicants may be placed into teams
 program:
   activities:
-  - Hackathon-style competition
-  - Teams tackle four real-world industrial challenges set by aerospace companies
+  - Bring Your Own Device event; participants bring their own laptops
+  - Teams tackle four confidential challenges during the week
+  - Challenges are revealed on the morning of 4 November 2026
+  - Cultural Night takes place on 6 November 2026
   benefits:
-  - Opportunity to solve industry challenges
-  - Evaluation by industry and academic experts
+  - Work on aerospace-related challenges in teams
+  - Present solutions to industry and academic experts
+  - Take part in an international Cultural Night
   topics:
   - Aerospace innovation
   - Industrial challenges
@@ -101,10 +115,14 @@ filters:
   academic_levels:
   - undergraduate
   - master
+  - doctoral
   academic_fields: []
   subjects: []
   audience_groups: []
-  funding_features: []
+  funding_features:
+  - participation-fee
+  - accommodation
+  - meals
   topics:
   - Aerospace innovation
   - Industrial challenges
@@ -154,7 +172,7 @@ OFFMAP-METADATA-END -->
 **[🌐 Official page](https://ideathon.euroavia.eu)** · **[🚀 Apply now](https://ideathon.euroavia.eu/applications)**
 
 > [!TIP]
-> EUROAVIA Ideathon 2026 is an in-person hackathon-style competition in Brugge, Belgium, where teams of bachelor’s and master’s students tackle real-world aerospace industry challenges. Participants collaborate, innovate, and present their solutions to a jury of industry and academic experts. The event is conducted in English and welcomes students aged 18 and above.
+> EUROAVIA Ideathon 2026 is an in-person hackathon-style competition in Brugge, Belgium, where teams of bachelor’s, master’s, and PhD students tackle real-world aerospace industry challenges. Participants collaborate, innovate, and present their solutions to a jury of industry and academic experts. The event is conducted in English and welcomes students aged 18 and above.
 
 > [!IMPORTANT]
 > **Application deadline:** 27 July 2026  
@@ -166,7 +184,7 @@ OFFMAP-METADATA-END -->
 
 ## ✨ Why this opportunity is worth your attention
 
-EUROAVIA Ideathon 2026 invites bachelor’s and master’s students to Brugge, Belgium, for a hackathon-style competition. Teams work on real-world aerospace challenges and present their solutions to a jury of experts.
+EUROAVIA Ideathon 2026 invites bachelor’s, master’s, and PhD students to Brugge, Belgium, for a hackathon-style competition. Teams work on real-world aerospace challenges and present their solutions to a jury of experts.
 
 🌐 **[Visit the official opportunity website →](https://ideathon.euroavia.eu)**
 
@@ -176,14 +194,25 @@ EUROAVIA, hosted by AS Oostende, is a European association for aerospace student
 
 ## 👥 Who can apply
 
-Applicants must be bachelor’s or master’s students enrolled at a university and at least 18 years old. The event is conducted in English.
+The Ideathon is open to **bachelor’s, master’s, and PhD students aged 18 or older** who are enrolled at a university when they apply.
+
+Teams must contain **3–5 members**, with one designated **Team Leader** acting as the sole point of contact.
+
+Teams may add members until they reach five, subject to approval, but cannot shrink below their registered size. A departing participant must be replaced. Three-person teams may make one replacement, while teams of four or five may make up to two replacements.
+
+Individual applicants are welcome and may be grouped into teams, although complete team applications are prioritised.
+
+The official event language is **English**.
 
 🚀 **[Open the official application page →](https://ideathon.euroavia.eu/applications)**
 
-## 📍 Where and how it happens
+## 💻 Format
 
+This is a **Bring Your Own Device** event, so participants must bring their own laptops.
 
-The event takes place in person in Brugge, Belgium.
+Teams tackle four challenges across the week. The challenges remain confidential until the morning of **4 November 2026** to keep the competition fair.
+
+A **Cultural Night** on **6 November 2026** gives participants the chance to share food and traditions from their home countries.
 
 ## 🗓️ Dates to remember
 
@@ -192,6 +221,31 @@ Applications close on 27 July 2026. The event runs from 3 to 8 November 2026.
 ## 🛠️ What you will do
 
 Participants collaborate in teams to solve four industrial challenges set by aerospace companies, presenting their solutions to a jury of industry and academic experts.
+
+## 💶 Participation fees
+
+The participation fee is charged **per person**.
+
+### 🛏️ With accommodation
+
+Includes participation, **five nights of shared accommodation**, all meals during the competition, and event transportation where applicable.
+
+| Participant | Fee |
+|---|---:|
+| Non-EUROAVIA participant | **€160** |
+| EUROAVIA member | **€120** |
+
+### 🎒 Without accommodation
+
+Includes participation and competition meals, but does **not** include accommodation or daily commuting.
+
+| Participant | Fee |
+|---|---:|
+| Non-EUROAVIA participant | **€95** |
+| EUROAVIA member | **€75** |
+
+> [!IMPORTANT]
+> Travel to Belgium, personal expenses, and health or travel insurance are not included in either tier. Payments are non-refundable once completed.
 
 ## 🚀 How to apply
 
