@@ -215,25 +215,35 @@ def date_range_text(
 
     return start_display or end_display
 
-def location_text(record: dict[str, Any]) -> str:
-    display = clean(
-        nested(record, "location", "display")
-    )
-    if display:
-        return display
 
+def location_text(
+    record: dict[str, Any],
+) -> str:
     city = clean(
-        nested(record, "location", "host_city")
+        nested(
+            record,
+            "location",
+            "host_city",
+        )
     )
     country = clean(
-        nested(record, "location", "host_country")
+        nested(
+            record,
+            "location",
+            "host_country",
+        )
     )
 
-    return ", ".join(
-        value for value in (city, country) if value
-    )
+    if city and country:
+        return f"{city}, {country}"
 
+    if country:
+        return country
 
+    if city:
+        return city
+
+    return "Location not confirmed"
 
 def when_where_text(
     record: dict[str, Any],
@@ -250,50 +260,49 @@ def when_where_text(
         or "Not confirmed"
     )
 
-def funding_text(record: dict[str, Any]) -> str:
-    display_points = join_items(
-        nested(record, "funding", "display_points"),
+
+def funding_text(
+    record: dict[str, Any],
+) -> str:
+    features = first_items(
+        nested(
+            record,
+            "filters",
+            "funding_features",
+        ),
         maximum=2,
     )
-    if display_points:
-        return display_points
 
-    filter_features = join_items(
-        nested(record, "filters", "funding_features"),
-        maximum=2,
-    )
-    if filter_features:
-        return filter_features
-
-    funding = record.get("funding")
-    if not isinstance(funding, dict):
+    if not features:
         return "Not stated"
 
     labels = {
-        "application_fee": "Application fee",
-        "participation_fee": "Participation fee",
-        "scholarship": "Scholarship available",
-        "travel_support": "Travel support",
-        "accommodation": "Accommodation support",
-        "meals": "Meals included",
-        "stipend_or_salary": "Stipend or salary",
-        "prizes": "Prize available",
+        "fully-funded": "Fully funded",
+        "partially-funded": "Partially funded",
+        "free": "Free",
+        "application-fee": "Application fee",
+        "participation-fee": "Participation fee",
+        "travel-support": "Travel support",
+        "accommodation": "Accommodation",
+        "meals": "Meals",
+        "stipend": "Stipend",
+        "salary": "Salary",
+        "prize-money": "Prize",
+        "scholarship": "Scholarship",
     }
 
-    found: list[str] = []
+    compact: list[str] = []
 
-    for key, label in labels.items():
-        value = funding.get(key)
+    for feature in features:
+        label = labels.get(
+            feature,
+            titleize(feature),
+        )
 
-        if value not in (None, "", [], {}, False):
-            found.append(label)
+        if label not in compact:
+            compact.append(label)
 
-        if len(found) >= 2:
-            break
-
-    return "; ".join(found) or "Not stated"
-
-
+    return ", ".join(compact) or "Not stated"
 
 def _compact_level_label(value: str) -> str:
     normalized = (

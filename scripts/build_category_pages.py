@@ -692,27 +692,35 @@ def display_program_dates(
         or "Dates not confirmed"
     )
 
-def display_location(record: dict[str, Any]) -> str:
-    display = clean(nested(record, "location", "display"))
-    if display:
-        return display
 
-    city = clean(nested(record, "location", "host_city"))
-    country = clean(
-        nested(record, "location", "host_country")
+def display_location(
+    record: dict[str, Any],
+) -> str:
+    city = markdown_text(
+        nested(
+            record,
+            "location",
+            "host_city",
+        )
     )
-    combined = ", ".join(
-        value for value in (city, country) if value
+    country = markdown_text(
+        nested(
+            record,
+            "location",
+            "host_country",
+        )
     )
-    if combined:
-        return combined
 
-    if clean(record.get("format")) == "online":
-        return "Online"
+    if city and country:
+        return f"{city}, {country}"
+
+    if country:
+        return country
+
+    if city:
+        return city
 
     return "Location not confirmed"
-
-
 
 def display_when_where(
     record: dict[str, Any],
@@ -748,20 +756,51 @@ def display_focus(record: dict[str, Any]) -> str:
     )
 
 
-def display_funding(record: dict[str, Any]) -> str:
+
+def display_funding(
+    record: dict[str, Any],
+) -> str:
     features = unique_strings(
-        nested(record, "filters", "funding_features")
+        nested(
+            record,
+            "filters",
+            "funding_features",
+        )
     )
 
     if not features:
-        return "Not confirmed"
+        return "Not stated"
 
-    return ", ".join(
-        markdown_text(humanize(item))
-        for item in features[:MAX_CELL_ITEMS]
-    )
+    labels = {
+        "fully-funded": "Fully funded",
+        "partially-funded": "Partially funded",
+        "free": "Free",
+        "application-fee": "Application fee",
+        "participation-fee": "Participation fee",
+        "travel-support": "Travel support",
+        "accommodation": "Accommodation",
+        "meals": "Meals",
+        "stipend": "Stipend",
+        "salary": "Salary",
+        "prize-money": "Prize",
+        "scholarship": "Scholarship",
+    }
 
+    compact: list[str] = []
 
+    for feature in features:
+        label = labels.get(
+            feature,
+            humanize(feature),
+        )
+
+        if label not in compact:
+            compact.append(label)
+
+        if len(compact) >= 2:
+            break
+
+    return ", ".join(compact)
 
 def _compact_level_label(value: str) -> str:
     normalized = (
