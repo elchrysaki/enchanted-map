@@ -26,10 +26,10 @@
 
 <br>
 
-[![⭐ Stars](https://img.shields.io/github/stars/elchrysaki/enchanted-map?style=for-the-badge&color=F4C542)](...)
-[![🦄 Contributors](https://img.shields.io/github/contributors/elchrysaki/enchanted-map?style=for-the-badge&color=8B5CF6)](...)
-[![🗺 Opportunities](https://img.shields.io/badge/Verified-0-blueviolet?style=for-the-badge)](...)
-[![🔥 Closing Soon](https://img.shields.io/badge/Closing%20Soon-0-orange?style=for-the-badge)](...)
+[![⭐ Stars](https://img.shields.io/github/stars/elchrysaki/enchanted-map?style=for-the-badge&color=F4C542)](https://github.com/elchrysaki/offmap-hub/stargazers)
+[![🦄 Contributors](https://img.shields.io/github/contributors/elchrysaki/enchanted-map?style=for-the-badge&color=8B5CF6)](https://github.com/elchrysaki/offmap-hub/graphs/contributors)
+[![🗺 Opportunities](https://img.shields.io/badge/Verified-0-blueviolet?style=for-the-badge)](opportunities/README.md)
+[![🔥 Closing Soon](https://img.shields.io/badge/Closing%20Soon-0-orange?style=for-the-badge)](#closing-soon)
 
 <br>
 
@@ -37,7 +37,7 @@
 
 <br>
 <p align="center">
-  <a href="#-opportunity-board">
+  <a href="opportunities/README.md">
     <img
       src="https://img.shields.io/badge/🗺️%20EXPLORE%20THE%20MAP-6D4AFF?style=for-the-badge"
       alt="Explore the Map"
@@ -53,7 +53,7 @@
     >
   </a>
   &nbsp;
-  <a href="https://github.com/elchrysaki/enchanted-map/issues/new/choose">
+  <a href="https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml">
     <img
       src="https://img.shields.io/badge/➕%20ADD%20A%20DISCOVERY-F4C542?style=for-the-badge&logo=github&logoColor=black"
       alt="Add a Discovery"
@@ -109,44 +109,44 @@ Found something valuable? Submit the official link in <u>under two minutes</u>. 
 <table>
 <tr>
 <td align="center" width="33%">
-<a href="#-conferences--events"><h3>🎤 Conferences & Events</h3></a>
+<a href="opportunities/events/"><h3>🎤 Conferences & Events</h3></a>
 Conferences, summits, forums, workshops, and networking events worth leaving your room for.
 </td>
 <td align="center" width="33%">
-<a href="#-internships"><h3>🧰 Internships</h3></a>
+<a href="opportunities/internships/"><h3>🧰 Internships</h3></a>
 Internships, traineeships, apprenticeships, and practical experience across different fields.
 </td>
 <td align="center" width="33%">
-<a href="#-hackathons--competitions"><h3>🏆 Hackathons & Competitions</h3></a>
+<a href="opportunities/competitions/"><h3>🏆 Hackathons & Competitions</h3></a>
 Build, test, pitch! Hackathons, challenges, contests, and build events where ideas become actual projects.
 </td>
 </tr>
 <tr>
 <td align="center" width="33%">
-<a href="#-research"><h3>🔬 Research </h3></a>
+<a href="opportunities/research/"><h3>🔬 Research </h3></a>
 Research placements, lab programs, assistantships, and opportunities.
 </td>
 <td align="center" width="33%">
-<a href="#-scholarships"><h3>💰 Scholarships & Funding</h3></a>
+<a href="opportunities/scholarships/"><h3>💰 Scholarships & Funding</h3></a>
 Grants, travel support, participation funding, and scholarships that make opportunities more accessible.
 </td>
 <td align="center" width="33%">
-<a href="#-fellowships"><h3>🌱 Fellowships </h3></a>
+<a href="opportunities/fellowships/"><h3>🌱 Fellowships </h3></a>
 Mentorship, leadership, professional development, and selective international cohorts.
 </td>
 </tr>
 <tr>
 <td align="center" width="33%">
-<a href="#-courses--academies"><h3>📚 Courses & Academies
+<a href="opportunities/courses/"><h3>📚 Courses & Academies
  </h3></a>
 Selective schools, intensive courses, technical academies, simulations and serious short programs.
 </td>
 <td align="center" width="33%">
-<a href="#-entrepreneurship--innovation"><h3>🚀 Entrepreneurship & Innovation</h3></a>
+<a href="opportunities/innovation/"><h3>🚀 Entrepreneurship & Innovation</h3></a>
 Startup programs, incubators, accelerators, entrepreneurship challenges, and idea-building opportunities.
 </td>
 <td align="center" width="33%">
-<a href="#-open-calls"><h3>🎨 Creative, Media & Open Calls</h3></a>
+<a href="opportunities/creative-calls/"><h3>🎨 Creative, Media & Open Calls</h3></a>
 Writing, media, design, art, publishing, exhibitions, and open calls for creative work.
 </td>
 </tr>
@@ -156,7 +156,7 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 
 ### One link can open a door for thousands of students.
 
-[![Submit an opportunity](https://img.shields.io/badge/SUBMIT%20AN%20OPPORTUNITY-Open%20an%20issue-00A878?style=for-the-badge&logo=github)](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose)
+[![Submit an opportunity](https://img.shields.io/badge/SUBMIT%20AN%20OPPORTUNITY-Open%20an%20issue-00A878?style=for-the-badge&logo=github)](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
 
 </div>
 
@@ -170,40 +170,40 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 
 **Browse by type**
 
-- [🎤 Events](#-events) 
-- [🧰 Internships](#-internships) 
-- [🏆 Competitions](#-competitions) 
-- [🔬 Research](#-research) 
-- [🌱 Fellowships](#-fellowships)
-- [💰 Scholarships](#-scholarships) 
-- [📚 Courses](#-courses) 
-- [🚀 Innovation](#-innovation) 
-- [🎨 Open Calls](#-creative-calls)
+- [🎤 Events](opportunities/events/)
+- [🧰 Internships](opportunities/internships/)
+- [🏆 Competitions](opportunities/competitions/)
+- [🔬 Research](opportunities/research/)
+- [🌱 Fellowships](opportunities/fellowships/)
+- [💰 Scholarships](opportunities/scholarships/)
+- [📚 Courses](opportunities/courses/)
+- [🚀 Innovation](opportunities/innovation/)
+- [🎨 Open Calls](opportunities/creative-calls/)
 
 </td>
 <td valign="top" width="30%"> 
 
 ### 🧠 Browse by field 
-- [⚙️ Engineering & Technology](#engineering--technology) 
-- [💻 Computing, AI & Data](#computing-ai--data) 
-- [🔬 Natural Sciences](#natural-sciences) 
-- [🩺 Health & Life Sciences](#health--life-sciences) 
-- [💼 Business & Economics](#business--economics) 
-- [🌍 Society, Policy & Law](#society-policy--law) 
-- [🌱 Environment & Sustainability](#environment--sustainability) 
-- [🎨 Arts, Media & Design](#arts-media--design) 
-- [📚 Humanities & Education](#humanities--education) 
-- [🧩 Multidisciplinary](#multidisciplinary) </td>
+- [⚙️ Engineering & Technology](...)
+- [💻 Computing, AI & Data](...)
+- [🔬 Natural Sciences](...)
+- [🩺 Health & Life Sciences](...)
+- [💼 Business & Economics](...)
+- [🌍 Society, Policy & Law](...)
+- [🌱 Environment & Sustainability](...)
+- [🎨 Arts, Media & Design](...)
+- [📚 Humanities & Education](...)
+- [🧩 Multidisciplinary](...) </td>
 
 <td valign="top" width="25%">
 
 **Browse by urgency**
 
-- [🔥 Closing Soon](#-closing-soon)
-- [✅ Open Now](#-opportunity-board)
-- [⏳ Opening Soon](#-opening-soon)
-- [🔁 Rolling Applications](#-rolling-applications)
-- [📅 Upcoming Cycles](#-upcoming-cycles)
+- [🔥 Closing Soon](#closing-soon)
+- [✅ Open Now](opportunities/README.md)
+- [⏳ Opening Soon](...)
+- [🔁 Rolling Applications](...)
+- [📅 Upcoming Cycles](...)
 - [🗄️ Past Opportunities](ARCHIVE.md)
 
 </td>
@@ -211,12 +211,12 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 
 **Community**
 
-- [➕ Add a Discovery](https://github.com/elchrysaki/enchanted-map/issues/new/choose) 
-- [🛠️ Fix Outdated Information](https://github.com/elchrysaki/enchanted-map/issues/new/choose) 
+- [➕ Add a Discovery](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
+- [🛠️ Fix Outdated Information](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
 - [📖 Read the Contribution Guide](CONTRIBUTING.md) 
-- [💛 Meet the Contributors](#-contributors) 
+- [💛 Meet the Contributors](#contributors) 
 - [📸 Share an Opportunity Story](#-from-the-community) 
-- [🗣️ Join the Discussion](https://github.com/elchrysaki/enchanted-map/discussions)
+- [🗣️ Join the Discussion](https://github.com/elchrysaki/offmap-hub/discussions)
 
 </td>
 </tr>
@@ -306,7 +306,7 @@ Listings may be removed or archived when the information becomes outdated, the o
 
 <!-- CLOSING_SOON_END -->
 
-<p align="right"><a href="#-find-your-way">↑ Back to navigation</a></p>
+<p align="right"><a href="#navigation">↑ Back to navigation</a></p>
 
 ---
 
@@ -329,9 +329,9 @@ A maintainer will review the information, verify it using official sources, and 
 
 <div align="center">
 
-[![Add Opportunity](https://img.shields.io/badge/ADD%20AN%20OPPORTUNITY-Start%20submission-6C63FF?style=for-the-badge&logo=github&logoColor=white)](https://github.com/elchrysaki/enchanted-map/issues/new?template=submit-opportunity.yml)
+[![Add Opportunity](https://img.shields.io/badge/ADD%20AN%20OPPORTUNITY-Start%20submission-6C63FF?style=for-the-badge&logo=github&logoColor=white)](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
 
-[![Read Contribution Guide](https://img.shields.io/badge/READ-CONTRIBUTING.md-118AB2?style=for-the-badge&logo=readthedocs&logoColor=white)](https://github.com/elchrysaki/enchanted-map/blob/main/CONTRIBUTING.md)
+[![Read Contribution Guide](https://img.shields.io/badge/READ-CONTRIBUTING.md-118AB2?style=for-the-badge&logo=readthedocs&logoColor=white)](CONTRIBUTING.md)
 
 </div>
 
@@ -349,14 +349,14 @@ OffMap is built by students, volunteers, and curious people who believe valuable
 <a href="https://github.com/elchrysaki">
 <img src="https://github.com/elchrysaki.png" width="96" alt="Elena Chrysaki"><br> <sub><strong>Elena Chrysaki</strong></sub><br> <sub>Project Maintainer</sub> </a> </td>
 
-<td align="center"> <a href="https://github.com/elchrysaki/enchanted-map/issues/new?template=submit-opportunity.yml"> <img src="assets/contributors/join.png" width="96" alt="Become a contributor"><br> <sub><strong>Your profile could be here</strong></sub><br> <sub>Join the community</sub> </a> </td> </tr> </table>
+<td align="center"> <a href="https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml"> <img src="assets/contributors/join.png" width="96" alt="Become a contributor"><br> <sub><strong>Your profile could be here</strong></sub><br> <sub>Join the community</sub> </a> </td> </tr> </table>
 
 <!-- CONTRIBUTORS_END -->
 Want to help build the map?
 
-[Submit an opportunity →](https://github.com/elchrysaki/enchanted-map/issues/new?template=submit-opportunity.yml)
+[Submit an opportunity →](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
 
-[See every contributor →](https://github.com/elchrysaki/enchanted-map/graphs/contributors)
+[See every contributor →](https://github.com/elchrysaki/offmap-hub/graphs/contributors)
 
 ---
 
@@ -401,11 +401,7 @@ We believe the right opportunity should not depend on who you know, which group 
 
 ### Find it. Apply. Build something worth remembering.
 
-[![Explore](https://img.shields.io/badge/EXPLORE-THE%20BOARD-6C63FF?style=for-the-badge)](#-opportunity-board)
-[![Contribute](https://img.shields.io/badge/CONTRIBUTE-AN%20OPPORTUNITY-00A878?style=for-the-badge)](https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/issues/new/choose)
-
-<br><br>
-
-<sub>Maintained with evidence, caffeine, and an entirely reasonable distrust of expired deadlines.</sub>
+[![Explore](https://img.shields.io/badge/EXPLORE-THE%20BOARD-6C63FF?style=for-the-badge)](opportunities/README.md)
+[![Contribute](https://img.shields.io/badge/CONTRIBUTE-AN%20OPPORTUNITY-00A878?style=for-the-badge)](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
 
 </div>
