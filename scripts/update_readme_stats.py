@@ -125,7 +125,7 @@ def main() -> None:
 
     readme = replace_badge(
         readme,
-        label_pattern="Closing Soon",
+        label_pattern="Active",
         replacement=badge(
             label="Active",
             value=active,
