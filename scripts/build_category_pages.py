@@ -592,22 +592,105 @@ def first_date_text(
     )
 
 
-def display_program_dates(record: dict[str, Any]) -> str:
-    start = first_date_text(
+
+def _compact_date_range(
+    start: date | None,
+    end: date | None,
+) -> str | None:
+    months = (
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    )
+
+    if start is None and end is None:
+        return None
+
+    if start is None:
+        return (
+            f"Until {end.day} "
+            f"{months[end.month - 1]} {end.year}"
+        )
+
+    if end is None or start == end:
+        return (
+            f"{start.day} "
+            f"{months[start.month - 1]} {start.year}"
+        )
+
+    if (
+        start.year == end.year
+        and start.month == end.month
+    ):
+        return (
+            f"{start.day}–{end.day} "
+            f"{months[start.month - 1]} {start.year}"
+        )
+
+    if start.year == end.year:
+        return (
+            f"{start.day} {months[start.month - 1]}"
+            f"–{end.day} {months[end.month - 1]} "
+            f"{start.year}"
+        )
+
+    return (
+        f"{start.day} {months[start.month - 1]} "
+        f"{start.year}"
+        f"–{end.day} {months[end.month - 1]} "
+        f"{end.year}"
+    )
+
+
+def display_program_dates(
+    record: dict[str, Any],
+) -> str:
+    start = parse_iso_date(
+        nested(
+            record,
+            "dates",
+            "start_date",
+            "normalized",
+        )
+    )
+    end = parse_iso_date(
+        nested(
+            record,
+            "dates",
+            "end_date",
+            "normalized",
+        )
+    )
+
+    compact = _compact_date_range(start, end)
+
+    if compact:
+        return compact
+
+    start_text = first_date_text(
         nested(record, "dates", "start_date")
     )
-    end = first_date_text(
+    end_text = first_date_text(
         nested(record, "dates", "end_date")
     )
 
-    if start and end and start != end:
-        return f"{start} – {end}"
-    if start:
-        return start
-    if end:
-        return end
-    return "Dates not confirmed"
+    if start_text and end_text and start_text != end_text:
+        return f"{start_text}–{end_text}"
 
+    return (
+        start_text
+        or end_text
+        or "Dates not confirmed"
+    )
 
 def display_location(record: dict[str, Any]) -> str:
     display = clean(nested(record, "location", "display"))
@@ -630,13 +713,18 @@ def display_location(record: dict[str, Any]) -> str:
     return "Location not confirmed"
 
 
-def display_when_where(record: dict[str, Any]) -> str:
-    return (
-        f"{markdown_text(display_program_dates(record))}"
-        "<br>"
-        f"{markdown_text(display_location(record))}"
+
+def display_when_where(
+    record: dict[str, Any],
+) -> str:
+    date_text = markdown_text(
+        display_program_dates(record)
+    )
+    place_text = markdown_text(
+        display_location(record)
     )
 
+    return f"{date_text} / {place_text}"
 
 def display_focus(record: dict[str, Any]) -> str:
     fields = unique_strings(
@@ -674,31 +762,91 @@ def display_funding(record: dict[str, Any]) -> str:
     )
 
 
-def display_eligibility(record: dict[str, Any]) -> str:
-    levels = unique_strings(
-        nested(record, "filters", "academic_levels")
+
+def _compact_level_label(value: str) -> str:
+    normalized = (
+        value.strip()
+        .casefold()
+        .replace("_", "-")
+        .replace(" ", "-")
     )
-    regions = unique_strings(
-        nested(record, "filters", "eligible_regions")
+
+    labels = {
+        "secondary-school": "Secondary",
+        "high-school": "Secondary",
+        "undergraduate": "Bachelor’s",
+        "bachelor": "Bachelor’s",
+        "bachelors": "Bachelor’s",
+        "bachelor's": "Bachelor’s",
+        "graduate": "Graduate",
+        "master": "Master’s",
+        "masters": "Master’s",
+        "master's": "Master’s",
+        "doctoral": "PhD",
+        "doctorate": "PhD",
+        "phd": "PhD",
+        "postdoctoral": "Postdoc",
+        "recent-graduate": "Recent grads",
+        "recent-graduates": "Recent grads",
+        "early-career": "Early career",
+        "professionals": "Professionals",
+    }
+
+    return labels.get(
+        normalized,
+        humanize(value),
+    )
+
+
+def display_eligibility(
+    record: dict[str, Any],
+) -> str:
+    levels = unique_strings(
+        nested(
+            record,
+            "filters",
+            "academic_levels",
+        )
     )
     audiences = unique_strings(
-        nested(record, "filters", "audience_groups")
+        nested(
+            record,
+            "filters",
+            "audience_groups",
+        )
+    )
+    regions = unique_strings(
+        nested(
+            record,
+            "filters",
+            "eligible_regions",
+        )
     )
 
-    selected = (
-        levels[:2]
-        + regions[:1]
-        + audiences[:1]
-    )
+    labels: list[str] = []
 
-    if not selected:
-        return "See opportunity page"
+    for level in levels[:2]:
+        label = _compact_level_label(level)
+
+        if label not in labels:
+            labels.append(label)
+
+    if len(labels) < 2 and audiences:
+        audience = humanize(audiences[0])
+
+        if audience not in labels:
+            labels.append(audience)
+
+    if not labels and regions:
+        labels.append(humanize(regions[0]))
+
+    if not labels:
+        return "See details"
 
     return ", ".join(
-        markdown_text(humanize(item))
-        for item in selected[:MAX_CELL_ITEMS]
+        markdown_text(label)
+        for label in labels[:2]
     )
-
 
 def safe_external_url(value: Any) -> str | None:
     text = clean(value)

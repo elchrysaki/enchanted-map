@@ -105,19 +105,115 @@ def focus_text(record: dict[str, Any]) -> str:
     return titleize(record.get("category")) or "General"
 
 
-def date_range_text(record: dict[str, Any]) -> str:
-    start = clean(
-        nested(record, "dates", "start_date", "display")
+
+def _compact_date_range(
+    start: date | None,
+    end: date | None,
+) -> str:
+    months = (
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
     )
-    end = clean(
-        nested(record, "dates", "end_date", "display")
+
+    if start is None and end is None:
+        return ""
+
+    if start is None:
+        return (
+            f"Until {end.day} "
+            f"{months[end.month - 1]} {end.year}"
+        )
+
+    if end is None or start == end:
+        return (
+            f"{start.day} "
+            f"{months[start.month - 1]} {start.year}"
+        )
+
+    if (
+        start.year == end.year
+        and start.month == end.month
+    ):
+        return (
+            f"{start.day}–{end.day} "
+            f"{months[start.month - 1]} {start.year}"
+        )
+
+    if start.year == end.year:
+        return (
+            f"{start.day} {months[start.month - 1]}"
+            f"–{end.day} {months[end.month - 1]} "
+            f"{start.year}"
+        )
+
+    return (
+        f"{start.day} {months[start.month - 1]} "
+        f"{start.year}"
+        f"–{end.day} {months[end.month - 1]} "
+        f"{end.year}"
     )
 
-    if start and end and start != end:
-        return f"{start} – {end}"
 
-    return start or end
+def date_range_text(
+    record: dict[str, Any],
+) -> str:
+    start = parse_date(
+        nested(
+            record,
+            "dates",
+            "start_date",
+            "normalized",
+        )
+    )
+    end = parse_date(
+        nested(
+            record,
+            "dates",
+            "end_date",
+            "normalized",
+        )
+    )
 
+    compact = _compact_date_range(start, end)
+
+    if compact:
+        return compact
+
+    start_display = clean(
+        nested(
+            record,
+            "dates",
+            "start_date",
+            "display",
+        )
+    )
+    end_display = clean(
+        nested(
+            record,
+            "dates",
+            "end_date",
+            "display",
+        )
+    )
+
+    if (
+        start_display
+        and end_display
+        and start_display != end_display
+    ):
+        return f"{start_display}–{end_display}"
+
+    return start_display or end_display
 
 def location_text(record: dict[str, Any]) -> str:
     display = clean(
@@ -138,18 +234,21 @@ def location_text(record: dict[str, Any]) -> str:
     )
 
 
-def when_where_text(record: dict[str, Any]) -> str:
-    parts = [
-        part
-        for part in (
-            date_range_text(record),
-            location_text(record),
-        )
-        if part
-    ]
 
-    return " · ".join(parts) or "Not confirmed"
+def when_where_text(
+    record: dict[str, Any],
+) -> str:
+    date_text = date_range_text(record)
+    place_text = location_text(record)
 
+    if date_text and place_text:
+        return f"{date_text} / {place_text}"
+
+    return (
+        date_text
+        or place_text
+        or "Not confirmed"
+    )
 
 def funding_text(record: dict[str, Any]) -> str:
     display_points = join_items(
@@ -195,23 +294,90 @@ def funding_text(record: dict[str, Any]) -> str:
     return "; ".join(found) or "Not stated"
 
 
-def eligibility_text(record: dict[str, Any]) -> str:
-    display_points = join_items(
-        nested(record, "eligibility", "display_points"),
+
+def _compact_level_label(value: str) -> str:
+    normalized = (
+        value.strip()
+        .casefold()
+        .replace("_", "-")
+        .replace(" ", "-")
+    )
+
+    labels = {
+        "secondary-school": "Secondary",
+        "high-school": "Secondary",
+        "undergraduate": "Bachelor’s",
+        "bachelor": "Bachelor’s",
+        "bachelors": "Bachelor’s",
+        "bachelor's": "Bachelor’s",
+        "graduate": "Graduate",
+        "master": "Master’s",
+        "masters": "Master’s",
+        "master's": "Master’s",
+        "doctoral": "PhD",
+        "doctorate": "PhD",
+        "phd": "PhD",
+        "postdoctoral": "Postdoc",
+        "recent-graduate": "Recent grads",
+        "recent-graduates": "Recent grads",
+        "early-career": "Early career",
+        "professionals": "Professionals",
+    }
+
+    return labels.get(
+        normalized,
+        titleize(value),
+    )
+
+
+def eligibility_text(
+    record: dict[str, Any],
+) -> str:
+    levels = first_items(
+        nested(
+            record,
+            "eligibility",
+            "academic_levels",
+        ),
         maximum=2,
     )
-    if display_points:
-        return display_points
 
-    levels = first_items(
-        nested(record, "eligibility", "academic_levels"),
-        maximum=3,
+    audiences = first_items(
+        nested(
+            record,
+            "audience",
+            "groups",
+        ),
+        maximum=1,
     )
-    if levels:
-        return ", ".join(titleize(level) for level in levels)
 
-    return "See official eligibility"
+    regions = first_items(
+        nested(
+            record,
+            "eligibility",
+            "geographic_regions",
+        ),
+        maximum=1,
+    )
 
+    labels: list[str] = []
+
+    for level in levels:
+        label = _compact_level_label(level)
+
+        if label not in labels:
+            labels.append(label)
+
+    if len(labels) < 2 and audiences:
+        audience = titleize(audiences[0])
+
+        if audience not in labels:
+            labels.append(audience)
+
+    if not labels and regions:
+        labels.append(titleize(regions[0]))
+
+    return ", ".join(labels[:2]) or "See details"
 
 def opportunity_link(record: dict[str, Any]) -> str:
     title = clean(record.get("title")) or "View opportunity"

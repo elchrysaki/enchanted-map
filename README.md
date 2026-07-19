@@ -303,7 +303,7 @@ Listings may be removed or archived when the information becomes outdated, the o
 
 | Status | Category | Opportunity | Focus | When & Where | Format | Funding / Prize | Eligibility | Apply | Deadline |
 |---|---|---|---|---|---|---|---|---|---|
-| 🔥 Closing soon | Hackathon | [EUROAVIA Ideathon 2026](opportunities/competitions/euroavia-ideathon-2026.md) | Aerospace innovation; Industrial challenges | 3 November 2026 – 8 November 2026 · In-person event in Brugge, Belgium | In Person | Not stated | Open to bachelor’s and master’s students enrolled at a university; Applicants must be at least 18 years old | [Apply](https://ideathon.euroavia.eu/applications) | 27 July 2026 |
+| 🔥 Closing soon | Hackathon | [EUROAVIA Ideathon 2026](opportunities/competitions/euroavia-ideathon-2026.md) | Aerospace innovation; Industrial challenges | 3–8 Nov 2026 / In-person event in Brugge, Belgium | In Person | Not stated | Bachelor’s, Master’s | [Apply](https://ideathon.euroavia.eu/applications) | 27 July 2026 |
 
 <!-- CLOSING_SOON_END -->
 
