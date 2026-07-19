@@ -11,6 +11,8 @@ on:
       - main
     paths:
       - "data/opportunities.json"
+      - "opportunities/**/*.md"
+      - "!opportunities/**/README.md"
 
 permissions:
   contents: write
@@ -35,10 +37,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Update Closing Soon table
+      - name: Update README opportunity data
         run: |
           set -euo pipefail
           python scripts/update_closing_soon.py
+          python scripts/update_readme_stats.py
 
       - name: Commit refreshed README
         run: |
