@@ -1,3 +1,11 @@
+<div align="center">
+
+[🏠 Home](<../../README.md>) · [🤝 Contributing](<../../CONTRIBUTING.md>) · [🎤 Events](<../events/>) · [🧰 Internships](<../internships/>) · [🏆 Competitions](<../competitions/>) · [🔬 Research](<../research/>)
+
+[🌱 Fellowships](<../fellowships/>) · [💰 Scholarships](<./>) · [📚 Courses & Training](<../courses/>) · [🚀 Innovation & Entrepreneurship](<../innovation/>) · [🎨 Creative & Open Calls](<../creative-calls/>)
+
+</div>
+
 # 🗺️ OffMap Opportunity Index
 
 This index is generated automatically from reviewed opportunity files. Edit the individual opportunity pages, not this index.
