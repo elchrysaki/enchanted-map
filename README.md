@@ -34,7 +34,7 @@
 
 <br>
 
-<img src=".github/media/logo/logo.png" width="760">
+<img src="ChatGPT Image Jul 19, 2026 at 11_45_12 PM.png" width="760">
 
 <br>
 <p align="center">
