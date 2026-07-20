@@ -27,8 +27,8 @@
 
 [![Stars](https://img.shields.io/github/stars/elchrysaki/offmap-hub?style=for-the-badge&logo=github&logoColor=black&label=STARS&color=F4C542)](https://github.com/elchrysaki/offmap-hub/stargazers)
 [![🦄 Contributors](https://img.shields.io/github/contributors/elchrysaki/offmap-hub?style=for-the-badge&color=8B5CF6)](https://github.com/elchrysaki/offmap-hub/graphs/contributors)
-[![Verified](https://img.shields.io/badge/Verified-3-blueviolet?style=for-the-badge)](opportunities/README.md)
-[![Active](https://img.shields.io/badge/Active-3-orange?style=for-the-badge)](opportunities/README.md)
+[![Verified](https://img.shields.io/badge/Verified-4-blueviolet?style=for-the-badge)](opportunities/README.md)
+[![Active](https://img.shields.io/badge/Active-4-orange?style=for-the-badge)](opportunities/README.md)
 
 
 <br>

@@ -2,12 +2,23 @@
 
 This index is generated automatically from reviewed opportunity files. Edit the individual opportunity pages, not this index.
 
-**Published opportunities:** 3
+**Published opportunities:** 4
 
 ## Jump to a main category
 
+- [🧰 Internships](#main-internships) (1)
 - [🏆 Competitions](#main-competitions) (1)
 - [📚 Courses & Schools](#main-courses) (2)
+
+<a id="main-internships"></a>
+
+## 🧰 Internships
+
+| Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
+|---|---|---|---|---|---|---|---|---|
+| [NASA Lucy Mission Internship](<internships/nasa-lucy-mission-internship.md>) | Internship | L'SPACE Program | March 8, 2026, by 11:59 PM PT | In Person | In-person at collaborative sites in the United States | Not confirmed | See opportunity page | [Official page](<https://www.lspace.asu.edu/lucy-internship>) |
+
+[↑ Back to main categories](#jump-to-a-main-category)
 
 <a id="main-competitions"></a>
 

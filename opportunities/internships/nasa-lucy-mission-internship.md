@@ -7,7 +7,7 @@ organizer: L'SPACE Program
 main_category: internships
 category: internship
 edition: '2026'
-status: pending-review
+status: published
 summary: The NASA Lucy Mission Internship offers students a 10-week in-person experience working on space science and engineering projects. Interns are paired with mentors at collaborative sites in the United States, gaining hands-on exposure to NASA mission work and professional development in the aerospace industry.
 format: in-person
 location:
@@ -111,6 +111,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 32
+  approved_by: elchrysaki
+  published_at: '2026-07-20T07:04:08.151234+00:00'
 submission:
   issue_number: 31
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/31
@@ -120,6 +126,10 @@ provenance:
   researched_at: '2026-07-20T07:01:10.031324+00:00'
   formatted_at: '2026-07-20T07:01:24.344527+00:00'
   generated_at: '2026-07-20T07:01:24.443176+00:00'
+  published_at: '2026-07-20T07:04:08.151234+00:00'
+  publication_pr_number: 32
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 NASA Lucy Mission Internship
