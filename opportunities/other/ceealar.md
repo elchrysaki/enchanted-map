@@ -7,7 +7,7 @@ organizer: CEEALAR
 main_category: other
 category: other
 edition: null
-status: pending-review
+status: published
 summary: CEEALAR offers a residential community in Blackpool, UK for researchers and builders working on existential risk reduction, effective altruism, AI safety, longtermism, or global catastrophic risk reduction. Residents receive subsidized accommodation and vegan food, with stays ranging from 6 weeks up to 12 months. Applications are accepted on a rolling basis.
 format: in-person
 location:
@@ -130,6 +130,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 72
+  approved_by: elchrysaki
+  published_at: '2026-07-20T09:12:36.014051+00:00'
 submission:
   issue_number: 71
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/71
@@ -139,6 +145,10 @@ provenance:
   researched_at: '2026-07-20T09:10:17.062396+00:00'
   formatted_at: '2026-07-20T09:10:31.792299+00:00'
   generated_at: '2026-07-20T09:10:31.888924+00:00'
+  published_at: '2026-07-20T09:12:36.014051+00:00'
+  publication_pr_number: 72
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 CEEALAR

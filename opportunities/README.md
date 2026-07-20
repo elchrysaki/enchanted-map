@@ -2,7 +2,7 @@
 
 This index is generated automatically from reviewed opportunity files. Edit the individual opportunity pages, not this index.
 
-**Published opportunities:** 6
+**Published opportunities:** 7
 
 ## Jump to a main category
 
@@ -11,6 +11,7 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 - [🏆 Competitions](#main-competitions) (1)
 - [📚 Courses & Schools](#main-courses) (2)
 - [❤️ Volunteering](#main-volunteering) (1)
+- [✨ Other Opportunities](#main-other) (1)
 
 <a id="main-events"></a>
 
@@ -60,6 +61,16 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 | Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
 |---|---|---|---|---|---|---|---|---|
 | [Lucy Mission Asteroid Ambassador Program](<volunteering/lucy-mission-asteroid-ambassador-program.md>) | Volunteering Program | NASA L'SPACE Academy | Applications for the 2026-2027 cohort are now closed | Not Confirmed | Format not confirmed; outreach may be local or remote. Organized from the United States. | Not confirmed | See opportunity page | [Official page](<https://www.lspace.asu.edu/lucy-ambassador-program>) |
+
+[↑ Back to main categories](#jump-to-a-main-category)
+
+<a id="main-other"></a>
+
+## ✨ Other Opportunities
+
+| Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
+|---|---|---|---|---|---|---|---|---|
+| [CEEALAR](<other/ceealar.md>) | Other | CEEALAR | Rolling applications | In Person | In-person residency in Blackpool, United Kingdom | Subsidized Accommodation, Subsidized Meals, No Application Fee | See opportunity page | [Apply](<https://www.ceealar.org/apply-to-ceealar?utm_source=ea-opps>) |
 
 [↑ Back to main categories](#jump-to-a-main-category)
 
