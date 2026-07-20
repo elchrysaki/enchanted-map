@@ -10,6 +10,8 @@ navigation:
   - courses
   - innovation
   - creative-calls
+  - exchanges
+  - volunteering
 
 main_categories:
   events:
@@ -324,3 +326,49 @@ main_categories:
         description: >
           Calls for graphic, product, industrial, architectural,
           digital, visual, and interdisciplinary design work.
+
+  exchanges:
+    title: Exchanges & Mobility
+    emoji: "🌍"
+    description: >
+      Exchange programs, mobility schemes, study visits, and structured
+      international experiences that help students learn beyond their usual
+      campus, country, or academic environment.
+    categories:
+      exchange-program:
+        title: Exchange Programs
+        emoji: "🌐"
+        route: exchange-programs
+        description: >
+          Academic, cultural, professional, and interdisciplinary exchange
+          programs for students and recent graduates.
+      mobility-program:
+        title: Mobility Programs
+        emoji: "🧭"
+        route: mobility-programs
+        description: >
+          Short-term and long-term mobility opportunities, study visits,
+          blended mobility, and other structured international experiences.
+
+  volunteering:
+    title: Volunteering & Service
+    emoji: "❤️"
+    description: >
+      Structured volunteering and service opportunities where students can
+      contribute their time and skills while learning through real-world
+      community, humanitarian, environmental, or technical work.
+    categories:
+      volunteering-program:
+        title: Volunteering Programs
+        emoji: "🤝"
+        route: volunteering-programs
+        description: >
+          Organized volunteering opportunities with a defined role, purpose,
+          organizer, and participation period.
+      service-program:
+        title: Service Programs
+        emoji: "🫶"
+        route: service-programs
+        description: >
+          Community service, service-learning, humanitarian, civic, and
+          public-interest programs for students and recent graduates.

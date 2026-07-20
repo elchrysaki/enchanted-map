@@ -307,3 +307,18 @@ A better filter can uncover the right opportunity at the right moment.
 > **Your map. Your story. Your impact.**
 
 **Find what is possible. Share what should not stay hidden.**
+
+<!-- OFFMAP_EXCHANGE_VOLUNTEERING_START -->
+## Exchanges, mobility, volunteering, and service opportunities
+
+OffMap accepts structured opportunities in these additional main categories:
+
+- **Exchanges & Mobility**
+  - `exchange-program`
+  - `mobility-program`
+- **Volunteering & Service**
+  - `volunteering-program`
+  - `service-program`
+
+The opportunity must have an identifiable organizer, an official source, a defined participation format or period, and enough information to verify that it is a real program rather than an informal request or an ordinary job listing. Use the main category and specific category that best match the organizer's official description.
+<!-- OFFMAP_EXCHANGE_VOLUNTEERING_END -->

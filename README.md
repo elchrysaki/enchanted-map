@@ -1,5 +1,5 @@
 <div align="center">
-  
+
 [**🏠 README**](README.md) ·
 [**🤝 Contributing**](CONTRIBUTING.md) ·
 [**🎤 Events**](opportunities/events/) ·
@@ -12,8 +12,8 @@
 [**📚 Courses**](opportunities/courses/) ·
 [**🚀 Innovation**](opportunities/innovation/) ·
 [**🎨 Open Calls**](opportunities/creative-calls/) ·
-[**🌍 Exchanges**](https://github.com/elchrysaki/offmap-travels/README.md) ·
-[**❤️ Volunteering**](https://github.com/elchrysaki/offmap-travels/README.md)
+[**🌍 Exchanges & Mobility**](opportunities/exchanges/) ·
+[**❤️ Volunteering & Service**](opportunities/volunteering/)
 
 </div>
 
@@ -69,7 +69,7 @@
 > [!NOTE]
 > **Built by students for students.** OffMap brings worthwhile opportunities out of forgotten newsletters, private group chats, chaotic spreadsheets, and that one Instagram post you forgot to save. Whether you are looking for your first international experience or your next impossible-sounding challenge, this is your place to start.
 
-**Find your path. Share what you discover. Help someone else begin theirs.** 
+**Find your path. Share what you discover. Help someone else begin theirs.**
 <div align = "center">
 
 
@@ -105,7 +105,7 @@ Found something valuable? Submit the official link in <u>under two minutes</u>. 
 ---
 
 ## ⚡ Start here
-> Find the opportunity that changes what you do next. 
+> Find the opportunity that changes what you do next.
 <table>
 <tr>
 <td align="center" width="33%">
@@ -150,6 +150,31 @@ Startup programs, incubators, accelerators, entrepreneurship challenges, and ide
 Writing, media, design, art, publishing, exhibitions, and open calls for creative work.
 </td>
 </tr>
+
+
+<tr>
+<td align="center" width="33%">
+
+<a href="opportunities/exchanges/"><h3>🌍 Exchanges & Mobility</h3></a>
+
+Exchange programs, mobility schemes, study visits, and international experiences that take learning beyond the usual campus map.
+
+</td>
+<td align="center" width="33%">
+
+<a href="opportunities/volunteering/"><h3>❤️ Volunteering & Service</h3></a>
+
+Structured volunteering, service-learning, humanitarian, environmental, and community programs where students contribute while building real experience.
+
+</td>
+<td align="center" width="33%">
+
+### 🧭 Go beyond the usual route
+
+Learn somewhere new, work with a community, and return with more than another line on a CV.
+
+</td>
+</tr>
 </table>
 
 <div align="center">
@@ -181,9 +206,13 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 - [🎨 Open Calls](opportunities/creative-calls/)
 
 </td>
-<td valign="top" width="30%"> 
+<td valign="top" width="30%">
 
-**Browse by field** 
+**
+- [🌍 Exchanges & Mobility](opportunities/exchanges/)
+- [❤️ Volunteering & Service](opportunities/volunteering/)
+
+Browse by field**
 - [⚙️ Engineering & Technology](...)
 - [💻 Computing, AI & Data](...)
 - [🔬 Natural Sciences](...)
@@ -213,9 +242,9 @@ Writing, media, design, art, publishing, exhibitions, and open calls for creativ
 
 - [➕ Add a Discovery](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
 - [🛠️ Fix Outdated Information](https://github.com/elchrysaki/offmap-hub/issues/new?template=submit-opportunity.yml)
-- [📖 Read the Contribution Guide](CONTRIBUTING.md) 
-- [💛 Meet the Contributors](#contributors) 
-- [📸 Share an Opportunity Story](#-from-the-community) 
+- [📖 Read the Contribution Guide](CONTRIBUTING.md)
+- [💛 Meet the Contributors](#contributors)
+- [📸 Share an Opportunity Story](#-from-the-community)
 - [🗣️ Join the Discussion](https://github.com/elchrysaki/offmap-hub/discussions)
 
 </td>
@@ -295,7 +324,7 @@ Listings may be removed or archived when the information becomes outdated, the o
 ## 🔥 Closing soon
 
 > [!TIP]
-> **Deadlines do not wait for motivation to arrive.**  
+> **Deadlines do not wait for motivation to arrive.**
 > These verified opportunities are closing within the next 30 days, ordered by the nearest application deadline.
 
 <!-- CLOSING_SOON_START -->
@@ -315,14 +344,14 @@ Listings may be removed or archived when the information becomes outdated, the o
 ---
 
 ## ➕ Add an opportunity
-Found a conference, competition, scholarship, hackathon, course, or other opportunity worth sharing?
+Found a conference, competition, scholarship, hackathon, course, exchange, volunteering program, or another opportunity worth sharing?
 
-Adding it takes around <u> two minutes.</u> 
+Adding it takes around <u> two minutes.</u>
 
 ```text
-1. Click “Add an Opportunity” 
-2. Paste the official opportunity link 
-3. Select the opportunity type 
+1. Click “Add an Opportunity”
+2. Paste the official opportunity link
+3. Select the opportunity type
 4. Add any details you already know
 5. Submit the form
 ```
