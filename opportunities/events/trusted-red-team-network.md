@@ -7,7 +7,7 @@ organizer: Syntony
 main_category: events
 category: networking-event
 edition: null
-status: pending-review
+status: published
 summary: Trusted Red Team Network is an online specialist network organized by Syntony. It connects experts with published work and demonstrable expertise for confidential, project-based engagements in adversarial testing, AI evaluation, and geopolitical forecasting. Participants contribute independent evaluation and systems thinking to influence impactful decisions.
 format: online
 location:
@@ -122,6 +122,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 42
+  approved_by: elchrysaki
+  published_at: '2026-07-20T09:17:44.329139+00:00'
 submission:
   issue_number: 41
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/41
@@ -131,6 +137,10 @@ provenance:
   researched_at: '2026-07-20T07:29:33.826404+00:00'
   formatted_at: '2026-07-20T07:29:44.851361+00:00'
   generated_at: '2026-07-20T07:29:44.929244+00:00'
+  published_at: '2026-07-20T09:17:44.329139+00:00'
+  publication_pr_number: 42
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 Trusted Red Team Network
