@@ -306,6 +306,7 @@ Listings may be removed or archived when the information becomes outdated, the o
 | 🔥 Closing soon | Academy | [Mission Concept Academy (MCA)](opportunities/courses/mission-concept-academy-mca.md) | Space mission concept development; NASA proposal process | United States | Online | No Application Fee, No Participation Fee | Bachelor’s, Graduate | [Apply](https://www.lspace.asu.edu/mission-concept-academy) | 2 August 2026, 11:59 PM PT |
 | 🔥 Closing soon | Academy | [NASA Proposal Writing and Evaluation Experience (NPWEE)](opportunities/courses/nasa-proposal-writing-and-evaluation-experience-npwee.md) | Space mission development; NASA proposal writing | United States | Online | Not stated | See details | [Apply](https://www.lspace.asu.edu/proposal-writing-academy) | 2 August 2026, 11:59 PM PT |
 | 🔥 Closing soon | Conference | [EAGxBerkeley 2026](opportunities/events/eagxberkeley-2026.md) | Conference | 21–23 Aug 2026 / Berkeley, United States | In Person | Not stated | See details | [Apply](https://effectivealtruism.my.site.com/EAGlobal/s/eagxberkeleyapplication) | August 7, 2026 |
+| 🔥 Closing soon | Conference | [EA Summit: Buenos Aires](opportunities/events/ea-summit-buenos-aires.md) | Effective altruism | 29 Aug 2026 / Buenos Aires, Argentina | In Person | Not stated | See details | [Apply](https://www.effectivealtruism.org/ea-global/events/ea-summit-buenos-aires?utm_source=ea-opps) | 15 August 2026 |
 
 <!-- CLOSING_SOON_END -->
 
