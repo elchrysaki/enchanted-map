@@ -857,6 +857,213 @@ def apply_trusted_fields(
 
 
 # ============================================================
+# MODEL STRING-LIST REPAIR
+# ============================================================
+
+# GitHub Models occasionally returns objects such as
+# {"label": "Travel", "details": "Flights covered"} inside fields
+# whose schema requires plain strings. Repair only those structural
+# mistakes before validation. The factual text is not rewritten.
+MODEL_STRING_LIST_PATHS: tuple[tuple[str, ...], ...] = (
+    ("location", "additional_locations"),
+    ("eligibility", "geographic_regions"),
+    ("eligibility", "eligible_countries"),
+    ("eligibility", "academic_levels"),
+    ("eligibility", "broad_fields"),
+    ("eligibility", "specific_majors"),
+    ("eligibility", "display_points"),
+    ("audience", "groups"),
+    ("audience", "display_points"),
+    ("funding", "other_support"),
+    ("funding", "display_points"),
+    ("application", "requirements"),
+    ("application", "documents"),
+    ("application", "selection_process"),
+    ("application", "display_points"),
+    ("program", "activities"),
+    ("program", "benefits"),
+    ("program", "topics"),
+    ("filters", "main_categories"),
+    ("filters", "categories"),
+    ("filters", "formats"),
+    ("filters", "host_countries"),
+    ("filters", "eligible_regions"),
+    ("filters", "eligible_countries"),
+    ("filters", "academic_levels"),
+    ("filters", "academic_fields"),
+    ("filters", "subjects"),
+    ("filters", "audience_groups"),
+    ("filters", "funding_features"),
+    ("filters", "topics"),
+    ("tags",),
+    ("publication_notes", "conflicts"),
+    ("publication_notes", "missing_information"),
+    ("publication_notes", "human_review"),
+    ("publication_notes", "excluded_claims"),
+)
+
+MODEL_OBJECT_TEXT_KEYS: tuple[str, ...] = (
+    "display",
+    "text",
+    "description",
+    "details",
+    "detail",
+    "value",
+    "label",
+    "name",
+    "note",
+    "finding",
+    "support",
+    "type",
+)
+
+
+def _path_value(
+    root: dict[str, Any],
+    path: tuple[str, ...],
+) -> Any:
+    current: Any = root
+
+    for key in path:
+        if not isinstance(current, dict):
+            return None
+        current = current.get(key)
+
+    return current
+
+
+def _coerce_model_list_item(
+    item: Any,
+    *,
+    field_name: str,
+    index: int,
+) -> tuple[str | None, str | None]:
+    if isinstance(item, str):
+        cleaned = item.strip()
+        if cleaned:
+            return cleaned, None
+        return None, (
+            f"{field_name}[{index}] was an empty string and was removed."
+        )
+
+    if not isinstance(item, dict):
+        return None, (
+            f"{field_name}[{index}] used unsupported type "
+            f"{type(item).__name__} and was removed."
+        )
+
+    pieces: list[str] = []
+    seen: set[str] = set()
+
+    for key in MODEL_OBJECT_TEXT_KEYS:
+        value = item.get(key)
+
+        if not isinstance(value, str):
+            continue
+
+        cleaned = " ".join(value.split()).strip()
+
+        if not cleaned:
+            continue
+
+        folded = cleaned.casefold()
+
+        if folded in seen:
+            continue
+
+        seen.add(folded)
+        pieces.append(cleaned)
+
+    if not pieces and len(item) == 1:
+        only_value = next(iter(item.values()))
+
+        if isinstance(only_value, str):
+            cleaned = " ".join(only_value.split()).strip()
+
+            if cleaned:
+                pieces.append(cleaned)
+
+    if not pieces:
+        return None, (
+            f"{field_name}[{index}] was an object without usable text "
+            "and was removed."
+        )
+
+    if len(pieces) == 1:
+        repaired = pieces[0]
+    else:
+        repaired = " — ".join(pieces)
+
+    return repaired[:20_000], (
+        f"{field_name}[{index}] was converted from an object to text."
+    )
+
+
+def normalize_model_string_lists(
+    result: dict[str, Any],
+) -> list[str]:
+    repairs: list[str] = []
+
+    for path in MODEL_STRING_LIST_PATHS:
+        value = _path_value(result, path)
+
+        # Missing fields and wrong top-level types remain validation errors.
+        # Repair only list items returned with the wrong inner type.
+        if not isinstance(value, list):
+            continue
+
+        field_name = ".".join(path)
+        normalized: list[str] = []
+        seen: set[str] = set()
+
+        for index, item in enumerate(value):
+            text, repair = _coerce_model_list_item(
+                item,
+                field_name=field_name,
+                index=index,
+            )
+
+            if repair:
+                repairs.append(repair)
+
+            if text is None:
+                continue
+
+            folded = text.casefold()
+
+            if folded in seen:
+                repairs.append(
+                    f"{field_name}[{index}] duplicated an earlier value "
+                    "and was removed."
+                )
+                continue
+
+            seen.add(folded)
+            normalized.append(text)
+
+        value[:] = normalized
+
+    if repairs:
+        publication_notes = result.get("publication_notes")
+
+        if isinstance(publication_notes, dict):
+            human_review = publication_notes.get("human_review")
+
+            if isinstance(human_review, list):
+                human_review.extend(
+                    [
+                        "Formatter structural repair: " + repair
+                        for repair in repairs
+                    ]
+                )
+
+        for repair in repairs:
+            warn("Formatter structural repair: " + repair)
+
+    return repairs
+
+
+# ============================================================
 # OUTPUT VALIDATION
 # ============================================================
 
@@ -1462,6 +1669,8 @@ def main() -> None:
         formatted,
         researched_record,
     )
+
+    normalize_model_string_lists(formatted)
 
     validate_publishable_draft(
         formatted,
