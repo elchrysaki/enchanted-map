@@ -7,7 +7,7 @@ organizer: Effective Altruism Global
 main_category: events
 category: conference
 edition: '2026'
-status: pending-review
+status: published
 summary: EAGxBerlin 2026 is an in-person conference for the effective altruism community, especially those in Western and Central Europe. Participants can attend workshops, talks, and networking sessions focused on global challenges and high-impact careers. The event is designed for those already familiar with effective altruism.
 format: in-person
 location:
@@ -119,6 +119,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 50
+  approved_by: elchrysaki
+  published_at: '2026-07-20T09:19:14.819833+00:00'
 submission:
   issue_number: 49
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/49
@@ -128,6 +134,10 @@ provenance:
   researched_at: '2026-07-20T08:49:48.703556+00:00'
   formatted_at: '2026-07-20T08:49:59.904405+00:00'
   generated_at: '2026-07-20T08:49:59.995164+00:00'
+  published_at: '2026-07-20T09:19:14.819833+00:00'
+  publication_pr_number: 50
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 EAGxBerlin 2026
