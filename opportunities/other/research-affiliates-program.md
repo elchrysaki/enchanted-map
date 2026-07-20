@@ -7,7 +7,7 @@ organizer: Syntony
 main_category: other
 category: other
 edition: null
-status: pending-review
+status: published
 summary: The Research Affiliates Program by Syntony is a project-based collaboration network for researchers, security specialists, and policy practitioners. Participants contribute to publications, co-author research, and gain visibility through work with frontier labs, public sector clients, and enterprise deployments. The program operates online and accepts affiliates on a rolling basis.
 format: online
 location:
@@ -117,6 +117,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 40
+  approved_by: elchrysaki
+  published_at: '2026-07-20T09:17:05.777574+00:00'
 submission:
   issue_number: 39
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/39
@@ -126,6 +132,10 @@ provenance:
   researched_at: '2026-07-20T07:27:37.398833+00:00'
   formatted_at: '2026-07-20T07:27:46.916519+00:00'
   generated_at: '2026-07-20T07:27:47.005996+00:00'
+  published_at: '2026-07-20T09:17:05.777574+00:00'
+  publication_pr_number: 40
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 Research Affiliates Program

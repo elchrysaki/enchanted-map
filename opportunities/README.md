@@ -2,7 +2,7 @@
 
 This index is generated automatically from reviewed opportunity files. Edit the individual opportunity pages, not this index.
 
-**Published opportunities:** 11
+**Published opportunities:** 12
 
 ## Jump to a main category
 
@@ -12,7 +12,7 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 - [🤝 Fellowships](#main-fellowships) (1)
 - [📚 Courses & Schools](#main-courses) (2)
 - [❤️ Volunteering](#main-volunteering) (1)
-- [✨ Other Opportunities](#main-other) (1)
+- [✨ Other Opportunities](#main-other) (2)
 
 <a id="main-events"></a>
 
@@ -85,6 +85,7 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 | Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
 |---|---|---|---|---|---|---|---|---|
 | [CEEALAR](<other/ceealar.md>) | Other | CEEALAR | Rolling applications | In Person | In-person residency in Blackpool, United Kingdom | Subsidized Accommodation, Subsidized Meals, No Application Fee | See opportunity page | [Apply](<https://www.ceealar.org/apply-to-ceealar?utm_source=ea-opps>) |
+| [Research Affiliates Program](<other/research-affiliates-program.md>) | Other | Syntony | Open, no known end date | Online | Online | Not confirmed | See opportunity page | [Official page](<https://www.syntonyresearch.ai/work/research-affiliates/>) |
 
 [↑ Back to main categories](#jump-to-a-main-category)
 
