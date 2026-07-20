@@ -7,7 +7,7 @@ organizer: Syntony Engineering
 main_category: fellowships
 category: fellowship
 edition: null
-status: pending-review
+status: published
 summary: The Syntony Engineering Fellowship is a remote technical fellowship for exceptional engineers, researchers, and builders interested in AI evaluation, safety, and governance. Fellows collaborate directly with Syntony's founder on impactful projects, gaining hands-on experience in company-building and technical leadership. Applications are open with no specified deadline.
 format: online
 location:
@@ -149,6 +149,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 38
+  approved_by: elchrysaki
+  published_at: '2026-07-20T09:13:31.723759+00:00'
 submission:
   issue_number: 37
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/37
@@ -158,6 +164,10 @@ provenance:
   researched_at: '2026-07-20T07:25:20.201406+00:00'
   formatted_at: '2026-07-20T07:25:34.551642+00:00'
   generated_at: '2026-07-20T07:25:34.650571+00:00'
+  published_at: '2026-07-20T09:13:31.723759+00:00'
+  publication_pr_number: 38
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 Syntony Engineering Fellowship

@@ -2,13 +2,14 @@
 
 This index is generated automatically from reviewed opportunity files. Edit the individual opportunity pages, not this index.
 
-**Published opportunities:** 7
+**Published opportunities:** 8
 
 ## Jump to a main category
 
 - [🎤 Events](#main-events) (1)
 - [🧰 Internships](#main-internships) (1)
 - [🏆 Competitions](#main-competitions) (1)
+- [🤝 Fellowships](#main-fellowships) (1)
 - [📚 Courses & Schools](#main-courses) (2)
 - [❤️ Volunteering](#main-volunteering) (1)
 - [✨ Other Opportunities](#main-other) (1)
@@ -40,6 +41,16 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 | Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
 |---|---|---|---|---|---|---|---|---|
 | [EUROAVIA Ideathon 2026](<competitions/euroavia-ideathon-2026.md>) | Hackathon | EUROAVIA (hosted by AS Oostende) | 27 July 2026 | In Person | In-person event in Brugge, Belgium | Participation Fee, Accommodation, Meals | Undergraduate, Master | [Apply](<https://ideathon.euroavia.eu/applications>) |
+
+[↑ Back to main categories](#jump-to-a-main-category)
+
+<a id="main-fellowships"></a>
+
+## 🤝 Fellowships
+
+| Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
+|---|---|---|---|---|---|---|---|---|
+| [Syntony Engineering Fellowship](<fellowships/syntony-engineering-fellowship.md>) | Fellowship | Syntony Engineering | Rolling applications | Online | Remote (hosted by Syntony Engineering, Durham, NC, United States) | No Application Fee, No Participation Fee, Remote | See opportunity page | [Official page](<https://www.syntonyresearch.ai/work/engineering-fellowship/?utm_source=ea-opps>) |
 
 [↑ Back to main categories](#jump-to-a-main-category)
 
