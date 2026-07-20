@@ -27,8 +27,8 @@
 
 [![Stars](https://img.shields.io/github/stars/elchrysaki/offmap-hub?style=for-the-badge&logo=github&logoColor=black&label=STARS&color=F4C542)](https://github.com/elchrysaki/offmap-hub/stargazers)
 [![🦄 Contributors](https://img.shields.io/github/contributors/elchrysaki/offmap-hub?style=for-the-badge&color=8B5CF6)](https://github.com/elchrysaki/offmap-hub/graphs/contributors)
-[![Verified](https://img.shields.io/badge/Verified-2-blueviolet?style=for-the-badge)](opportunities/README.md)
-[![Active](https://img.shields.io/badge/Active-2-orange?style=for-the-badge)](opportunities/README.md)
+[![Verified](https://img.shields.io/badge/Verified-3-blueviolet?style=for-the-badge)](opportunities/README.md)
+[![Active](https://img.shields.io/badge/Active-3-orange?style=for-the-badge)](opportunities/README.md)
 
 
 <br>
@@ -304,6 +304,7 @@ Listings may be removed or archived when the information becomes outdated, the o
 |---|---|---|---|---|---|---|---|---|---|
 | 🔥 Closing soon | Hackathon | [EUROAVIA Ideathon 2026](opportunities/competitions/euroavia-ideathon-2026.md) | Aerospace innovation; Industrial challenges | 3–8 Nov 2026 / Brugge, Belgium | In Person | Participation fee, Accommodation | Bachelor’s, Master’s | [Apply](https://ideathon.euroavia.eu/applications) | 27 July 2026 |
 | 🔥 Closing soon | Academy | [Mission Concept Academy (MCA)](opportunities/courses/mission-concept-academy-mca.md) | Space mission concept development; NASA proposal process | United States | Online | No Application Fee, No Participation Fee | Bachelor’s, Graduate | [Apply](https://www.lspace.asu.edu/mission-concept-academy) | 2 August 2026, 11:59 PM PT |
+| 🔥 Closing soon | Academy | [NASA Proposal Writing and Evaluation Experience (NPWEE)](opportunities/courses/nasa-proposal-writing-and-evaluation-experience-npwee.md) | Space mission development; NASA proposal writing | United States | Online | Not stated | See details | [Apply](https://www.lspace.asu.edu/proposal-writing-academy) | 2 August 2026, 11:59 PM PT |
 
 <!-- CLOSING_SOON_END -->
 
