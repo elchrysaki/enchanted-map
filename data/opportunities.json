@@ -3,9 +3,9 @@
   "record_type": "opportunity-index",
   "source": "opportunities/*/*.md",
   "public_status": "published",
-  "total_published": 21,
+  "total_published": 22,
   "main_category_counts": {
-    "events": 13,
+    "events": 14,
     "internships": 1,
     "competitions": 1,
     "fellowships": 1,
@@ -14,7 +14,7 @@
     "other": 2
   },
   "category_counts": {
-    "conference": 11,
+    "conference": 12,
     "workshop-seminar": 1,
     "networking-event": 1,
     "internship": 1,
@@ -26,7 +26,7 @@
   },
   "main_category_category_counts": {
     "events": {
-      "conference": 11,
+      "conference": 12,
       "workshop-seminar": 1,
       "networking-event": 1
     },
@@ -51,7 +51,7 @@
   },
   "source_status_counts": {
     "archived": 1,
-    "published": 21
+    "published": 22
   },
   "opportunities": [
     {
@@ -1521,6 +1521,166 @@
       },
       "id": "events:ea-summit-wellington",
       "path": "opportunities/events/ea-summit-wellington.md"
+    },
+    {
+      "schema_version": 2,
+      "record_type": "opportunity",
+      "slug": "eagxaustralasia-2026",
+      "title": "EAGxAustralasia 2026",
+      "organizer": "EAGxAustralasia",
+      "main_category": "events",
+      "category": "conference",
+      "edition": "2026",
+      "status": "published",
+      "summary": "EAGxAustralasia 2026 is an in-person conference in Melbourne, Australia, focused on effective altruism and high-impact careers. Attendees can join workshops, talks, and networking sessions with others interested in tackling global challenges. Applications will open soon; funding and eligibility details are not yet confirmed.",
+      "format": "in-person",
+      "location": {
+        "display": "Melbourne, Australia (in-person)",
+        "host_city": "Melbourne",
+        "host_country": "Australia",
+        "host_country_code": "AU",
+        "additional_locations": []
+      },
+      "dates": {
+        "application_deadline": {
+          "raw": "open soon",
+          "display": "Applications will open soon",
+          "normalized": null
+        },
+        "start_date": {
+          "display": "27 November 2026",
+          "normalized": "2026-11-27"
+        },
+        "end_date": {
+          "display": "29 November 2026",
+          "normalized": "2026-11-29"
+        },
+        "additional_dates": []
+      },
+      "eligibility": {
+        "geographic_regions": [],
+        "eligible_countries": [],
+        "nationality_or_residency_rules": null,
+        "academic_levels": [],
+        "broad_fields": [],
+        "specific_majors": [],
+        "age_requirements": null,
+        "experience_requirements": null,
+        "language_requirements": null,
+        "display_points": [
+          "Eligibility details have not yet been announced."
+        ]
+      },
+      "audience": {
+        "classification_source": "submitted-dropdown-only",
+        "groups": [],
+        "access_model": "not-confirmed",
+        "display_points": []
+      },
+      "funding": {
+        "application_fee": null,
+        "participation_fee": null,
+        "scholarship": null,
+        "travel_support": null,
+        "accommodation": null,
+        "meals": null,
+        "stipend_or_salary": null,
+        "prizes": null,
+        "visa_support": null,
+        "accessibility_support": null,
+        "other_support": [],
+        "display_points": [
+          "Funding and support details have not yet been announced."
+        ]
+      },
+      "application": {
+        "official_page": "https://www.effectivealtruism.org/ea-global/events/eagxaustralasia-2026?utm_source=ea-opps",
+        "application_page": null,
+        "requirements": [],
+        "documents": [],
+        "selection_process": [],
+        "display_points": [
+          "Applications will open soon. Check the official page for updates."
+        ]
+      },
+      "program": {
+        "activities": [
+          "Connect with others passionate about doing good effectively",
+          "Explore high-impact career paths and meet potential employers",
+          "Join workshops, talks, and discussions on key global challenges"
+        ],
+        "benefits": [
+          "Networking with 300+ attendees",
+          "Career exploration",
+          "Workshops and talks"
+        ],
+        "topics": [
+          "Effective altruism",
+          "High-impact careers",
+          "Global challenges"
+        ]
+      },
+      "filters": {
+        "main_categories": [
+          "events"
+        ],
+        "categories": [
+          "conference"
+        ],
+        "formats": [
+          "in-person"
+        ],
+        "host_countries": [
+          "Australia"
+        ],
+        "eligible_regions": [],
+        "eligible_countries": [],
+        "academic_levels": [],
+        "academic_fields": [],
+        "subjects": [],
+        "audience_groups": [],
+        "funding_features": [],
+        "topics": [
+          "Effective altruism",
+          "High-impact careers",
+          "Global challenges"
+        ]
+      },
+      "tags": [],
+      "verification": {
+        "human_review_required": true,
+        "safe_to_generate_draft_page": true,
+        "research_confidence": 90,
+        "research_recommended_action": "continue-to-human-review",
+        "formatter_recommended_action": "continue-to-draft-pr",
+        "identity_categories_locked_to_research": true,
+        "audience_groups_locked_to_research": true,
+        "automatically_verified": false,
+        "automatically_published": false,
+        "human_review_completed": true,
+        "approved_by_merge": true,
+        "approval_method": "merged-pull-request",
+        "approval_pr_number": 79,
+        "approved_by": "elchrysaki",
+        "published_at": "2026-07-20T11:55:14.634541+00:00"
+      },
+      "submission": {
+        "issue_number": 67,
+        "issue_url": "https://github.com/elchrysaki/offmap-hub/issues/67"
+      },
+      "provenance": {
+        "research_model": "openai/gpt-4.1",
+        "formatter_model": "openai/gpt-4.1",
+        "researched_at": "2026-07-20T11:49:26.634255+00:00",
+        "formatted_at": "2026-07-20T11:49:35.361988+00:00",
+        "generated_at": "2026-07-20T11:49:35.463924+00:00",
+        "published_at": "2026-07-20T11:55:14.634541+00:00",
+        "publication_pr_number": 79,
+        "published_by": "elchrysaki",
+        "publishing_workflow": ".github/workflows/rebuild-indexes.yml"
+      },
+      "id": "events:eagxaustralasia-2026",
+      "path": "opportunities/events/eagxaustralasia-2026.md"
     },
     {
       "schema_version": 2,

@@ -7,7 +7,7 @@ organizer: EAGxAustralasia
 main_category: events
 category: conference
 edition: '2026'
-status: pending-review
+status: published
 summary: EAGxAustralasia 2026 is an in-person conference in Melbourne, Australia, focused on effective altruism and high-impact careers. Attendees can join workshops, talks, and networking sessions with others interested in tackling global challenges. Applications will open soon; funding and eligibility details are not yet confirmed.
 format: in-person
 location:
@@ -111,6 +111,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 79
+  approved_by: elchrysaki
+  published_at: '2026-07-20T11:55:14.634541+00:00'
 submission:
   issue_number: 67
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/67
@@ -120,6 +126,10 @@ provenance:
   researched_at: '2026-07-20T11:49:26.634255+00:00'
   formatted_at: '2026-07-20T11:49:35.361988+00:00'
   generated_at: '2026-07-20T11:49:35.463924+00:00'
+  published_at: '2026-07-20T11:55:14.634541+00:00'
+  publication_pr_number: 79
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 EAGxAustralasia 2026
