@@ -3,9 +3,9 @@
   "record_type": "opportunity-index",
   "source": "opportunities/*/*.md",
   "public_status": "published",
-  "total_published": 8,
+  "total_published": 9,
   "main_category_counts": {
-    "events": 1,
+    "events": 2,
     "internships": 1,
     "competitions": 1,
     "fellowships": 1,
@@ -14,6 +14,7 @@
     "other": 1
   },
   "category_counts": {
+    "conference": 1,
     "workshop-seminar": 1,
     "internship": 1,
     "hackathon": 1,
@@ -24,6 +25,7 @@
   },
   "main_category_category_counts": {
     "events": {
+      "conference": 1,
       "workshop-seminar": 1
     },
     "internships": {
@@ -47,9 +49,167 @@
   },
   "source_status_counts": {
     "archived": 1,
-    "published": 8
+    "published": 9
   },
   "opportunities": [
+    {
+      "schema_version": 2,
+      "record_type": "opportunity",
+      "slug": "eagxindia-2026",
+      "title": "EAGxIndia 2026",
+      "organizer": "EAGxIndia",
+      "main_category": "events",
+      "category": "conference",
+      "edition": "2026",
+      "status": "published",
+      "summary": "EAGxIndia 2026 is an in-person conference in New Delhi, designed especially for Indian effective altruism communities and those interested in EA. Participants can expect talks, workshops, networking, and community-building activities focused on EA cause areas and impactful action.",
+      "format": "in-person",
+      "location": {
+        "display": "Aloft New Delhi Aerocity, New Delhi, India",
+        "host_city": "New Delhi",
+        "host_country": "India",
+        "host_country_code": "IN",
+        "additional_locations": []
+      },
+      "dates": {
+        "application_deadline": {
+          "raw": "idk",
+          "display": null,
+          "normalized": null
+        },
+        "start_date": {
+          "display": "19 September 2026",
+          "normalized": "2026-09-19"
+        },
+        "end_date": {
+          "display": "20 September 2026",
+          "normalized": "2026-09-20"
+        },
+        "additional_dates": []
+      },
+      "eligibility": {
+        "geographic_regions": [],
+        "eligible_countries": [],
+        "nationality_or_residency_rules": "Organized especially for Indian EA communities; others interested in effective altruism may also be welcome.",
+        "academic_levels": [],
+        "broad_fields": [],
+        "specific_majors": [],
+        "age_requirements": null,
+        "experience_requirements": null,
+        "language_requirements": null,
+        "display_points": [
+          "Especially for Indian EA communities",
+          "Open to those interested in effective altruism"
+        ]
+      },
+      "audience": {
+        "classification_source": "submitted-dropdown-only",
+        "groups": [],
+        "access_model": "not-confirmed",
+        "display_points": []
+      },
+      "funding": {
+        "application_fee": null,
+        "participation_fee": null,
+        "scholarship": null,
+        "travel_support": null,
+        "accommodation": null,
+        "meals": null,
+        "stipend_or_salary": null,
+        "prizes": null,
+        "visa_support": null,
+        "accessibility_support": null,
+        "other_support": [],
+        "display_points": []
+      },
+      "application": {
+        "official_page": "https://www.effectivealtruism.org/ea-global/events/eagxindia-2026?utm_source=ea-opps",
+        "application_page": null,
+        "requirements": [],
+        "documents": [],
+        "selection_process": [],
+        "display_points": [
+          "Application details and deadline not yet confirmed"
+        ]
+      },
+      "program": {
+        "activities": [
+          "Networking",
+          "Talks",
+          "Workshops",
+          "Community-building"
+        ],
+        "benefits": [
+          "Connect with people and organizations in the EA community",
+          "Exchange ideas",
+          "Discover actionable ways to make an impact"
+        ],
+        "topics": [
+          "Effective altruism",
+          "EA cause areas"
+        ]
+      },
+      "filters": {
+        "main_categories": [
+          "events"
+        ],
+        "categories": [
+          "conference"
+        ],
+        "formats": [
+          "in-person"
+        ],
+        "host_countries": [
+          "India"
+        ],
+        "eligible_regions": [],
+        "eligible_countries": [],
+        "academic_levels": [],
+        "academic_fields": [],
+        "subjects": [],
+        "audience_groups": [],
+        "funding_features": [],
+        "topics": [
+          "Effective altruism",
+          "EA cause areas"
+        ]
+      },
+      "tags": [],
+      "verification": {
+        "human_review_required": true,
+        "safe_to_generate_draft_page": true,
+        "research_confidence": 90,
+        "research_recommended_action": "continue-to-human-review",
+        "formatter_recommended_action": "continue-to-draft-pr",
+        "identity_categories_locked_to_research": true,
+        "audience_groups_locked_to_research": true,
+        "automatically_verified": false,
+        "automatically_published": false,
+        "human_review_completed": true,
+        "approved_by_merge": true,
+        "approval_method": "merged-pull-request",
+        "approval_pr_number": 66,
+        "approved_by": "elchrysaki",
+        "published_at": "2026-07-20T09:15:46.593472+00:00"
+      },
+      "submission": {
+        "issue_number": 65,
+        "issue_url": "https://github.com/elchrysaki/offmap-hub/issues/65"
+      },
+      "provenance": {
+        "research_model": "openai/gpt-4.1",
+        "formatter_model": "openai/gpt-4.1",
+        "researched_at": "2026-07-20T09:05:23.961976+00:00",
+        "formatted_at": "2026-07-20T09:05:32.987998+00:00",
+        "generated_at": "2026-07-20T09:05:33.080029+00:00",
+        "published_at": "2026-07-20T09:15:46.593472+00:00",
+        "publication_pr_number": 66,
+        "published_by": "elchrysaki",
+        "publishing_workflow": ".github/workflows/rebuild-indexes.yml"
+      },
+      "id": "events:eagxindia-2026",
+      "path": "opportunities/events/eagxindia-2026.md"
+    },
     {
       "schema_version": 2,
       "record_type": "opportunity",

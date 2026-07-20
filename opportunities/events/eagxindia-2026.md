@@ -7,7 +7,7 @@ organizer: EAGxIndia
 main_category: events
 category: conference
 edition: '2026'
-status: pending-review
+status: published
 summary: EAGxIndia 2026 is an in-person conference in New Delhi, designed especially for Indian effective altruism communities and those interested in EA. Participants can expect talks, workshops, networking, and community-building activities focused on EA cause areas and impactful action.
 format: in-person
 location:
@@ -110,6 +110,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 66
+  approved_by: elchrysaki
+  published_at: '2026-07-20T09:15:46.593472+00:00'
 submission:
   issue_number: 65
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/65
@@ -119,6 +125,10 @@ provenance:
   researched_at: '2026-07-20T09:05:23.961976+00:00'
   formatted_at: '2026-07-20T09:05:32.987998+00:00'
   generated_at: '2026-07-20T09:05:33.080029+00:00'
+  published_at: '2026-07-20T09:15:46.593472+00:00'
+  publication_pr_number: 66
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 EAGxIndia 2026
