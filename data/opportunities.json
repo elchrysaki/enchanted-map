@@ -3,9 +3,9 @@
   "record_type": "opportunity-index",
   "source": "opportunities/*/*.md",
   "public_status": "published",
-  "total_published": 13,
+  "total_published": 14,
   "main_category_counts": {
-    "events": 5,
+    "events": 6,
     "internships": 1,
     "competitions": 1,
     "fellowships": 1,
@@ -14,7 +14,7 @@
     "other": 2
   },
   "category_counts": {
-    "conference": 3,
+    "conference": 4,
     "workshop-seminar": 1,
     "networking-event": 1,
     "internship": 1,
@@ -26,7 +26,7 @@
   },
   "main_category_category_counts": {
     "events": {
-      "conference": 3,
+      "conference": 4,
       "workshop-seminar": 1,
       "networking-event": 1
     },
@@ -51,7 +51,8 @@
   },
   "source_status_counts": {
     "archived": 1,
-    "published": 13
+    "pending-review": 1,
+    "published": 14
   },
   "opportunities": [
     {
@@ -203,6 +204,146 @@
       },
       "id": "events:eagxberkeley-2026",
       "path": "opportunities/events/eagxberkeley-2026.md"
+    },
+    {
+      "schema_version": 2,
+      "record_type": "opportunity",
+      "slug": "pausecon-london-2026",
+      "title": "PauseCon London 2026",
+      "organizer": "PauseAI Events (Global)",
+      "main_category": "events",
+      "category": "conference",
+      "edition": "2026",
+      "status": "published",
+      "summary": "PauseCon London 2026 is an in-person conference organized by PauseAI Events (Global), focusing on AI-related topics and training. The event takes place in London, United Kingdom, and invites participants interested in the future of artificial intelligence. Application deadline is August 21, 2026. Specific eligibility and funding details are not confirmed.",
+      "format": "in-person",
+      "location": {
+        "display": "In-person in London, United Kingdom",
+        "host_city": "London",
+        "host_country": "United Kingdom",
+        "host_country_code": "GB",
+        "additional_locations": []
+      },
+      "dates": {
+        "application_deadline": {
+          "raw": "​Application deadline: August 21",
+          "display": "21 August 2026",
+          "normalized": "2026-08-21"
+        },
+        "start_date": {
+          "display": null,
+          "normalized": null
+        },
+        "end_date": {
+          "display": null,
+          "normalized": null
+        },
+        "additional_dates": []
+      },
+      "eligibility": {
+        "geographic_regions": [],
+        "eligible_countries": [],
+        "nationality_or_residency_rules": null,
+        "academic_levels": [],
+        "broad_fields": [],
+        "specific_majors": [],
+        "age_requirements": null,
+        "experience_requirements": null,
+        "language_requirements": null,
+        "display_points": []
+      },
+      "audience": {
+        "classification_source": "submitted-dropdown-only",
+        "groups": [],
+        "access_model": "not-confirmed",
+        "display_points": []
+      },
+      "funding": {
+        "application_fee": null,
+        "participation_fee": null,
+        "scholarship": null,
+        "travel_support": null,
+        "accommodation": null,
+        "meals": null,
+        "stipend_or_salary": null,
+        "prizes": null,
+        "visa_support": null,
+        "accessibility_support": null,
+        "other_support": [],
+        "display_points": []
+      },
+      "application": {
+        "official_page": "https://luma.com/4be2eqz9?utm_source=ea-opps",
+        "application_page": "https://luma.com/4be2eqz9?utm_source=ea-opps",
+        "requirements": [],
+        "documents": [],
+        "selection_process": [],
+        "display_points": [
+          "Applications and registration are handled through the official event page."
+        ]
+      },
+      "program": {
+        "activities": [],
+        "benefits": [],
+        "topics": []
+      },
+      "filters": {
+        "main_categories": [
+          "events"
+        ],
+        "categories": [
+          "conference"
+        ],
+        "formats": [
+          "in-person"
+        ],
+        "host_countries": [
+          "United Kingdom"
+        ],
+        "eligible_regions": [],
+        "eligible_countries": [],
+        "academic_levels": [],
+        "academic_fields": [],
+        "subjects": [],
+        "audience_groups": [],
+        "funding_features": [],
+        "topics": []
+      },
+      "tags": [],
+      "verification": {
+        "human_review_required": true,
+        "safe_to_generate_draft_page": true,
+        "research_confidence": 90,
+        "research_recommended_action": "continue-to-human-review",
+        "formatter_recommended_action": "continue-to-draft-pr",
+        "identity_categories_locked_to_research": true,
+        "audience_groups_locked_to_research": true,
+        "automatically_verified": false,
+        "automatically_published": false,
+        "human_review_completed": true,
+        "approved_by_merge": true,
+        "approval_method": "merged-pull-request",
+        "approval_pr_number": 44,
+        "approved_by": "elchrysaki",
+        "published_at": "2026-07-20T09:18:14.373027+00:00"
+      },
+      "submission": {
+        "issue_number": 43,
+        "issue_url": "https://github.com/elchrysaki/offmap-hub/issues/43"
+      },
+      "provenance": {
+        "research_model": "openai/gpt-4.1",
+        "formatter_model": "openai/gpt-4.1",
+        "researched_at": "2026-07-20T08:32:02.285329+00:00",
+        "formatted_at": "2026-07-20T08:32:12.931549+00:00",
+        "generated_at": "2026-07-20T08:32:13.006628+00:00",
+        "published_at": "2026-07-20T09:18:14.373027+00:00",
+        "publication_pr_number": 44,
+        "published_by": "elchrysaki",
+        "publishing_workflow": ".github/workflows/rebuild-indexes.yml"
+      },
+      "id": "events:pausecon-london-2026",
+      "path": "opportunities/events/pausecon-london-2026.md"
     },
     {
       "schema_version": 2,
