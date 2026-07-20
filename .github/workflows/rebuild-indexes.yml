@@ -310,6 +310,7 @@ jobs:
           set -euo pipefail
           python scripts/build_indexes.py
           python scripts/build_category_pages.py
+          python scripts/update_readme_stats.py
 
       - name: Commit publishing updates
         env:
@@ -323,6 +324,7 @@ jobs:
 
           git add -A -- \
             "$OPPORTUNITY_FILE" \
+            README.md \
             data/opportunities.json \
             opportunities/
 
@@ -345,8 +347,12 @@ jobs:
 
           python scripts/build_indexes.py
           python scripts/build_category_pages.py
+          python scripts/update_readme_stats.py
 
-          git add -A -- data/opportunities.json opportunities/
+          git add -A -- \
+            README.md \
+            data/opportunities.json \
+            opportunities/
           if [[ -n "$REVIEW_PACKET" ]]; then
             if [[ -e "$REVIEW_PACKET" ]] || \
               git ls-files --error-unmatch "$REVIEW_PACKET" >/dev/null 2>&1; then
