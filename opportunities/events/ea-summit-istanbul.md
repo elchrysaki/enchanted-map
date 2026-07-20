@@ -7,7 +7,7 @@ organizer: Effective Altruism Turkey
 main_category: events
 category: conference
 edition: '2026'
-status: pending-review
+status: published
 summary: 'EA Summit: Istanbul is a one-day in-person conference organized by Effective Altruism Turkey. The event brings together individuals interested in effective altruism for talks, discussions, and networking. Participants can connect with the EA community, learn about impactful causes, and explore ways to make a greater difference.'
 format: in-person
 location:
@@ -114,6 +114,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 52
+  approved_by: elchrysaki
+  published_at: '2026-07-20T09:19:39.229666+00:00'
 submission:
   issue_number: 51
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/51
@@ -123,6 +129,10 @@ provenance:
   researched_at: '2026-07-20T08:51:10.401910+00:00'
   formatted_at: '2026-07-20T08:51:22.031365+00:00'
   generated_at: '2026-07-20T08:51:22.124853+00:00'
+  published_at: '2026-07-20T09:19:39.229666+00:00'
+  publication_pr_number: 52
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 EA Summit: Istanbul
