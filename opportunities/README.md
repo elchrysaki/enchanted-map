@@ -2,11 +2,12 @@
 
 This index is generated automatically from reviewed opportunity files. Edit the individual opportunity pages, not this index.
 
-**Published opportunities:** 5
+**Published opportunities:** 6
 
 ## Jump to a main category
 
 - [🎤 Events](#main-events) (1)
+- [🧰 Internships](#main-internships) (1)
 - [🏆 Competitions](#main-competitions) (1)
 - [📚 Courses & Schools](#main-courses) (2)
 - [❤️ Volunteering](#main-volunteering) (1)
@@ -18,6 +19,16 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 | Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
 |---|---|---|---|---|---|---|---|---|
 | [Secure & Sovereign AI Workshop](<events/secure-sovereign-ai-workshop.md>) | Workshop Seminar | Foresight Institute | idk | In Person | Berlin, Germany (in-person) | Not confirmed | See opportunity page | [Official page](<https://foresight.org/events/2026-secure-sovereign-ai-workshop/?utm_source=ea-opps>) |
+
+[↑ Back to main categories](#jump-to-a-main-category)
+
+<a id="main-internships"></a>
+
+## 🧰 Internships
+
+| Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
+|---|---|---|---|---|---|---|---|---|
+| [NASA's Lucy Mission LEAP Internship](<internships/nasa-s-lucy-mission-leap-internship.md>) | Internship | L'SPACE Program | July 31st at 11:59 PM PT | Online | Online | Not confirmed | See opportunity page | [Official page](<https://www.lspace.asu.edu/mentor-internship>) |
 
 [↑ Back to main categories](#jump-to-a-main-category)
 

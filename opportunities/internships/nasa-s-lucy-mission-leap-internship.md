@@ -7,7 +7,7 @@ organizer: L'SPACE Program
 main_category: internships
 category: internship
 edition: null
-status: pending-review
+status: published
 summary: NASA's Lucy Mission LEAP Internship is an online program organized by the L'SPACE Program. Participants gain leadership experience by supporting teams in the Mission Concept Academy, helping structure roles, providing feedback, and engaging in professional development activities related to space mission concept development.
 format: online
 location:
@@ -109,6 +109,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 36
+  approved_by: elchrysaki
+  published_at: '2026-07-20T09:12:07.369585+00:00'
 submission:
   issue_number: 35
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/35
@@ -118,6 +124,10 @@ provenance:
   researched_at: '2026-07-20T07:22:26.926418+00:00'
   formatted_at: '2026-07-20T07:22:35.857763+00:00'
   generated_at: '2026-07-20T07:22:35.948955+00:00'
+  published_at: '2026-07-20T09:12:07.369585+00:00'
+  publication_pr_number: 36
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 NASA's Lucy Mission LEAP Internship
