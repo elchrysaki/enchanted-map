@@ -15,7 +15,7 @@ The researched record could not be converted into publishable structured content
 
 - **Issue:** [[Discovery]: Vision Weekend United Kingdom 2026](https://github.com/elchrysaki/offmap-hub/issues/62)
 - **Submitted by:** `elchrysaki`
-- **Processed at:** `2026-07-20T11:49:34.293241+00:00`
+- **Processed at:** `2026-07-20T11:57:13.617628+00:00`
 - **Original issue preserved:** Yes
 
 ## Workflow stages
