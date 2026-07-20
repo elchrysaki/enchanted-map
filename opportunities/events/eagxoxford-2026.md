@@ -7,7 +7,7 @@ organizer: EAGxOxford
 main_category: events
 category: conference
 edition: '2026'
-status: pending-review
+status: published
 summary: EAGxOxford 2026 is an in-person conference in Oxford, UK, focused on the effective altruism community. While it is organised especially for those in the UK and Ireland, others interested in effective altruism may also attend. The event offers talks, networking, and discussions around impactful causes and actions.
 format: in-person
 location:
@@ -110,6 +110,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 54
+  approved_by: elchrysaki
+  published_at: '2026-07-20T09:23:20.869281+00:00'
 submission:
   issue_number: 53
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/53
@@ -119,6 +125,10 @@ provenance:
   researched_at: '2026-07-20T08:52:26.147131+00:00'
   formatted_at: '2026-07-20T08:52:37.372451+00:00'
   generated_at: '2026-07-20T08:52:37.449198+00:00'
+  published_at: '2026-07-20T09:23:20.869281+00:00'
+  publication_pr_number: 54
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 EAGxOxford 2026
