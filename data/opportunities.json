@@ -3,25 +3,25 @@
   "record_type": "opportunity-index",
   "source": "opportunities/*/*.md",
   "public_status": "published",
-  "total_published": 2,
+  "total_published": 3,
   "main_category_counts": {
     "competitions": 1,
-    "courses": 1
+    "courses": 2
   },
   "category_counts": {
     "hackathon": 1,
-    "academy": 1
+    "academy": 2
   },
   "main_category_category_counts": {
     "competitions": {
       "hackathon": 1
     },
     "courses": {
-      "academy": 1
+      "academy": 2
     }
   },
   "source_status_counts": {
-    "published": 2
+    "published": 3
   },
   "opportunities": [
     {
@@ -403,6 +403,171 @@
       },
       "id": "courses:mission-concept-academy-mca",
       "path": "opportunities/courses/mission-concept-academy-mca.md"
+    },
+    {
+      "schema_version": 2,
+      "record_type": "opportunity",
+      "slug": "nasa-proposal-writing-and-evaluation-experience-npwee",
+      "title": "NASA Proposal Writing and Evaluation Experience (NPWEE)",
+      "organizer": "L'SPACE Program (Arizona State University)",
+      "main_category": "courses",
+      "category": "academy",
+      "edition": "Fall 2026",
+      "status": "published",
+      "summary": "NPWEE is a virtual academy organized by the L'SPACE Program at Arizona State University. Participants gain hands-on experience in NASA mission planning, proposal writing, and interdisciplinary teamwork. The program immerses students in the NASA mission life cycle, focusing on mission concept development and remote project management skills.",
+      "format": "online",
+      "location": {
+        "display": "Virtual program hosted from the United States",
+        "host_city": null,
+        "host_country": "United States",
+        "host_country_code": "US",
+        "additional_locations": []
+      },
+      "dates": {
+        "application_deadline": {
+          "raw": "Applications for Fall 2026 are now OPEN. Deadline to apply: 8/2/26, by 11:59 PM PT",
+          "display": "2 August 2026, 11:59 PM PT",
+          "normalized": "2026-08-02"
+        },
+        "start_date": {
+          "display": null,
+          "normalized": null
+        },
+        "end_date": {
+          "display": null,
+          "normalized": null
+        },
+        "additional_dates": []
+      },
+      "eligibility": {
+        "geographic_regions": [],
+        "eligible_countries": [],
+        "nationality_or_residency_rules": null,
+        "academic_levels": [],
+        "broad_fields": [],
+        "specific_majors": [],
+        "age_requirements": null,
+        "experience_requirements": null,
+        "language_requirements": null,
+        "display_points": []
+      },
+      "audience": {
+        "classification_source": "submitted-dropdown-only",
+        "groups": [],
+        "access_model": "not-confirmed",
+        "display_points": []
+      },
+      "funding": {
+        "application_fee": null,
+        "participation_fee": null,
+        "scholarship": null,
+        "travel_support": null,
+        "accommodation": null,
+        "meals": null,
+        "stipend_or_salary": null,
+        "prizes": null,
+        "visa_support": null,
+        "accessibility_support": null,
+        "other_support": [],
+        "display_points": []
+      },
+      "application": {
+        "official_page": "https://www.lspace.asu.edu/proposal-writing-academy",
+        "application_page": "https://www.lspace.asu.edu/proposal-writing-academy",
+        "requirements": [],
+        "documents": [],
+        "selection_process": [],
+        "display_points": []
+      },
+      "program": {
+        "activities": [
+          "Proposal writing training",
+          "Mission concept development",
+          "Team collaboration",
+          "NASA mission life cycle immersion"
+        ],
+        "benefits": [
+          "Hands-on NASA mission planning experience",
+          "Interdisciplinary teamwork",
+          "Leadership and collaboration skills",
+          "Remote project management skills"
+        ],
+        "topics": [
+          "Space mission development",
+          "NASA proposal writing",
+          "Mission design",
+          "Team communication"
+        ]
+      },
+      "filters": {
+        "main_categories": [
+          "courses"
+        ],
+        "categories": [
+          "academy"
+        ],
+        "formats": [
+          "online"
+        ],
+        "host_countries": [
+          "United States"
+        ],
+        "eligible_regions": [],
+        "eligible_countries": [],
+        "academic_levels": [],
+        "academic_fields": [],
+        "subjects": [],
+        "audience_groups": [],
+        "funding_features": [],
+        "topics": [
+          "Space mission development",
+          "NASA proposal writing",
+          "Mission design",
+          "Team communication"
+        ]
+      },
+      "tags": [
+        "nasa",
+        "space",
+        "proposal-writing",
+        "mission-design",
+        "academy",
+        "virtual"
+      ],
+      "verification": {
+        "human_review_required": true,
+        "safe_to_generate_draft_page": true,
+        "research_confidence": 85,
+        "research_recommended_action": "continue-to-human-review",
+        "formatter_recommended_action": "continue-to-draft-pr",
+        "identity_categories_locked_to_research": true,
+        "audience_groups_locked_to_research": true,
+        "automatically_verified": false,
+        "automatically_published": false,
+        "human_review_completed": true,
+        "approved_by_merge": true,
+        "approval_method": "merged-pull-request",
+        "approval_pr_number": 30,
+        "approved_by": "elchrysaki",
+        "published_at": "2026-07-20T05:04:44.486401+00:00"
+      },
+      "submission": {
+        "issue_number": 29,
+        "issue_url": "https://github.com/elchrysaki/offmap-hub/issues/29"
+      },
+      "provenance": {
+        "research_model": "openai/gpt-4.1",
+        "formatter_model": "openai/gpt-4.1",
+        "researched_at": "2026-07-20T04:57:36.476457+00:00",
+        "formatted_at": "2026-07-20T04:57:46.837677+00:00",
+        "generated_at": "2026-07-20T04:57:46.949515+00:00",
+        "published_at": "2026-07-20T05:04:44.486401+00:00",
+        "publication_pr_number": 30,
+        "published_by": "elchrysaki",
+        "publishing_workflow": ".github/workflows/rebuild-indexes.yml"
+      },
+      "id": "courses:nasa-proposal-writing-and-evaluation-experience-npwee",
+      "path": "opportunities/courses/nasa-proposal-writing-and-evaluation-experience-npwee.md"
     }
   ]
 }

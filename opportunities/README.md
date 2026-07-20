@@ -2,12 +2,12 @@
 
 This index is generated automatically from reviewed opportunity files. Edit the individual opportunity pages, not this index.
 
-**Published opportunities:** 2
+**Published opportunities:** 3
 
 ## Jump to a main category
 
 - [🏆 Competitions](#main-competitions) (1)
-- [📚 Courses & Schools](#main-courses) (1)
+- [📚 Courses & Schools](#main-courses) (2)
 
 <a id="main-competitions"></a>
 
@@ -26,6 +26,7 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 | Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
 |---|---|---|---|---|---|---|---|---|
 | [Mission Concept Academy (MCA)](<courses/mission-concept-academy-mca.md>) | Academy | L'SPACE | 2 August 2026, 11:59 PM PT | Online | Online (hosted from the United States) | No Application Fee, No Participation Fee | Undergraduate, Graduate | [Official page](<https://www.lspace.asu.edu/mission-concept-academy>) |
+| [NASA Proposal Writing and Evaluation Experience (NPWEE)](<courses/nasa-proposal-writing-and-evaluation-experience-npwee.md>) | Academy | L'SPACE Program (Arizona State University) | 2 August 2026, 11:59 PM PT | Online | Virtual program hosted from the United States | Not confirmed | See opportunity page | [Apply](<https://www.lspace.asu.edu/proposal-writing-academy>) |
 
 [↑ Back to main categories](#jump-to-a-main-category)
 
