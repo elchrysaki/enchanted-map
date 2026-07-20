@@ -7,7 +7,7 @@ organizer: 'Effective Altruism Global / EA Summit: Buenos Aires'
 main_category: events
 category: conference
 edition: '2026'
-status: pending-review
+status: published
 summary: 'EA Summit: Buenos Aires is Argentina''s first dedicated effective altruism conference, bringing together students, researchers, entrepreneurs, professionals, nonprofit leaders, and policymakers. The one-day in-person event offers talks, networking, and discussions focused on effective altruism and related topics.'
 format: in-person
 location:
@@ -107,6 +107,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 46
+  approved_by: elchrysaki
+  published_at: '2026-07-20T09:18:33.226175+00:00'
 submission:
   issue_number: 45
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/45
@@ -116,6 +122,10 @@ provenance:
   researched_at: '2026-07-20T08:35:00.919922+00:00'
   formatted_at: '2026-07-20T08:35:12.155483+00:00'
   generated_at: '2026-07-20T08:35:12.246512+00:00'
+  published_at: '2026-07-20T09:18:33.226175+00:00'
+  publication_pr_number: 46
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 EA Summit: Buenos Aires
