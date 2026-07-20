@@ -7,7 +7,7 @@ organizer: NASA L'SPACE Academy
 main_category: volunteering
 category: volunteering-program
 edition: 2026-2027 cohort
-status: pending-review
+status: published
 summary: The Lucy Mission Asteroid Ambassador Program offers science communication training and outreach opportunities for volunteers interested in space exploration. Participants engage in public engagement activities, promote NASA's Lucy Mission, and receive resources to support educational outreach. The program is organized by NASA L'SPACE Academy and focuses on Jupiter's Trojan asteroids and small bodies in the solar system.
 format: not-confirmed
 location:
@@ -116,6 +116,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 34
+  approved_by: elchrysaki
+  published_at: '2026-07-20T07:21:42.305644+00:00'
 submission:
   issue_number: 33
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/33
@@ -125,6 +131,10 @@ provenance:
   researched_at: '2026-07-20T07:16:19.335041+00:00'
   formatted_at: '2026-07-20T07:16:30.912351+00:00'
   generated_at: '2026-07-20T07:16:31.005583+00:00'
+  published_at: '2026-07-20T07:21:42.305644+00:00'
+  publication_pr_number: 34
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 Lucy Mission Asteroid Ambassador Program
