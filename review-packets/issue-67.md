@@ -7,15 +7,15 @@
 
 ## Processing outcome
 
-**Outcome:** `automation-recovery-required`
+**Outcome:** `ready-for-review`
 
-The researched record could not be converted into publishable structured content.
+A reviewable opportunity page was generated. Human approval is still required.
 
 ## Original submission
 
 - **Issue:** [[Discovery]: EAGxAustralasia 2026](https://github.com/elchrysaki/offmap-hub/issues/67)
 - **Submitted by:** `elchrysaki`
-- **Processed at:** `2026-07-20T09:07:22.600803+00:00`
+- **Processed at:** `2026-07-20T11:49:37.340737+00:00`
 - **Original issue preserved:** Yes
 
 ## Workflow stages
@@ -26,20 +26,23 @@ The researched record could not be converted into publishable structured content
 | Intake | `success` | safe_to_research=true |
 | Official research | `success` | continue-to-human-review |
 | Category reconciliation | `success` | keeps main and specific categories paired |
-| Formatting | `failure` | no recommendation |
-| Opportunity generation | `skipped` | safe_to_generate=not set |
-| Moderator report | `skipped` | report is included when available |
+| Formatting | `success` | continue-to-draft-pr |
+| Opportunity generation | `success` | safe_to_generate=true |
+| Moderator report | `success` | report is included when available |
 
 ## Human tasks
 
-1. Inspect the researched JSON and formatting error.
-2. Correct missing or incompatible fields.
-3. Rerun formatting or prepare the page manually.
+1. Verify the official evidence and corrected values.
+2. Confirm the category pair, deadline, funding, and eligibility.
+3. Approve, edit, or close the draft pull request.
 
 ## Available processing records
 
 - `artifacts/raw-submission-67.json`
 - `artifacts/researched-submission-67.json`
+- `artifacts/publishable-content-67.json`
+- `artifacts/review-report-67.md`
+- `opportunities/events/eagxaustralasia-2026.md`
 
 ## Important rules
 
@@ -50,47 +53,98 @@ The researched record could not be converted into publishable structured content
 - Nothing is published until a human approves and merges a valid page.
 
 
+## Existing automated moderator report
 
-## Processing log excerpts
+# 🧭 Moderator Review: EAGxAustralasia 2026
 
-### `risk.log`
+This report compares the original submission, official-source research, and the proposed publishable OFFMAP record.
 
-```text
-Preflight risk classification passed. The submission may continue to intake and research.
+**Nothing here is automatically verified or approved. A human moderator must review the evidence and wording.**
 
-```
+## 🧾 Review Snapshot
 
-### `intake.log`
+| Field | Value |
+|---|---|
+| Opportunity | EAGxAustralasia 2026 |
+| Main category | `events` |
+| Specific category | `conference` |
+| Audience source | `submitted-dropdown-only` |
+| Audience groups | None selected |
+| Research confidence | `90` |
+| Research action | `continue-to-human-review` |
+| Formatter action | `continue-to-draft-pr` |
+| Safe to generate draft page | `true` |
+| Original issue | [Open submission](<https://github.com/elchrysaki/offmap-hub/issues/67>) |
+| Proposed opportunity page | `opportunities/events/eagxaustralasia-2026.md` |
 
-```text
-Raw submission preserved successfully.
-Raw record path: artifacts/raw-submission-67.json
-Main category routing hint: events
-Specific category routing hint: conference
-Assigned moderators: elchrysaki
+## 🧭 Classification Guardrails
 
-```
+- `main_category` and `category` are separate classifications and must be reviewed separately.
+- Audience groups come only from the submitter's dropdown selections.
+- Research may flag unsupported selected groups, but it must not add, remove, or replace tags.
+- Researched groups: None selected
+- Publishable groups: None selected
+- Filter groups: None selected
 
-### `research.log`
+## ✅ Confirmed
 
-```text
-Researched submission created successfully.
-Research output: artifacts/researched-submission-67.json
-Search enabled: True
+- opportunity\_name
+- main\_category
+- category
+- current\_edition
+- official\_page
+- start\_date
+- end\_date
+- host\_city
+- host\_country
+- organizer (confirmed with clarification)
+- format (confirmed with clarification)
+- application\_deadline (confirmed with clarification)
 
-```
+## ⚠️ Possible Conflicts
 
-### `reconcile.log`
+- No possible conflicts were reported.
 
-```text
-Researched category pair already matched.
+## 🧩 Important Information Not Found
 
-```
+- application\_page
+- funding
+- eligibility details
+- audience groups
 
-### `formatter.log`
+## 🔍 Requires Human Judgment
 
-```text
-::error::GitHub Models formatting request failed with status 429: Too many requests. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service).
+- Check for future application link and eligibility details when available
+- Clarify funding/support options when announced
 
+## 🚫 Claims Excluded From the Public Draft
 
-```
+- No claims were explicitly excluded from the draft.
+
+## 🔗 Incorrect or Outdated Links
+
+- No incorrect or outdated links were reported.
+
+## 🔗 Sources Checked
+
+- [Source](<https://www.effectivealtruism.org/ea-global/events/eagxaustralasia-2026?utm_source=ea-opps>)
+
+## 🛡️ Human Review Checklist
+
+- [ ] Confirm the opportunity and organizer.
+- [ ] Confirm `main_category` and `category` separately.
+- [ ] Open the official and application links.
+- [ ] Confirm deadline, dates, and edition.
+- [ ] Review geographic, academic, age, language, and experience requirements.
+- [ ] Confirm audience groups exactly match the submitted dropdown selections.
+- [ ] Do not infer audience groups from website prose, eligibility text, images, or model judgment.
+- [ ] Confirm fees, travel, accommodation, meals, scholarships, stipend or salary, prizes, and support.
+- [ ] Remove or rewrite unsupported public claims.
+- [ ] Confirm deterministic filters match their structured source fields.
+- [ ] Approve the final page for publication.
+
+> Merging remains a human decision. This report cannot approve or publish the opportunity.
+
+---
+
+Generated at 2026-07-20T11:49:35.536468+00:00.
