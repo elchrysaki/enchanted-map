@@ -7,7 +7,7 @@ organizer: Foresight Institute
 main_category: events
 category: conference
 edition: '2026'
-status: pending-review
+status: published
 summary: Vision Weekend USA 2026 is a three-day in-person conference in San Francisco hosted by Foresight Institute. Participants engage in presentations, unconference sessions, and live technology demos focused on frontier science and technology. A $10,000 grant will be awarded to a project advancing the frontiers of science.
 format: in-person
 location:
@@ -125,6 +125,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 81
+  approved_by: elchrysaki
+  published_at: '2026-07-20T12:17:56.594385+00:00'
 submission:
   issue_number: 80
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/80
@@ -134,6 +140,10 @@ provenance:
   researched_at: '2026-07-20T12:16:15.485856+00:00'
   formatted_at: '2026-07-20T12:16:26.959663+00:00'
   generated_at: '2026-07-20T12:16:27.051694+00:00'
+  published_at: '2026-07-20T12:17:56.594385+00:00'
+  publication_pr_number: 81
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 Vision Weekend USA 2026
