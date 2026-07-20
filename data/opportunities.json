@@ -3,9 +3,9 @@
   "record_type": "opportunity-index",
   "source": "opportunities/*/*.md",
   "public_status": "published",
-  "total_published": 19,
+  "total_published": 20,
   "main_category_counts": {
-    "events": 11,
+    "events": 12,
     "internships": 1,
     "competitions": 1,
     "fellowships": 1,
@@ -14,7 +14,7 @@
     "other": 2
   },
   "category_counts": {
-    "conference": 9,
+    "conference": 10,
     "workshop-seminar": 1,
     "networking-event": 1,
     "internship": 1,
@@ -26,7 +26,7 @@
   },
   "main_category_category_counts": {
     "events": {
-      "conference": 9,
+      "conference": 10,
       "workshop-seminar": 1,
       "networking-event": 1
     },
@@ -51,7 +51,7 @@
   },
   "source_status_counts": {
     "archived": 1,
-    "published": 19
+    "published": 20
   },
   "opportunities": [
     {
@@ -824,6 +824,182 @@
       },
       "id": "events:ea-summit-warsaw-2026",
       "path": "opportunities/events/ea-summit-warsaw-2026.md"
+    },
+    {
+      "schema_version": 2,
+      "record_type": "opportunity",
+      "slug": "ea-global-new-york-city-2026",
+      "title": "EA Global: New York City 2026",
+      "organizer": "Effective Altruism Global",
+      "main_category": "events",
+      "category": "conference",
+      "edition": "2026",
+      "status": "published",
+      "summary": "EA Global: New York City 2026 is an in-person conference bringing together individuals interested in effective altruism. Attendees will engage with new research, share ideas, and connect with a global network dedicated to making a positive impact. The event features talks, networking, and collaborative sessions focused on global challenges and altruistic action.",
+      "format": "in-person",
+      "location": {
+        "display": "Sheraton New York Times Square, New York, United States",
+        "host_city": "New York",
+        "host_country": "United States",
+        "host_country_code": "US",
+        "additional_locations": []
+      },
+      "dates": {
+        "application_deadline": {
+          "raw": "sept 27",
+          "display": "27 September 2026 (11:59pm ET)",
+          "normalized": "2026-09-27"
+        },
+        "start_date": {
+          "display": "16 October 2026",
+          "normalized": "2026-10-16"
+        },
+        "end_date": {
+          "display": "18 October 2026",
+          "normalized": "2026-10-18"
+        },
+        "additional_dates": [
+          {
+            "display": null,
+            "normalized": null
+          }
+        ]
+      },
+      "eligibility": {
+        "geographic_regions": [],
+        "eligible_countries": [],
+        "nationality_or_residency_rules": "Open to global applicants; no nationality or residency restrictions specified.",
+        "academic_levels": [],
+        "broad_fields": [],
+        "specific_majors": [],
+        "age_requirements": null,
+        "experience_requirements": null,
+        "language_requirements": "Likely English (event in New York, US, and website in English), but not explicitly stated.",
+        "display_points": [
+          "Open to applicants worldwide.",
+          "No specific academic or professional requirements stated.",
+          "Event likely conducted in English."
+        ]
+      },
+      "audience": {
+        "classification_source": "submitted-dropdown-only",
+        "groups": [],
+        "access_model": "not-confirmed",
+        "display_points": []
+      },
+      "funding": {
+        "application_fee": null,
+        "participation_fee": null,
+        "scholarship": null,
+        "travel_support": null,
+        "accommodation": null,
+        "meals": null,
+        "stipend_or_salary": null,
+        "prizes": null,
+        "visa_support": null,
+        "accessibility_support": null,
+        "other_support": [],
+        "display_points": []
+      },
+      "application": {
+        "official_page": "https://www.effectivealtruism.org/ea-global/events/ea-global-new-york-city-2026?utm_source=ea-opps",
+        "application_page": "https://www.effectivealtruism.org/ea-global/events/ea-global-new-york-city-2026?utm_source=ea-opps",
+        "requirements": [
+          "Applicants must log into or create an effectivealtruism.org account to apply."
+        ],
+        "documents": [],
+        "selection_process": [
+          "All applications will receive a response by 7 October 2026; most within two weeks."
+        ],
+        "display_points": [
+          "Apply via the official event page.",
+          "Account creation or login required."
+        ]
+      },
+      "program": {
+        "activities": [
+          "Talks and presentations on effective altruism.",
+          "Networking and coordination on global projects."
+        ],
+        "benefits": [
+          "Connect with a global network of people dedicated to helping others.",
+          "Learn about new research and thinking in effective altruism."
+        ],
+        "topics": [
+          "Effective altruism",
+          "Global challenges",
+          "Research",
+          "Collaboration"
+        ]
+      },
+      "filters": {
+        "main_categories": [
+          "events"
+        ],
+        "categories": [
+          "conference"
+        ],
+        "formats": [
+          "in-person"
+        ],
+        "host_countries": [
+          "United States"
+        ],
+        "eligible_regions": [],
+        "eligible_countries": [],
+        "academic_levels": [],
+        "academic_fields": [],
+        "subjects": [],
+        "audience_groups": [],
+        "funding_features": [],
+        "topics": [
+          "Effective altruism",
+          "Global challenges",
+          "Research",
+          "Collaboration"
+        ]
+      },
+      "tags": [
+        "effective altruism",
+        "conference",
+        "networking",
+        "global",
+        "research"
+      ],
+      "verification": {
+        "human_review_required": true,
+        "safe_to_generate_draft_page": true,
+        "research_confidence": 95,
+        "research_recommended_action": "continue-to-human-review",
+        "formatter_recommended_action": "continue-to-draft-pr",
+        "identity_categories_locked_to_research": true,
+        "audience_groups_locked_to_research": true,
+        "automatically_verified": false,
+        "automatically_published": false,
+        "human_review_completed": true,
+        "approved_by_merge": true,
+        "approval_method": "merged-pull-request",
+        "approval_pr_number": 74,
+        "approved_by": "elchrysaki",
+        "published_at": "2026-07-20T09:29:15.424132+00:00"
+      },
+      "submission": {
+        "issue_number": 73,
+        "issue_url": "https://github.com/elchrysaki/offmap-hub/issues/73"
+      },
+      "provenance": {
+        "research_model": "openai/gpt-4.1",
+        "formatter_model": "openai/gpt-4.1",
+        "researched_at": "2026-07-20T09:25:01.012101+00:00",
+        "formatted_at": "2026-07-20T09:25:12.128740+00:00",
+        "generated_at": "2026-07-20T09:25:12.220671+00:00",
+        "published_at": "2026-07-20T09:29:15.424132+00:00",
+        "publication_pr_number": 74,
+        "published_by": "elchrysaki",
+        "publishing_workflow": ".github/workflows/rebuild-indexes.yml"
+      },
+      "id": "events:ea-global-new-york-city-2026",
+      "path": "opportunities/events/ea-global-new-york-city-2026.md"
     },
     {
       "schema_version": 2,

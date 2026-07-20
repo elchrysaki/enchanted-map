@@ -2,11 +2,11 @@
 
 This index is generated automatically from reviewed opportunity files. Edit the individual opportunity pages, not this index.
 
-**Published opportunities:** 19
+**Published opportunities:** 20
 
 ## Jump to a main category
 
-- [🎤 Events](#main-events) (11)
+- [🎤 Events](#main-events) (12)
 - [🧰 Internships](#main-internships) (1)
 - [🏆 Competitions](#main-competitions) (1)
 - [🤝 Fellowships](#main-fellowships) (1)
@@ -25,6 +25,7 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 | [PauseCon London 2026](<events/pausecon-london-2026.md>) | Conference | PauseAI Events (Global) | 21 August 2026 | In Person | In-person in London, United Kingdom | Not confirmed | See opportunity page | [Apply](<https://luma.com/4be2eqz9?utm_source=ea-opps>) |
 | [EAGxOxford 2026](<events/eagxoxford-2026.md>) | Conference | EAGxOxford | 13 September 2026 | In Person | In-person at Examination Schools, Oxford, United Kingdom | Not confirmed | See opportunity page | [Apply](<https://effectivealtruism.my.site.com/EAGlobal/s/eagxoxfordapplication>) |
 | [EA Summit: Warsaw 2026](<events/ea-summit-warsaw-2026.md>) | Conference | Effective Altruism Global | 25 September 2026 | In Person | In-person at POLIN Conference Centre, Warsaw, Poland | Not confirmed | See opportunity page | [Official page](<https://www.effectivealtruism.org/ea-global/events/ea-summit-warsaw-2026?utm_source=ea-opps>) |
+| [EA Global: New York City 2026](<events/ea-global-new-york-city-2026.md>) | Conference | Effective Altruism Global | 27 September 2026 (11:59pm ET) | In Person | Sheraton New York Times Square, New York, United States | Not confirmed | See opportunity page | [Apply](<https://www.effectivealtruism.org/ea-global/events/ea-global-new-york-city-2026?utm_source=ea-opps>) |
 | [EA Summit: Istanbul](<events/ea-summit-istanbul.md>) | Conference | Effective Altruism Turkey | Application deadline not yet announced | In Person | In-person at HAN Spaces Etiler, Istanbul, Turkey | Not confirmed | See opportunity page | [Official page](<https://www.effectivealtruism.org/ea-global/events/ea-summit-istanbul?utm_source=ea-opps>) |
 | [EA Summit: Wellington](<events/ea-summit-wellington.md>) | Conference | Effective Altruism (EA Global) | unknown | In Person | Tiakiwai Conference Centre, Wellington, New Zealand | Not confirmed | See opportunity page | [Official page](<https://www.effectivealtruism.org/ea-global/events/ea-summit-wellington?utm_source=ea-opps>) |
 | [EAGxBerlin 2026](<events/eagxberlin-2026.md>) | Conference | Effective Altruism Global | Applications not yet open | In Person | In-person in Berlin, Germany | Not confirmed | Europe | [Official page](<https://www.effectivealtruism.org/ea-global/events/eagxberlin-2026?utm_source=ea-opps>) |
