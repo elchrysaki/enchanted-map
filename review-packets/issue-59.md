@@ -15,7 +15,7 @@ The intake stage did not complete, so OffMap created a recovery pull request ins
 
 - **Issue:** [[Discovery]: Human-aligned AI Summer School](https://github.com/elchrysaki/offmap-hub/issues/59)
 - **Submitted by:** `elchrysaki`
-- **Processed at:** `2026-07-20T09:01:50.645410+00:00`
+- **Processed at:** `2026-07-20T11:48:13.178949+00:00`
 - **Original issue preserved:** Yes
 
 ## Workflow stages
