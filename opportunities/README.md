@@ -2,11 +2,11 @@
 
 This index is generated automatically from reviewed opportunity files. Edit the individual opportunity pages, not this index.
 
-**Published opportunities:** 23
+**Published opportunities:** 24
 
 ## Jump to a main category
 
-- [🎤 Events](#main-events) (15)
+- [🎤 Events](#main-events) (16)
 - [🧰 Internships](#main-internships) (1)
 - [🏆 Competitions](#main-competitions) (1)
 - [🤝 Fellowships](#main-fellowships) (1)
@@ -32,6 +32,7 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 | [EAGxAustralasia 2026](<events/eagxaustralasia-2026.md>) | Conference | EAGxAustralasia | Applications will open soon | In Person | Melbourne, Australia (in-person) | Not confirmed | See opportunity page | [Official page](<https://www.effectivealtruism.org/ea-global/events/eagxaustralasia-2026?utm_source=ea-opps>) |
 | [EAGxBerlin 2026](<events/eagxberlin-2026.md>) | Conference | Effective Altruism Global | Applications not yet open | In Person | In-person in Berlin, Germany | Not confirmed | Europe | [Official page](<https://www.effectivealtruism.org/ea-global/events/eagxberlin-2026?utm_source=ea-opps>) |
 | [EAGxIndia 2026](<events/eagxindia-2026.md>) | Conference | EAGxIndia | idk | In Person | Aloft New Delhi Aerocity, New Delhi, India | Not confirmed | See opportunity page | [Official page](<https://www.effectivealtruism.org/ea-global/events/eagxindia-2026?utm_source=ea-opps>) |
+| [Human-aligned AI Summer School](<events/human-aligned-ai-summer-school.md>) | Conference | Human-aligned AI Summer School | Application deadline not confirmed | In Person | In-person in Prague, Czech Republic | Not confirmed | See opportunity page | [Official page](<https://humanaligned.ai/2026/>) |
 | [Vision Weekend USA 2026](<events/vision-weekend-usa-2026.md>) | Conference | Foresight Institute | unknown | In Person | San Francisco, United States (in-person) | Grant Prize | See opportunity page | [Official page](<https://foresight.org/events/vision-weekend-usa-2026/>) |
 | [Secure & Sovereign AI Workshop](<events/secure-sovereign-ai-workshop.md>) | Workshop Seminar | Foresight Institute | idk | In Person | Berlin, Germany (in-person) | Not confirmed | See opportunity page | [Official page](<https://foresight.org/events/2026-secure-sovereign-ai-workshop/?utm_source=ea-opps>) |
 | [Trusted Red Team Network](<events/trusted-red-team-network.md>) | Networking Event | Syntony | Rolling applications | Online | Online | Not confirmed | See opportunity page | [Official page](<https://www.syntonyresearch.ai/work/trusted-red-team/>) |

@@ -7,7 +7,7 @@ organizer: Human-aligned AI Summer School
 main_category: events
 category: conference
 edition: sixth
-status: pending-review
+status: published
 summary: The Human-aligned AI Summer School is a four-day in-person event in Prague, Czech Republic, focused on AI alignment research. Participants engage in talks, workshops, and discussions exploring current machine learning approaches and theoretical frameworks. Attendees should have familiarity with modern ML methods and theory. Funding and application details are not confirmed.
 format: in-person
 location:
@@ -117,6 +117,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 83
+  approved_by: elchrysaki
+  published_at: '2026-07-20T12:24:17.405316+00:00'
 submission:
   issue_number: 82
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/82
@@ -126,6 +132,10 @@ provenance:
   researched_at: '2026-07-20T12:23:22.601544+00:00'
   formatted_at: '2026-07-20T12:23:35.164461+00:00'
   generated_at: '2026-07-20T12:23:35.265175+00:00'
+  published_at: '2026-07-20T12:24:17.405316+00:00'
+  publication_pr_number: 83
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 Human-aligned AI Summer School

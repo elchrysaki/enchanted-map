@@ -3,9 +3,9 @@
   "record_type": "opportunity-index",
   "source": "opportunities/*/*.md",
   "public_status": "published",
-  "total_published": 23,
+  "total_published": 24,
   "main_category_counts": {
-    "events": 15,
+    "events": 16,
     "internships": 1,
     "competitions": 1,
     "fellowships": 1,
@@ -14,7 +14,7 @@
     "other": 2
   },
   "category_counts": {
-    "conference": 13,
+    "conference": 14,
     "workshop-seminar": 1,
     "networking-event": 1,
     "internship": 1,
@@ -26,7 +26,7 @@
   },
   "main_category_category_counts": {
     "events": {
-      "conference": 13,
+      "conference": 14,
       "workshop-seminar": 1,
       "networking-event": 1
     },
@@ -51,7 +51,7 @@
   },
   "source_status_counts": {
     "archived": 1,
-    "published": 23
+    "published": 24
   },
   "opportunities": [
     {
@@ -2008,6 +2008,173 @@
       },
       "id": "events:eagxindia-2026",
       "path": "opportunities/events/eagxindia-2026.md"
+    },
+    {
+      "schema_version": 2,
+      "record_type": "opportunity",
+      "slug": "human-aligned-ai-summer-school",
+      "title": "Human-aligned AI Summer School",
+      "organizer": "Human-aligned AI Summer School",
+      "main_category": "events",
+      "category": "conference",
+      "edition": "sixth",
+      "status": "published",
+      "summary": "The Human-aligned AI Summer School is a four-day in-person event in Prague, Czech Republic, focused on AI alignment research. Participants engage in talks, workshops, and discussions exploring current machine learning approaches and theoretical frameworks. Attendees should have familiarity with modern ML methods and theory. Funding and application details are not confirmed.",
+      "format": "in-person",
+      "location": {
+        "display": "In-person in Prague, Czech Republic",
+        "host_city": "Prague",
+        "host_country": "Czech Republic",
+        "host_country_code": "CZ",
+        "additional_locations": []
+      },
+      "dates": {
+        "application_deadline": {
+          "raw": "open",
+          "display": "Application deadline not confirmed",
+          "normalized": null
+        },
+        "start_date": {
+          "display": "13 July 2026",
+          "normalized": "2026-07-13"
+        },
+        "end_date": {
+          "display": "16 July 2026",
+          "normalized": "2026-07-16"
+        },
+        "additional_dates": []
+      },
+      "eligibility": {
+        "geographic_regions": [],
+        "eligible_countries": [],
+        "nationality_or_residency_rules": null,
+        "academic_levels": [],
+        "broad_fields": [],
+        "specific_majors": [],
+        "age_requirements": null,
+        "experience_requirements": "Attendees should understand current ML approaches and some theoretical frameworks.",
+        "language_requirements": null,
+        "display_points": [
+          "No nationality or residency restrictions are specified.",
+          "No age requirements are mentioned.",
+          "Attendees should understand current ML approaches and some theoretical frameworks."
+        ]
+      },
+      "audience": {
+        "classification_source": "submitted-dropdown-only",
+        "groups": [],
+        "access_model": "not-confirmed",
+        "display_points": []
+      },
+      "funding": {
+        "application_fee": null,
+        "participation_fee": null,
+        "scholarship": null,
+        "travel_support": null,
+        "accommodation": null,
+        "meals": null,
+        "stipend_or_salary": null,
+        "prizes": null,
+        "visa_support": null,
+        "accessibility_support": null,
+        "other_support": [],
+        "display_points": [
+          "No information about fees, scholarships, or travel support is provided."
+        ]
+      },
+      "application": {
+        "official_page": "https://humanaligned.ai/2026/",
+        "application_page": null,
+        "requirements": [],
+        "documents": [],
+        "selection_process": [],
+        "display_points": [
+          "Application details and requirements are not confirmed.",
+          "Check the official page for updates on registration."
+        ]
+      },
+      "program": {
+        "activities": [
+          "talks",
+          "workshops",
+          "discussions"
+        ],
+        "benefits": [
+          "exploring approaches and frameworks in AI alignment",
+          "technical content"
+        ],
+        "topics": [
+          "AI alignment research",
+          "current ML approaches",
+          "theoretical frameworks"
+        ]
+      },
+      "filters": {
+        "main_categories": [
+          "events"
+        ],
+        "categories": [
+          "conference"
+        ],
+        "formats": [
+          "in-person"
+        ],
+        "host_countries": [
+          "Czech Republic"
+        ],
+        "eligible_regions": [],
+        "eligible_countries": [],
+        "academic_levels": [],
+        "academic_fields": [],
+        "subjects": [],
+        "audience_groups": [],
+        "funding_features": [],
+        "topics": [
+          "AI alignment research",
+          "current ML approaches",
+          "theoretical frameworks"
+        ]
+      },
+      "tags": [
+        "ai-alignment",
+        "machine-learning",
+        "summer-school",
+        "technical"
+      ],
+      "verification": {
+        "human_review_required": true,
+        "safe_to_generate_draft_page": true,
+        "research_confidence": 80,
+        "research_recommended_action": "continue-to-human-review",
+        "formatter_recommended_action": "continue-to-draft-pr",
+        "identity_categories_locked_to_research": true,
+        "audience_groups_locked_to_research": true,
+        "automatically_verified": false,
+        "automatically_published": false,
+        "human_review_completed": true,
+        "approved_by_merge": true,
+        "approval_method": "merged-pull-request",
+        "approval_pr_number": 83,
+        "approved_by": "elchrysaki",
+        "published_at": "2026-07-20T12:24:17.405316+00:00"
+      },
+      "submission": {
+        "issue_number": 82,
+        "issue_url": "https://github.com/elchrysaki/offmap-hub/issues/82"
+      },
+      "provenance": {
+        "research_model": "openai/gpt-4.1",
+        "formatter_model": "openai/gpt-4.1",
+        "researched_at": "2026-07-20T12:23:22.601544+00:00",
+        "formatted_at": "2026-07-20T12:23:35.164461+00:00",
+        "generated_at": "2026-07-20T12:23:35.265175+00:00",
+        "published_at": "2026-07-20T12:24:17.405316+00:00",
+        "publication_pr_number": 83,
+        "published_by": "elchrysaki",
+        "publishing_workflow": ".github/workflows/rebuild-indexes.yml"
+      },
+      "id": "events:human-aligned-ai-summer-school",
+      "path": "opportunities/events/human-aligned-ai-summer-school.md"
     },
     {
       "schema_version": 2,
