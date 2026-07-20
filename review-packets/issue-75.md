@@ -15,7 +15,7 @@ The researched record could not be converted into publishable structured content
 
 - **Issue:** [[Discovery]: Vision Weekend USA 2026](https://github.com/elchrysaki/offmap-hub/issues/75)
 - **Submitted by:** `elchrysaki`
-- **Processed at:** `2026-07-20T09:29:42.756861+00:00`
+- **Processed at:** `2026-07-20T12:10:56.873602+00:00`
 - **Original issue preserved:** Yes
 
 ## Workflow stages
@@ -63,6 +63,7 @@ Preflight risk classification passed. The submission may continue to intake and 
 ### `intake.log`
 
 ```text
+Intake comment already exists. Skipping duplicate.
 Raw submission preserved successfully.
 Raw record path: artifacts/raw-submission-75.json
 Main category routing hint: events
@@ -90,6 +91,6 @@ Researched category pair already matched.
 ### `formatter.log`
 
 ```text
-::error::'funding.other_support' must contain only strings.
+::error::'publication_notes.conflicts' must contain only strings.
 
 ```
