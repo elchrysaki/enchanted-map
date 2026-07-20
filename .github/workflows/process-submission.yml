@@ -194,6 +194,30 @@ jobs:
           python scripts/generate_opportunity.py \
             2>&1 | tee artifacts/generator.log
 
+      - name: Create editable recovery opportunity template
+        id: recovery_template
+        if: >-
+          always()
+          && steps.risk.outputs.risk_outcome != 'security-rejected'
+          && steps.intake.outcome == 'success'
+          && steps.generator.outcome != 'success'
+        continue-on-error: true
+        env:
+          RAW_SUBMISSION_FILE: >-
+            ${{ steps.intake.outputs.raw_submission_file }}
+          NORMAL_OPPORTUNITY_FILE: >-
+            ${{ steps.generator.outputs.opportunity_file }}
+          OPPORTUNITIES_DIRECTORY: opportunities
+          RECOVERY_REASON: >-
+            research=${{ steps.research.outcome }};
+            reconcile=${{ steps.reconcile.outcome }};
+            formatter=${{ steps.formatter.outcome }};
+            generator=${{ steps.generator.outcome }}
+        run: |
+          set -euo pipefail
+          python scripts/create_recovery_template.py \
+            2>&1 | tee artifacts/recovery-template.log
+
       - name: Build moderator review report
         id: review
         if: >-
@@ -206,7 +230,12 @@ jobs:
           PUBLISHABLE_CONTENT_FILE: >-
             ${{ steps.formatter.outputs.publishable_content_file }}
           OPPORTUNITY_FILE: >-
-            ${{ steps.generator.outputs.opportunity_file }}
+            ${{
+              steps.generator.outputs.opportunity_file
+              || steps.recovery_template.outputs.opportunity_file
+            }}
+          RECOVERY_TEMPLATE_CREATED: >-
+            ${{ steps.recovery_template.outputs.recovery_template_created }}
           REVIEW_REPORT_FILE: >-
             artifacts/review-report-${{ env.ISSUE_NUMBER }}.md
         run: |

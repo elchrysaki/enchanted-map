@@ -44,6 +44,10 @@ FORMATTER_RECOMMENDATION = os.environ.get(
     "",
 ).strip()
 MODERATORS = os.environ.get("MODERATORS", "").strip()
+RECOVERY_TEMPLATE_CREATED = os.environ.get(
+    "RECOVERY_TEMPLATE_CREATED",
+    "",
+).strip().lower()
 
 RAW_SUBMISSION_FILE = Path(
     os.environ.get(
@@ -365,6 +369,19 @@ def stage_rows() -> list[tuple[str, str, str]]:
             REVIEW_OUTCOME or "not run",
             "report is included when available",
         ),
+        (
+            "Recovery template",
+            (
+                "created"
+                if RECOVERY_TEMPLATE_CREATED == "true"
+                else "not created"
+            ),
+            (
+                "raw-submission-only editable page"
+                if RECOVERY_TEMPLATE_CREATED == "true"
+                else "normal generated page or no recoverable intake"
+            ),
+        ),
     ]
 
 
@@ -382,7 +399,10 @@ def determine_outcome() -> tuple[str, str, list[str]]:
             [],
         )
 
-    if opportunity_exists:
+    if (
+        opportunity_exists
+        and RECOVERY_TEMPLATE_CREATED != "true"
+    ):
         return (
             "ready-for-review",
             (
@@ -917,6 +937,7 @@ after this draft pull request is created successfully.
 - Verify the official evidence.
 - Correct anything uncertain or conflicting.
 - Keep the opportunity page at `pending-review` until approved.
+- For a recovery template, verify and complete it before setting `recovery.template: false`, `ready_for_publication: true`, and `human_verified: true`.
 - The temporary review packet is removed automatically after merge.
 - Merge only when the page is publishable.
 - Close this pull request without merging if the opportunity is unsuitable.
