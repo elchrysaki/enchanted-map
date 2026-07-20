@@ -7,7 +7,7 @@ organizer: Effective Altruism (EA Global)
 main_category: events
 category: conference
 edition: '2026'
-status: pending-review
+status: published
 summary: 'EA Summit: Wellington is a one-day in-person conference for people interested in effective altruism, held in Wellington, New Zealand. The event features talks, sessions, and networking opportunities focused on global health, animal welfare, AI safety, and more. Both newcomers and experienced participants are welcome to explore pressing global challenges and connect with the EA community.'
 format: in-person
 location:
@@ -127,6 +127,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 57
+  approved_by: elchrysaki
+  published_at: '2026-07-20T09:16:31.577733+00:00'
 submission:
   issue_number: 55
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/55
@@ -136,6 +142,10 @@ provenance:
   researched_at: '2026-07-20T08:56:23.735647+00:00'
   formatted_at: '2026-07-20T08:56:33.314558+00:00'
   generated_at: '2026-07-20T08:56:33.420225+00:00'
+  published_at: '2026-07-20T09:16:31.577733+00:00'
+  publication_pr_number: 57
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 EA Summit: Wellington

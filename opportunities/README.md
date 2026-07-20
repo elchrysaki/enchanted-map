@@ -2,11 +2,11 @@
 
 This index is generated automatically from reviewed opportunity files. Edit the individual opportunity pages, not this index.
 
-**Published opportunities:** 10
+**Published opportunities:** 11
 
 ## Jump to a main category
 
-- [🎤 Events](#main-events) (3)
+- [🎤 Events](#main-events) (4)
 - [🧰 Internships](#main-internships) (1)
 - [🏆 Competitions](#main-competitions) (1)
 - [🤝 Fellowships](#main-fellowships) (1)
@@ -21,6 +21,7 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 | Opportunity | Type | Organizer | Deadline | Format | Location | Funding | Eligibility | Application |
 |---|---|---|---|---|---|---|---|---|
 | [EAGxBerkeley 2026](<events/eagxberkeley-2026.md>) | Conference | EAGxBerkeley | August 7, 2026 | In Person | In-person at Lighthaven, Berkeley, California, United States | Not confirmed | See opportunity page | [Apply](<https://effectivealtruism.my.site.com/EAGlobal/s/eagxberkeleyapplication>) |
+| [EA Summit: Wellington](<events/ea-summit-wellington.md>) | Conference | Effective Altruism (EA Global) | unknown | In Person | Tiakiwai Conference Centre, Wellington, New Zealand | Not confirmed | See opportunity page | [Official page](<https://www.effectivealtruism.org/ea-global/events/ea-summit-wellington?utm_source=ea-opps>) |
 | [EAGxIndia 2026](<events/eagxindia-2026.md>) | Conference | EAGxIndia | idk | In Person | Aloft New Delhi Aerocity, New Delhi, India | Not confirmed | See opportunity page | [Official page](<https://www.effectivealtruism.org/ea-global/events/eagxindia-2026?utm_source=ea-opps>) |
 | [Secure & Sovereign AI Workshop](<events/secure-sovereign-ai-workshop.md>) | Workshop Seminar | Foresight Institute | idk | In Person | Berlin, Germany (in-person) | Not confirmed | See opportunity page | [Official page](<https://foresight.org/events/2026-secure-sovereign-ai-workshop/?utm_source=ea-opps>) |
 
