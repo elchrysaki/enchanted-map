@@ -3,9 +3,9 @@
   "record_type": "opportunity-index",
   "source": "opportunities/*/*.md",
   "public_status": "published",
-  "total_published": 20,
+  "total_published": 21,
   "main_category_counts": {
-    "events": 12,
+    "events": 13,
     "internships": 1,
     "competitions": 1,
     "fellowships": 1,
@@ -14,7 +14,7 @@
     "other": 2
   },
   "category_counts": {
-    "conference": 10,
+    "conference": 11,
     "workshop-seminar": 1,
     "networking-event": 1,
     "internship": 1,
@@ -26,7 +26,7 @@
   },
   "main_category_category_counts": {
     "events": {
-      "conference": 10,
+      "conference": 11,
       "workshop-seminar": 1,
       "networking-event": 1
     },
@@ -51,7 +51,7 @@
   },
   "source_status_counts": {
     "archived": 1,
-    "published": 20
+    "published": 21
   },
   "opportunities": [
     {
@@ -359,6 +359,189 @@
       },
       "id": "events:ea-summit-buenos-aires",
       "path": "opportunities/events/ea-summit-buenos-aires.md"
+    },
+    {
+      "schema_version": 2,
+      "record_type": "opportunity",
+      "slug": "eagxsingapore-2026",
+      "title": "EAGxSingapore 2026",
+      "organizer": "Effective Altruism Global (EA Global)",
+      "main_category": "events",
+      "category": "conference",
+      "edition": "2026",
+      "status": "published",
+      "summary": "EAGxSingapore 2026 is a two-day in-person conference for those interested in effective altruism, with a focus on Southeast and East Asia. Participants will engage in sessions, networking, and community interaction to explore EA cause areas and connect with like-minded individuals.",
+      "format": "in-person",
+      "location": {
+        "display": "Catapult by CapitaLand, Singapore",
+        "host_city": "Singapore",
+        "host_country": "Singapore",
+        "host_country_code": "SG",
+        "additional_locations": []
+      },
+      "dates": {
+        "application_deadline": {
+          "raw": "august 15",
+          "display": "15 August 2026",
+          "normalized": "2026-08-15"
+        },
+        "start_date": {
+          "display": "29 August 2026",
+          "normalized": "2026-08-29"
+        },
+        "end_date": {
+          "display": "30 August 2026",
+          "normalized": "2026-08-30"
+        },
+        "additional_dates": []
+      },
+      "eligibility": {
+        "geographic_regions": [
+          "Southeast Asia",
+          "East Asia"
+        ],
+        "eligible_countries": [],
+        "nationality_or_residency_rules": "Priority for applicants from Southeast and East Asia, but others may apply.",
+        "academic_levels": [],
+        "broad_fields": [],
+        "specific_majors": [],
+        "age_requirements": null,
+        "experience_requirements": "Interest and engagement in effective altruism cause areas.",
+        "language_requirements": "Likely English (not explicitly stated)",
+        "display_points": [
+          "Priority for applicants from Southeast and East Asia, but others may apply.",
+          "Applicants should have interest and engagement in effective altruism cause areas.",
+          "No explicit age or academic requirements.",
+          "Event likely conducted in English."
+        ]
+      },
+      "audience": {
+        "classification_source": "submitted-dropdown-only",
+        "groups": [],
+        "access_model": "not-confirmed",
+        "display_points": []
+      },
+      "funding": {
+        "application_fee": "No application fee mentioned",
+        "participation_fee": null,
+        "scholarship": null,
+        "travel_support": null,
+        "accommodation": null,
+        "meals": null,
+        "stipend_or_salary": null,
+        "prizes": null,
+        "visa_support": null,
+        "accessibility_support": null,
+        "other_support": [],
+        "display_points": [
+          "No application fee mentioned.",
+          "Participation fee not specified.",
+          "No information found about scholarships, travel support, accommodation, or meals."
+        ]
+      },
+      "application": {
+        "official_page": "https://www.effectivealtruism.org/ea-global/events/eagxsingapore-2026?utm_source=ea-opps",
+        "application_page": "https://effectivealtruism.my.site.com/EAGlobal/s/eagxsingaporeapplication",
+        "requirements": [
+          "Basic details about interests and engagement in effective altruism",
+          "Short application form (5-15 minutes)"
+        ],
+        "documents": [],
+        "selection_process": [
+          "Application review for engagement and interest in EA cause areas"
+        ],
+        "display_points": [
+          "Apply online by 15 August 2026.",
+          "Complete a short application form outlining your interests in effective altruism.",
+          "Applications are reviewed for engagement and interest in EA cause areas."
+        ]
+      },
+      "program": {
+        "activities": [
+          "Conference sessions",
+          "Networking",
+          "Community interaction"
+        ],
+        "benefits": [
+          "Connect with EA community",
+          "Learn about EA cause areas",
+          "Networking opportunities"
+        ],
+        "topics": [
+          "Effective altruism",
+          "EA cause areas"
+        ]
+      },
+      "filters": {
+        "main_categories": [
+          "events"
+        ],
+        "categories": [
+          "conference"
+        ],
+        "formats": [
+          "in-person"
+        ],
+        "host_countries": [
+          "Singapore"
+        ],
+        "eligible_regions": [
+          "Southeast Asia",
+          "East Asia"
+        ],
+        "eligible_countries": [],
+        "academic_levels": [],
+        "academic_fields": [],
+        "subjects": [],
+        "audience_groups": [],
+        "funding_features": [],
+        "topics": [
+          "Effective altruism",
+          "EA cause areas"
+        ]
+      },
+      "tags": [
+        "ea",
+        "conference",
+        "singapore",
+        "networking",
+        "southeast-asia",
+        "east-asia"
+      ],
+      "verification": {
+        "human_review_required": true,
+        "safe_to_generate_draft_page": true,
+        "research_confidence": 90,
+        "research_recommended_action": "continue-to-human-review",
+        "formatter_recommended_action": "continue-to-draft-pr",
+        "identity_categories_locked_to_research": true,
+        "audience_groups_locked_to_research": true,
+        "automatically_verified": false,
+        "automatically_published": false,
+        "human_review_completed": true,
+        "approved_by_merge": true,
+        "approval_method": "merged-pull-request",
+        "approval_pr_number": 77,
+        "approved_by": "elchrysaki",
+        "published_at": "2026-07-20T11:54:52.075264+00:00"
+      },
+      "submission": {
+        "issue_number": 69,
+        "issue_url": "https://github.com/elchrysaki/offmap-hub/issues/69"
+      },
+      "provenance": {
+        "research_model": "openai/gpt-4.1",
+        "formatter_model": "openai/gpt-4.1",
+        "researched_at": "2026-07-20T11:46:19.207162+00:00",
+        "formatted_at": "2026-07-20T11:46:31.310119+00:00",
+        "generated_at": "2026-07-20T11:46:31.396644+00:00",
+        "published_at": "2026-07-20T11:54:52.075264+00:00",
+        "publication_pr_number": 77,
+        "published_by": "elchrysaki",
+        "publishing_workflow": ".github/workflows/rebuild-indexes.yml"
+      },
+      "id": "events:eagxsingapore-2026",
+      "path": "opportunities/events/eagxsingapore-2026.md"
     },
     {
       "schema_version": 2,

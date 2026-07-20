@@ -7,7 +7,7 @@ organizer: Effective Altruism Global (EA Global)
 main_category: events
 category: conference
 edition: '2026'
-status: pending-review
+status: published
 summary: EAGxSingapore 2026 is a two-day in-person conference for those interested in effective altruism, with a focus on Southeast and East Asia. Participants will engage in sessions, networking, and community interaction to explore EA cause areas and connect with like-minded individuals.
 format: in-person
 location:
@@ -129,6 +129,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 77
+  approved_by: elchrysaki
+  published_at: '2026-07-20T11:54:52.075264+00:00'
 submission:
   issue_number: 69
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/69
@@ -138,6 +144,10 @@ provenance:
   researched_at: '2026-07-20T11:46:19.207162+00:00'
   formatted_at: '2026-07-20T11:46:31.310119+00:00'
   generated_at: '2026-07-20T11:46:31.396644+00:00'
+  published_at: '2026-07-20T11:54:52.075264+00:00'
+  publication_pr_number: 77
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 EAGxSingapore 2026

@@ -2,11 +2,11 @@
 
 This index is generated automatically from reviewed opportunity files. Edit the individual opportunity pages, not this index.
 
-**Published opportunities:** 20
+**Published opportunities:** 21
 
 ## Jump to a main category
 
-- [🎤 Events](#main-events) (12)
+- [🎤 Events](#main-events) (13)
 - [🧰 Internships](#main-internships) (1)
 - [🏆 Competitions](#main-competitions) (1)
 - [🤝 Fellowships](#main-fellowships) (1)
@@ -22,6 +22,7 @@ This index is generated automatically from reviewed opportunity files. Edit the 
 |---|---|---|---|---|---|---|---|---|
 | [EAGxBerkeley 2026](<events/eagxberkeley-2026.md>) | Conference | EAGxBerkeley | August 7, 2026 | In Person | In-person at Lighthaven, Berkeley, California, United States | Not confirmed | See opportunity page | [Apply](<https://effectivealtruism.my.site.com/EAGlobal/s/eagxberkeleyapplication>) |
 | [EA Summit: Buenos Aires](<events/ea-summit-buenos-aires.md>) | Conference | Effective Altruism Global / EA Summit: Buenos Aires | 15 August 2026 | In Person | In-person in Buenos Aires, Argentina | Not confirmed | See opportunity page | [Official page](<https://www.effectivealtruism.org/ea-global/events/ea-summit-buenos-aires?utm_source=ea-opps>) |
+| [EAGxSingapore 2026](<events/eagxsingapore-2026.md>) | Conference | Effective Altruism Global (EA Global) | 15 August 2026 | In Person | Catapult by CapitaLand, Singapore | Not confirmed | Southeast Asia | [Apply](<https://effectivealtruism.my.site.com/EAGlobal/s/eagxsingaporeapplication>) |
 | [PauseCon London 2026](<events/pausecon-london-2026.md>) | Conference | PauseAI Events (Global) | 21 August 2026 | In Person | In-person in London, United Kingdom | Not confirmed | See opportunity page | [Apply](<https://luma.com/4be2eqz9?utm_source=ea-opps>) |
 | [EAGxOxford 2026](<events/eagxoxford-2026.md>) | Conference | EAGxOxford | 13 September 2026 | In Person | In-person at Examination Schools, Oxford, United Kingdom | Not confirmed | See opportunity page | [Apply](<https://effectivealtruism.my.site.com/EAGlobal/s/eagxoxfordapplication>) |
 | [EA Summit: Warsaw 2026](<events/ea-summit-warsaw-2026.md>) | Conference | Effective Altruism Global | 25 September 2026 | In Person | In-person at POLIN Conference Centre, Warsaw, Poland | Not confirmed | See opportunity page | [Official page](<https://www.effectivealtruism.org/ea-global/events/ea-summit-warsaw-2026?utm_source=ea-opps>) |
