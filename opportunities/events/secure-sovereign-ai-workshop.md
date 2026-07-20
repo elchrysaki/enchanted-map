@@ -7,7 +7,7 @@ organizer: Foresight Institute
 main_category: events
 category: workshop-seminar
 edition: '2026'
-status: pending-review
+status: published
 summary: The Secure & Sovereign AI Workshop is a two-day in-person event in Berlin, Germany, organized by Foresight Institute. Participants will explore topics such as AI security, privacy, decentralization, and cooperation among AI systems. The workshop aims to foster discussion and collaboration on privacy-preserving technologies and the future of secure AI.
 format: in-person
 location:
@@ -106,6 +106,12 @@ verification:
   audience_groups_locked_to_research: true
   automatically_verified: false
   automatically_published: false
+  human_review_completed: true
+  approved_by_merge: true
+  approval_method: merged-pull-request
+  approval_pr_number: 63
+  approved_by: elchrysaki
+  published_at: '2026-07-20T09:11:08.473594+00:00'
 submission:
   issue_number: 61
   issue_url: https://github.com/elchrysaki/offmap-hub/issues/61
@@ -115,6 +121,10 @@ provenance:
   researched_at: '2026-07-20T09:03:26.047912+00:00'
   formatted_at: '2026-07-20T09:03:36.359130+00:00'
   generated_at: '2026-07-20T09:03:36.455453+00:00'
+  published_at: '2026-07-20T09:11:08.473594+00:00'
+  publication_pr_number: 63
+  published_by: elchrysaki
+  publishing_workflow: .github/workflows/rebuild-indexes.yml
 OFFMAP-METADATA-END -->
 
 # 🧭 Secure &amp; Sovereign AI Workshop
