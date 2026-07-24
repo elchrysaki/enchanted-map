@@ -28,7 +28,7 @@ Gatherings where students, researchers, professionals, and organisations share w
 
 | Status | Category | Opportunity | Focus | When & Where | Format | Funding | Eligibility | Apply | Deadline |
 |---|---|---|---|---|---|---|---|---|---|
-| ✅ **OPEN** | Conferences | [EAGxBerkeley 2026](<eagxberkeley-2026.md>) | Open / multidisciplinary | 21–23 Aug 2026 / Berkeley, United States | In Person | Not stated | See details | [Apply](<https://effectivealtruism.my.site.com/EAGlobal/s/eagxberkeleyapplication>) | August 7, 2026 |
+| 🔥 **CLOSING SOON** | Conferences | [EAGxBerkeley 2026](<eagxberkeley-2026.md>) | Open / multidisciplinary | 21–23 Aug 2026 / Berkeley, United States | In Person | Not stated | See details | [Apply](<https://effectivealtruism.my.site.com/EAGlobal/s/eagxberkeleyapplication>) | August 7, 2026 |
 | ✅ **OPEN** | Conferences | [EA Summit: Buenos Aires](<ea-summit-buenos-aires.md>) | Effective Altruism | 29 Aug 2026 / Buenos Aires, Argentina | In Person | Not stated | See details | [Official page](<https://www.effectivealtruism.org/ea-global/events/ea-summit-buenos-aires?utm_source=ea-opps>) | 15 August 2026 |
 | ✅ **OPEN** | Conferences | [EAGxSingapore 2026](<eagxsingapore-2026.md>) | Effective Altruism, Ea Cause Areas | 29–30 Aug 2026 / Singapore, Singapore | In Person | Not stated | Southeast Asia | [Apply](<https://effectivealtruism.my.site.com/EAGlobal/s/eagxsingaporeapplication>) | 15 August 2026 |
 | ✅ **OPEN** | Conferences | [PauseCon London 2026](<pausecon-london-2026.md>) | Open / multidisciplinary | Dates not confirmed / London, United Kingdom | In Person | Not stated | See details | [Apply](<https://luma.com/4be2eqz9?utm_source=ea-opps>) | 21 August 2026 |
